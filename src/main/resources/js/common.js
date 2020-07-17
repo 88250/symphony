@@ -724,7 +724,6 @@ var Util = {
             'insert-after',
             'fullscreen',
             'preview',
-            'format',
             'info',
             'help',
           ],
