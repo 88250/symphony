@@ -82,7 +82,6 @@ var ChatRoom = {
             'fullscreen',
             'edit-mode',
             'both',
-            'format',
             'preview',
             'outline',
             'content-theme',
