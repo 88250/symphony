@@ -63,7 +63,7 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 2.28.2.2, Jun 23, 2020
+ * @version 2.28.2.3, Jul 22, 2020
  * @since 0.2.0
  */
 @Service
@@ -169,7 +169,7 @@ public class ArticleQueryService {
      *
      * @param sortMode       the specified sort mode, 0: default, 1: unanswered, 2: reward, 3: hot
      * @param currentPageNum the specified current page number
-     * @param fetchSize      the specified fetch size
+     * @param pageSize       the specified page size
      * @return for example,      <pre>
      * {
      *     "pagination": {
@@ -185,20 +185,20 @@ public class ArticleQueryService {
      * }
      * </pre>
      */
-    public JSONObject getQuestionArticles(final int sortMode, final int currentPageNum, final int fetchSize) {
+    public JSONObject getQuestionArticles(final int sortMode, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
 
         Query query;
         switch (sortMode) {
             case 0:
                 query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                        setPage(currentPageNum, fetchSize).
+                        setPage(currentPageNum, pageSize).
                         setFilter(makeQuestionArticleShowingFilter());
                 break;
             case 1:
                 query = new Query().
                         addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                        setPage(currentPageNum, fetchSize);
+                        setPage(currentPageNum, pageSize);
                 final CompositeFilter compositeFilter1 = makeQuestionArticleShowingFilter();
                 final List<Filter> filters1 = new ArrayList<>();
                 filters1.add(new PropertyFilter(Article.ARTICLE_COMMENT_CNT, FilterOperator.EQUAL, 0));
@@ -210,7 +210,7 @@ public class ArticleQueryService {
                 query = new Query().
                         addSort(Article.ARTICLE_QNA_OFFER_POINT, SortDirection.DESCENDING).
                         addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                        setPage(currentPageNum, fetchSize);
+                        setPage(currentPageNum, pageSize);
                 final CompositeFilter compositeFilter2 = makeQuestionArticleShowingFilter();
                 final List<Filter> filters2 = new ArrayList<>();
                 filters2.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, id));
@@ -221,13 +221,13 @@ public class ArticleQueryService {
                 query = new Query().
                         addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING).
                         addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                        setPage(currentPageNum, fetchSize).
+                        setPage(currentPageNum, pageSize).
                         setFilter(makeQuestionArticleShowingFilter());
                 break;
             default:
                 query = new Query().
                         addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                        setPage(currentPageNum, fetchSize).
+                        setPage(currentPageNum, pageSize).
                         setFilter(makeQuestionArticleShowingFilter());
         }
 
@@ -251,7 +251,7 @@ public class ArticleQueryService {
 
         final int windowSize = Symphonys.ARTICLE_LIST_WIN_SIZE;
 
-        final List<Integer> pageNums = Paginator.paginate(currentPageNum, fetchSize, pageCount, windowSize);
+        final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) pageNums);
 
@@ -1109,16 +1109,15 @@ public class ArticleQueryService {
      * Makes the top articles with the specified fetch size.
      *
      * @param currentPageNum the specified current page number
-     * @param fetchSize      the specified fetch size
+     * @param pageSize       the specified page size
      * @return top articles query
      */
-    private Query makeTopQuery(final int currentPageNum, final int fetchSize) {
+    private Query makeTopQuery(final int currentPageNum, final int pageSize) {
         final Query query = new Query().
                 addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING).
                 addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING).
-                setPageCount(1).setPage(currentPageNum, fetchSize);
+                setPageCount(1).setPage(currentPageNum, pageSize);
         query.setFilter(makeArticleShowingFilter());
-
         return query;
     }
 
@@ -1127,7 +1126,7 @@ public class ArticleQueryService {
      *
      * @param sortMode       the specified sort mode, 0: default, 1: hot, 2: score, 3: reply
      * @param currentPageNum the specified current page number
-     * @param fetchSize      the specified fetch size
+     * @param pageSize       the specified page size
      * @return for example,      <pre>
      * {
      *     "pagination": {
@@ -1143,7 +1142,7 @@ public class ArticleQueryService {
      * }
      * </pre>
      */
-    public JSONObject getRecentArticles(final int sortMode, final int currentPageNum, final int fetchSize) {
+    public JSONObject getRecentArticles(final int sortMode, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
 
         Query query;
@@ -1186,7 +1185,7 @@ public class ArticleQueryService {
                         addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                         setFilter(makeRecentArticleShowingFilter());
         }
-        query.setPage(currentPageNum, fetchSize);
+        query.setPage(currentPageNum, pageSize);
         addListProjections(query);
 
         JSONObject result = null;
@@ -1204,7 +1203,7 @@ public class ArticleQueryService {
         final JSONObject pagination = new JSONObject();
         ret.put(Pagination.PAGINATION, pagination);
         final int windowSize = Symphonys.ARTICLE_LIST_WIN_SIZE;
-        final List<Integer> pageNums = Paginator.paginate(currentPageNum, fetchSize, pageCount, windowSize);
+        final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) pageNums);
 
@@ -1318,7 +1317,7 @@ public class ArticleQueryService {
      * Gets the perfect articles with the specified fetch size.
      *
      * @param currentPageNum the specified current page number
-     * @param fetchSize      the specified fetch size
+     * @param pageSize       the specified page size
      * @return for example,      <pre>
      * {
      *     "pagination": {
@@ -1334,9 +1333,9 @@ public class ArticleQueryService {
      * }
      * </pre>
      */
-    public JSONObject getPerfectArticles(final int currentPageNum, final int fetchSize) {
+    public JSONObject getPerfectArticles(final int currentPageNum, final int pageSize) {
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                setPage(currentPageNum, fetchSize).
+                setPage(currentPageNum, pageSize).
                 setFilter(CompositeFilterOperator.and(
                         new PropertyFilter(Article.ARTICLE_PERFECT, FilterOperator.EQUAL, Article.ARTICLE_PERFECT_C_PERFECT),
                         new PropertyFilter(Article.ARTICLE_SHOW_IN_LIST, FilterOperator.NOT_EQUAL, Article.ARTICLE_SHOW_IN_LIST_C_NOT)));
@@ -1358,7 +1357,7 @@ public class ArticleQueryService {
         final JSONObject pagination = new JSONObject();
         ret.put(Pagination.PAGINATION, pagination);
         final int windowSize = Symphonys.ARTICLE_LIST_WIN_SIZE;
-        final List<Integer> pageNums = Paginator.paginate(currentPageNum, fetchSize, pageCount, windowSize);
+        final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) pageNums);
 
