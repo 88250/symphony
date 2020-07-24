@@ -29,7 +29,6 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Report;
@@ -42,7 +41,6 @@ import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Escapes;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -140,13 +138,11 @@ public class ReportQueryService {
         final Query query = new Query().setPage(currentPageNum, pageSize).
                 addSort(Report.REPORT_HANDLED, SortDirection.ASCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-
         JSONObject result;
         try {
             result = reportRepository.get(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Get reports failed", e);
-
             return null;
         }
 
@@ -157,8 +153,7 @@ public class ReportQueryService {
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> records = CollectionUtils.jsonArrayToList(data);
+        final List<JSONObject> records = (List<JSONObject>) result.opt(Keys.RESULTS);
         final List<JSONObject> reports = new ArrayList<>();
         for (final JSONObject record : records) {
             final JSONObject report = new JSONObject();
@@ -182,7 +177,6 @@ public class ReportQueryService {
                             reportData = "<a href=\"" + Latkes.getServePath() + "/article/" + article.optString(Keys.OBJECT_ID) +
                                     "\" target=\"_blank\">" + Emotions.convert(title) + "</a>";
                         }
-
                         break;
                     case Report.REPORT_DATA_TYPE_C_COMMENT:
                         report.put(Report.REPORT_T_DATA_TYPE_STR, langPropsService.get("cmtLabel"));
@@ -192,23 +186,19 @@ public class ReportQueryService {
                             final int cmtViewMode = UserExt.USER_COMMENT_VIEW_MODE_C_REALTIME;
                             reportData = commentQueryService.getCommentURL(commentId, cmtViewMode, Symphonys.ARTICLE_COMMENTS_CNT);
                         }
-
                         break;
                     case Report.REPORT_DATA_TYPE_C_USER:
                         report.put(Report.REPORT_T_DATA_TYPE_STR, langPropsService.get("accountLabel"));
                         final JSONObject reported = userRepository.get(dataId);
                         reportData = UserExt.getUserLink(reported);
-
                         break;
                     default:
                         LOGGER.log(Level.ERROR, "Unknown report data type [" + dataType + "]");
-
                         continue;
                 }
                 report.put(Report.REPORT_T_DATA, reportData);
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Builds report data failed", e);
-
                 continue;
             }
 
@@ -217,43 +207,33 @@ public class ReportQueryService {
             switch (type) {
                 case Report.REPORT_TYPE_C_SPAM_AD:
                     report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("spamADLabel"));
-
                     break;
                 case Report.REPORT_TYPE_C_PORNOGRAPHIC:
                     report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("pornographicLabel"));
-
                     break;
                 case Report.REPORT_TYPE_C_VIOLATION_OF_REGULATIONS:
                     report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("violationOfRegulationsLabel"));
-
                     break;
                 case Report.REPORT_TYPE_C_ALLEGEDLY_INFRINGING:
                     report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("allegedlyInfringingLabel"));
-
                     break;
                 case Report.REPORT_TYPE_C_PERSONAL_ATTACKS:
                     report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("personalAttacksLabel"));
-
                     break;
                 case Report.REPORT_TYPE_C_POSING_ACCOUNT:
                     report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("posingAccountLabel"));
-
                     break;
                 case Report.REPORT_TYPE_C_SPAM_AD_ACCOUNT:
                     report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("spamADAccountLabel"));
-
                     break;
                 case Report.REPORT_TYPE_C_PERSONAL_INFO_VIOLATION:
                     report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("personalInfoViolationLabel"));
-
                     break;
                 case Report.REPORT_TYPE_C_OTHER:
                     report.put(Report.REPORT_T_TYPE_STR, langPropsService.get("miscLabel"));
-
                     break;
                 default:
                     LOGGER.log(Level.ERROR, "Unknown report type [" + type + "]");
-
                     continue;
             }
 
@@ -262,11 +242,9 @@ public class ReportQueryService {
             memo = Markdowns.clean(memo, "");
             report.put(Report.REPORT_MEMO, memo);
             report.put(Report.REPORT_HANDLED, record.optInt(Report.REPORT_HANDLED));
-
             reports.add(report);
         }
-        ret.put(Report.REPORTS, reports);
-
+        ret.put(Report.REPORTS, (Object) reports);
         return ret;
     }
 }

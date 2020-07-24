@@ -78,12 +78,9 @@
         <ul class="module-list">
             <#list sideHotArticles as hotArticle>
             <li<#if !hotArticle_has_next> class="last"</#if>>
-                <#if "someone" != hotArticle.articleAuthorName>
-                <a rel="nofollow" href="${servePath}/member/${hotArticle.articleAuthorName}"></#if>
-                    <span class="avatar-small tooltipped tooltipped-se slogan"
-                          aria-label="${hotArticle.articleAuthorName}"
-                          style="background-image:url('${hotArticle.articleAuthorThumbnailURL20}')"></span>
-                    <#if "someone" != hotArticle.articleAuthorName></a></#if>
+                <a rel="nofollow" href="${servePath}/member/${hotArticle.articleAuthorName}">
+                    <span class="avatar-small tooltipped tooltipped-se slogan" aria-label="${hotArticle.articleAuthorName}" style="background-image:url('${hotArticle.articleAuthorThumbnailURL20}')"></span>
+                  </a>
                 <a rel="nofollow" class="title" href="${servePath}${hotArticle.articlePermalink}">${hotArticle.articleTitleEmoj}</a>
             </li>
             </#list>
@@ -134,12 +131,9 @@
         <ul class="module-list">
             <#list sideRandomArticles as randomArticle>
             <li<#if !randomArticle_has_next> class="last"</#if>>
-                <#if "someone" != randomArticle.articleAuthorName>
-                <a rel="nofollow" href="${servePath}/member/${randomArticle.articleAuthorName}"></#if>
-                    <span aria-label="${randomArticle.articleAuthorName}"
-                          style="background-image:url('${randomArticle.articleAuthorThumbnailURL20}')"
-                          class="avatar-small tooltipped tooltipped-se slogan"></span>
-                    <#if "someone" != randomArticle.articleAuthorName></a></#if>
+                <a rel="nofollow" href="${servePath}/member/${randomArticle.articleAuthorName}">
+                    <span aria-label="${randomArticle.articleAuthorName}" style="background-image:url('${randomArticle.articleAuthorThumbnailURL20}')" class="avatar-small tooltipped tooltipped-se slogan"></span>
+                </a>
                 <a class="title" rel="nofollow" href="${servePath}${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
             </li>
             </#list>

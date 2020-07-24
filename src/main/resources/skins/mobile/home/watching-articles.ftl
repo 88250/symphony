@@ -25,11 +25,10 @@
     <ul class="fn-clear">
         <#list userHomeFollowingArticles as article>
         <li class="fn-flex read">
-            <#if "someone" != article.articleAuthorName>
             <a title="${article.articleAuthorName}"
-               target="_blank" rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if>
+               target="_blank" rel="nofollow" href="${servePath}/member/${article.articleAuthorName}">
                 <div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div>
-            <#if "someone" != article.articleAuthorName></a></#if>
+            </a>
             <div class="fn-flex-1 has-view">
                 <h2>
                     <@icon article.articlePerfect article.articleType></@icon>

@@ -33,8 +33,9 @@ import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.DomainRepository;
 import org.b3log.symphony.repository.DomainTagRepository;
 import org.b3log.symphony.repository.OptionRepository;
-import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Domain management service.
@@ -93,13 +94,12 @@ public class DomainMgmtService {
                     CompositeFilterOperator.and(
                             new PropertyFilter(Domain.DOMAIN + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, domainId),
                             new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId)));
-
-            final JSONArray relations = domainTagRepository.get(query).optJSONArray(Keys.RESULTS);
-            if (relations.length() < 1) {
+            final List<JSONObject> relations = domainTagRepository.getList(query);
+            if (relations.size() < 1) {
                 return;
             }
 
-            final JSONObject relation = relations.optJSONObject(0);
+            final JSONObject relation = relations.get(0);
             domainTagRepository.remove(relation.optString(Keys.OBJECT_ID));
 
             // Refresh cache

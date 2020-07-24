@@ -27,10 +27,8 @@
         <#if article_has_next><#assign articleIds = articleIds + ","></#if>
         <li<#if article.articleStickRemains gt 0 && articleStickCheck??> class="stick"</#if>>
             <div class="fn-flex">
-                <#if article.articleAnonymous == 0>
                 <a rel="nofollow" class="ft-gray"
-                   href="${servePath}/member/${article.articleAuthorName}"
-                   ></#if><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>
+                   href="${servePath}/member/${article.articleAuthorName}"><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div></a>
                 <div class="fn-flex-1 has-view">
                     <h2 class="fn-ellipsis">
                         <@icon article.articlePerfect article.articleType></@icon>
@@ -44,9 +42,8 @@
                     <div class="ft-smaller">
                     <span class="ft-fade">${article.timeAgo}</span>
                     <#if "" != article.articleLatestCmterName>
-                    <span class="ft-fade">•&nbsp;${latestCmtFromLabel}</span> 
-                    <#if article.articleLatestCmterName != 'someone'>
-                    <a rel="nofollow" class="ft-gray" href="${servePath}/member/${article.articleLatestCmterName}"><#else><span class="ft-gray"></#if>${article.articleLatestCmterName}<#if article.articleLatestCmterName != 'someone'></a><#else></span></#if>
+                    <span class="ft-fade">•&nbsp;${latestCmtFromLabel}</span>
+                    <a rel="nofollow" class="ft-gray" href="${servePath}/member/${article.articleLatestCmterName}">${article.articleLatestCmterName}</a>
                     </#if>
                     </div>
                 </div>

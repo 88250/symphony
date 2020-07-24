@@ -17,11 +17,9 @@
  */
 package org.b3log.symphony.repository;
 
-import org.b3log.latke.Keys;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Referral;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -45,15 +43,8 @@ public class ReferralRepository extends AbstractRepository {
     public JSONObject getByDataIdAndIP(final String dataId, final String ip) throws RepositoryException {
         final Query query = new Query().setFilter(CompositeFilterOperator.and(
                 new PropertyFilter(Referral.REFERRAL_DATA_ID, FilterOperator.EQUAL, dataId),
-                new PropertyFilter(Referral.REFERRAL_IP, FilterOperator.EQUAL, ip)
-        )).setPageCount(1).setPage(1, 1);
-
-        final JSONArray records = get(query).optJSONArray(Keys.RESULTS);
-        if (records.length() < 1) {
-            return null;
-        }
-
-        return records.optJSONObject(0);
+                new PropertyFilter(Referral.REFERRAL_IP, FilterOperator.EQUAL, ip))).setPageCount(1).setPage(1, 1);
+        return getFirst(query);
     }
 
     /**

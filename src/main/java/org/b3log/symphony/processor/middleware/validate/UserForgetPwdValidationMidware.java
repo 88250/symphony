@@ -51,14 +51,12 @@ public class UserForgetPwdValidationMidware {
         if (CaptchaProcessor.invalidCaptcha(captcha)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("submitFailedLabel") + " - " + langPropsService.get("captchaErrorLabel")));
             context.abort();
-
             return;
         }
 
         if (!Strings.isEmail(email)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("submitFailedLabel") + " - " + langPropsService.get("invalidEmailLabel")));
             context.abort();
-
             return;
         }
 

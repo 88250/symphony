@@ -146,7 +146,6 @@ public class DataModelService {
         final int articleStatus = article.optInt(Article.ARTICLE_STATUS);
         if (Article.ARTICLE_STATUS_C_INVALID == articleStatus) {
             dataModel.put(Common.SIDE_RELEVANT_ARTICLES, Collections.emptyList());
-
             return;
         }
 

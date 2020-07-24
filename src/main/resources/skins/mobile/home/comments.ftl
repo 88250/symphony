@@ -25,13 +25,10 @@
     <ul>
         <#list userHomeComments as comment>
         <li class="fn-flex comment-list-item">
-            <#if comment.commentArticleAuthorName != "someone">
             <a rel="nofollow" href="${servePath}/member/${comment.commentArticleAuthorName}" 
-               title="${comment.commentArticleAuthorName}"></#if>
+               title="${comment.commentArticleAuthorName}">
                 <div class="avatar" style="background-image:url('${comment.commentArticleAuthorThumbnailURL}')"></div>
-            <#if comment.commentArticleAuthorName != "someone">
             </a>
-            </#if>
             <div class="fn-flex-1">
                 <div>
                     <h2>

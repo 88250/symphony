@@ -19,7 +19,7 @@
  * @fileoverview 聊天室
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.0.1, Aug 6, 2019
+ * @version 1.3.0.2, Apr 30, 2020
  */
 
 /**
@@ -37,7 +37,7 @@ var ChatRoom = {
       $('.list').height($(window).height() - 173)
     }
 
-    // 没用登陆就不需要编辑起初始化了
+    // 没用登录就不需要编辑器初始化了
     if ($('#chatContent').length === 0) {
       return false
     }
@@ -52,7 +52,46 @@ var ChatRoom = {
         enable: true,
         position: 'bottom',
       },
-      height: 160,
+      toolbar: [
+        'emoji',
+        'headings',
+        'bold',
+        'italic',
+        'link',
+        '|',
+        'list',
+        'ordered-list',
+        'check',
+        'outdent',
+        'indent',
+        '|',
+        'quote',
+        'code',
+        'insert-before',
+        'insert-after',
+        '|',
+        'upload',
+        'table',
+        '|',
+        'undo',
+        'redo',
+        '|',
+        {
+          name: 'more',
+          toolbar: [
+            'fullscreen',
+            'edit-mode',
+            'both',
+            'preview',
+            'outline',
+            'content-theme',
+            'code-theme',
+            'devtools',
+            'info',
+            'help',
+          ],
+        }],
+      height: 200,
       counter: 4096,
       placeholder: 'Say sth...',
       ctrlEnter: function () {
@@ -81,7 +120,7 @@ var ChatRoom = {
           css('opacity', '0.3')
       },
       success: function (result) {
-        if (result.sc) {
+        if (0 === result.code) {
           $('#chatContentTip').removeClass('error succ').html('')
 
           ChatRoom.editor.setValue('')

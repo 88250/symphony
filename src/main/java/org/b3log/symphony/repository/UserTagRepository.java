@@ -23,7 +23,6 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Tag;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -55,14 +54,8 @@ public class UserTagRepository extends AbstractRepository {
         final Query query = new Query().setFilter(CompositeFilterOperator.and(
                 new PropertyFilter(User.USER + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, userId),
                 new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId),
-                new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, type)
-        )).setPage(1, Integer.MAX_VALUE).setPageCount(1);
-
-        final JSONArray rels = get(query).optJSONArray(Keys.RESULTS);
-        for (int i = 0; i < rels.length(); i++) {
-            final String id = rels.optJSONObject(i).optString(Keys.OBJECT_ID);
-            remove(id);
-        }
+                new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, type))).setPage(1, Integer.MAX_VALUE).setPageCount(1);
+        remove(query);
     }
 
     /**

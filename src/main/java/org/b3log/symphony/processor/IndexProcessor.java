@@ -162,7 +162,6 @@ public class IndexProcessor {
 
             if (!UserExt.finshedGuide(user)) {
                 context.sendRedirect(Latkes.getServePath() + "/guide");
-
                 return;
             }
         }
@@ -172,19 +171,15 @@ public class IndexProcessor {
         switch (sortModeStr) {
             case "":
                 sortMode = 0;
-
                 break;
             case "/unanswered":
                 sortMode = 1;
-
                 break;
             case "/reward":
                 sortMode = 2;
-
                 break;
             case "/hot":
                 sortMode = 3;
-
                 break;
             default:
                 sortMode = 0;
@@ -232,7 +227,6 @@ public class IndexProcessor {
 
             if (!UserExt.finshedGuide(user)) {
                 context.sendRedirect(Latkes.getServePath() + "/guide");
-
                 return;
             }
         }
@@ -245,14 +239,12 @@ public class IndexProcessor {
                     final List<JSONObject> followingTagArticles = articleQueryService.getFollowingTagArticles(user.optString(Keys.OBJECT_ID), 1, pageSize);
                     dataModel.put(Common.WATCHING_ARTICLES, followingTagArticles);
                 }
-
                 break;
             case "/users":
                 if (null != user) {
                     final List<JSONObject> followingUserArticles = articleQueryService.getFollowingUserArticles(user.optString(Keys.OBJECT_ID), 1, pageSize);
                     dataModel.put(Common.WATCHING_ARTICLES, followingUserArticles);
                 }
-
                 break;
         }
 
@@ -278,7 +270,6 @@ public class IndexProcessor {
             final String indexRedirectURL = currentUser.optString(UserExt.USER_INDEX_REDIRECT_URL);
             if (StringUtils.isNotBlank(indexRedirectURL)) {
                 context.sendRedirect(indexRedirectURL);
-
                 return;
             }
         }
@@ -316,7 +307,6 @@ public class IndexProcessor {
 
             if (!UserExt.finshedGuide(user)) {
                 context.sendRedirect(Latkes.getServePath() + "/guide");
-
                 return;
             }
         }
@@ -326,19 +316,15 @@ public class IndexProcessor {
         switch (sortModeStr) {
             case "":
                 sortMode = 0;
-
                 break;
             case "/hot":
                 sortMode = 1;
-
                 break;
             case "/good":
                 sortMode = 2;
-
                 break;
             case "/reply":
                 sortMode = 3;
-
                 break;
             default:
                 sortMode = 0;
@@ -431,7 +417,6 @@ public class IndexProcessor {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
             if (!UserExt.finshedGuide(user)) {
                 context.sendRedirect(Latkes.getServePath() + "/guide");
-
                 return;
             }
         }

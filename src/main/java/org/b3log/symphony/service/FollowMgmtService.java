@@ -211,7 +211,6 @@ public class FollowMgmtService {
             final JSONObject tag = tagRepository.get(followingId);
             if (null == tag) {
                 LOGGER.log(Level.ERROR, "Not found tag [id={}] to follow", followingId);
-
                 return;
             }
 
@@ -223,7 +222,6 @@ public class FollowMgmtService {
             final JSONObject article = articleRepository.get(followingId);
             if (null == article) {
                 LOGGER.log(Level.ERROR, "Not found article [id={}] to follow", followingId);
-
                 return;
             }
 
@@ -234,7 +232,6 @@ public class FollowMgmtService {
             final JSONObject article = articleRepository.get(followingId);
             if (null == article) {
                 LOGGER.log(Level.ERROR, "Not found article [id={}] to watch", followingId);
-
                 return;
             }
 
@@ -266,7 +263,6 @@ public class FollowMgmtService {
             final JSONObject tag = tagRepository.get(followingId);
             if (null == tag) {
                 LOGGER.log(Level.ERROR, "Not found tag [id={}] to unfollow", followingId);
-
                 return;
             }
 
@@ -282,7 +278,6 @@ public class FollowMgmtService {
             final JSONObject article = articleRepository.get(followingId);
             if (null == article) {
                 LOGGER.log(Level.ERROR, "Not found article [id={}] to unfollow", followingId);
-
                 return;
             }
 
@@ -296,7 +291,6 @@ public class FollowMgmtService {
             final JSONObject article = articleRepository.get(followingId);
             if (null == article) {
                 LOGGER.log(Level.ERROR, "Not found article [id={}] to unwatch", followingId);
-
                 return;
             }
 

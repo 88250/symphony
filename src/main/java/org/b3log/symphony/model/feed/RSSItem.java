@@ -77,7 +77,7 @@ public final class RSSItem {
     /**
      * Categories.
      */
-    private Set<RSSCategory> categories = new HashSet<>();
+    private final Set<RSSCategory> categories = new HashSet<>();
 
     /**
      * Start guid element.

@@ -27,13 +27,11 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Escapes;
 import org.b3log.symphony.util.Symphonys;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -115,18 +113,13 @@ public class PointtransferQueryService {
         final List<Filter> filters = new ArrayList<>();
         filters.add(new CompositeFilter(CompositeFilterOperator.OR, userFilters));
         filters.add(new PropertyFilter(Pointtransfer.TYPE, FilterOperator.EQUAL, type));
-
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setPage(1, fetchSize).setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-
         try {
-            final JSONObject result = pointtransferRepository.get(query);
-
-            return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            return pointtransferRepository.getList(query);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets latest pointtransfers error", e);
+            LOGGER.log(Level.ERROR, "Gets latest pointtransfers failed", e);
         }
-
         return ret;
     }
 
@@ -138,33 +131,25 @@ public class PointtransferQueryService {
      */
     public List<JSONObject> getTopBalanceUsers(final int fetchSize) {
         final List<JSONObject> ret = new ArrayList<>();
-
         final Query query = new Query().addSort(UserExt.USER_POINT, SortDirection.DESCENDING).
                 setPage(1, fetchSize).
-                setFilter(new PropertyFilter(UserExt.USER_JOIN_POINT_RANK, FilterOperator.EQUAL, UserExt.USER_JOIN_XXX_C_JOIN));
-
+                setFilter(new PropertyFilter(UserExt.USER_JOIN_POINT_RANK, FilterOperator.EQUAL, UserExt.USER_XXX_STATUS_C_ENABLED));
         final int moneyUnit = Symphonys.POINT_EXCHANGE_UNIT;
         try {
-            final JSONObject result = userRepository.get(query);
-            final List<JSONObject> users = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-
+            final List<JSONObject> users = userRepository.getList(query);
             for (final JSONObject user : users) {
                 if (UserExt.USER_APP_ROLE_C_HACKER == user.optInt(UserExt.USER_APP_ROLE)) {
                     user.put(UserExt.USER_T_POINT_HEX, Integer.toHexString(user.optInt(UserExt.USER_POINT)));
                 } else {
                     user.put(UserExt.USER_T_POINT_CC, UserExt.toCCString(user.optInt(UserExt.USER_POINT)));
                 }
-
                 user.put(Common.MONEY, (int) Math.floor(user.optInt(UserExt.USER_POINT) / moneyUnit));
-
                 avatarQueryService.fillUserAvatarURL(user);
-
                 ret.add(user);
             }
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets top balance users error", e);
+            LOGGER.log(Level.ERROR, "Gets top balance users failed", e);
         }
-
         return ret;
     }
 
@@ -176,33 +161,25 @@ public class PointtransferQueryService {
      */
     public List<JSONObject> getTopConsumptionUsers(final int fetchSize) {
         final List<JSONObject> ret = new ArrayList<>();
-
         final Query query = new Query().addSort(UserExt.USER_USED_POINT, SortDirection.DESCENDING).
                 setPage(1, fetchSize).
-                setFilter(new PropertyFilter(UserExt.USER_JOIN_USED_POINT_RANK, FilterOperator.EQUAL, UserExt.USER_JOIN_XXX_C_JOIN));
-
+                setFilter(new PropertyFilter(UserExt.USER_JOIN_USED_POINT_RANK, FilterOperator.EQUAL, UserExt.USER_XXX_STATUS_C_ENABLED));
         final int moneyUnit = Symphonys.POINT_EXCHANGE_UNIT;
         try {
-            final JSONObject result = userRepository.get(query);
-            final List<JSONObject> users = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-
+            final List<JSONObject> users = userRepository.getList(query);
             for (final JSONObject user : users) {
                 if (UserExt.USER_APP_ROLE_C_HACKER == user.optInt(UserExt.USER_APP_ROLE)) {
                     user.put(UserExt.USER_T_POINT_HEX, Integer.toHexString(user.optInt(UserExt.USER_POINT)));
                 } else {
                     user.put(UserExt.USER_T_POINT_CC, UserExt.toCCString(user.optInt(UserExt.USER_POINT)));
                 }
-
                 user.put(Common.MONEY, (int) Math.floor(user.optInt(UserExt.USER_USED_POINT) / moneyUnit));
-
                 avatarQueryService.fillUserAvatarURL(user);
-
                 ret.add(user);
             }
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets top consumption users error", e);
+            LOGGER.log(Level.ERROR, "Gets top consumption users failed", e);
         }
-
         return ret;
     }
 
@@ -231,10 +208,9 @@ public class PointtransferQueryService {
 
         try {
             final JSONObject ret = pointtransferRepository.get(query);
-            final JSONArray records = ret.optJSONArray(Keys.RESULTS);
-            for (int i = 0; i < records.length(); i++) {
-                final JSONObject record = records.optJSONObject(i);
-
+            final List<JSONObject> records = (List<JSONObject>) ret.opt(Keys.RESULTS);
+            for (int i = 0; i < records.size(); i++) {
+                final JSONObject record = records.get(i);
                 record.put(Common.CREATE_TIME, new Date(record.optLong(Pointtransfer.TIME)));
 
                 final String toId = record.optString(Pointtransfer.TO_ID);
@@ -267,17 +243,14 @@ public class PointtransferQueryService {
                 switch (type) {
                     case Pointtransfer.TRANSFER_TYPE_C_DATA_EXPORT:
                         desTemplate = desTemplate.replace("{num}", record.optString(Pointtransfer.DATA_ID));
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_INIT:
                         desTemplate = desTemplate.replace("{point}", record.optString(Pointtransfer.SUM));
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE:
                         final JSONObject addArticle = articleRepository.get(dataId);
                         if (null == addArticle) {
                             desTemplate = langPropsService.get("removedLabel");
-
                             break;
                         }
 
@@ -285,13 +258,11 @@ public class PointtransferQueryService {
                                 + addArticle.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + Escapes.escapeHTML(addArticle.optString(Article.ARTICLE_TITLE)) + "</a>";
                         desTemplate = desTemplate.replace("{article}", addArticleLink);
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_UPDATE_ARTICLE:
                         final JSONObject updateArticle = articleRepository.get(dataId);
                         if (null == updateArticle) {
                             desTemplate = langPropsService.get("removedLabel");
-
                             break;
                         }
 
@@ -299,14 +270,12 @@ public class PointtransferQueryService {
                                 + updateArticle.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + Escapes.escapeHTML(updateArticle.optString(Article.ARTICLE_TITLE)) + "</a>";
                         desTemplate = desTemplate.replace("{article}", updateArticleLink);
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT:
                         final JSONObject comment = commentRepository.get(dataId);
 
                         if (null == comment) {
                             desTemplate = langPropsService.get("removedLabel");
-
                             break;
                         }
 
@@ -324,14 +293,12 @@ public class PointtransferQueryService {
 
                             desTemplate = desTemplate.replace("{user}", commenterLink);
                         }
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_UPDATE_COMMENT:
                         final JSONObject comment32 = commentRepository.get(dataId);
 
                         if (null == comment32) {
                             desTemplate = langPropsService.get("removedLabel");
-
                             break;
                         }
 
@@ -342,13 +309,11 @@ public class PointtransferQueryService {
                                 + commentArticle32.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + Escapes.escapeHTML(commentArticle32.optString(Article.ARTICLE_TITLE)) + "</a>";
                         desTemplate = desTemplate.replace("{article}", commentArticleLink32);
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD:
                         final JSONObject addArticleReward = articleRepository.get(dataId);
                         if (null == addArticleReward) {
                             desTemplate = langPropsService.get("removedLabel");
-
                             break;
                         }
 
@@ -356,7 +321,6 @@ public class PointtransferQueryService {
                                 + addArticleReward.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + Escapes.escapeHTML(addArticleReward.optString(Article.ARTICLE_TITLE)) + "</a>";
                         desTemplate = desTemplate.replace("{article}", addArticleRewardLink);
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ARTICLE_REWARD:
                         final JSONObject reward = rewardRepository.get(dataId);
@@ -373,7 +337,6 @@ public class PointtransferQueryService {
                         final JSONObject articleReward = articleRepository.get(rewardArticleId);
                         if (null == articleReward) {
                             desTemplate = langPropsService.get("removedLabel");
-
                             break;
                         }
 
@@ -381,7 +344,6 @@ public class PointtransferQueryService {
                                 + articleReward.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + Escapes.escapeHTML(articleReward.optString(Article.ARTICLE_TITLE)) + "</a>";
                         desTemplate = desTemplate.replace("{article}", articleRewardLink);
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_COMMENT_REWARD:
                         final JSONObject reward14 = rewardRepository.get(dataId);
@@ -397,14 +359,12 @@ public class PointtransferQueryService {
                         final JSONObject article14 = articleRepository.get(articleId14);
                         if (null == article14) {
                             desTemplate = langPropsService.get("removedLabel");
-
                             break;
                         }
                         final String articleLink14 = "<a href=\""
                                 + article14.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + Escapes.escapeHTML(article14.optString(Article.ARTICLE_TITLE)) + "</a>";
                         desTemplate = desTemplate.replace("{article}", articleLink14);
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ARTICLE_THANK:
                         final JSONObject thank22 = rewardRepository.get(dataId);
@@ -418,7 +378,6 @@ public class PointtransferQueryService {
                         final JSONObject article22 = articleRepository.get(articleId22);
                         if (null == article22) {
                             desTemplate = langPropsService.get("removedLabel");
-
                             break;
                         }
 
@@ -429,25 +388,21 @@ public class PointtransferQueryService {
                                 + article22.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + Escapes.escapeHTML(article22.optString(Article.ARTICLE_TITLE)) + "</a>";
                         desTemplate = desTemplate.replace("{article}", articleLink22);
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_INVITE_REGISTER:
                         final JSONObject newUser = userRepository.get(dataId);
                         final String newUserLink = UserExt.getUserLink(newUser);
                         desTemplate = desTemplate.replace("{user}", newUserLink);
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_INVITED_REGISTER:
                         final JSONObject referralUser = userRepository.get(dataId);
                         final String referralUserLink = UserExt.getUserLink(referralUser);
                         desTemplate = desTemplate.replace("{user}", referralUserLink);
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_INVITECODE_USED:
                         final JSONObject newUser1 = userRepository.get(dataId);
                         final String newUserLink1 = UserExt.getUserLink(newUser1);
                         desTemplate = desTemplate.replace("{user}", newUserLink1);
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN:
                     case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_YESTERDAY_LIVENESS_REWARD:
@@ -465,7 +420,6 @@ public class PointtransferQueryService {
                         final JSONObject comment20 = commentRepository.get(dataId);
                         if (null == comment20) {
                             desTemplate = langPropsService.get("removedLabel");
-
                             break;
                         }
 
@@ -473,7 +427,6 @@ public class PointtransferQueryService {
                         final JSONObject atParticipantsArticle = articleRepository.get(articleId20);
                         if (null == atParticipantsArticle) {
                             desTemplate = langPropsService.get("removedLabel");
-
                             break;
                         }
 
@@ -481,13 +434,11 @@ public class PointtransferQueryService {
                                 + atParticipantsArticle.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + Escapes.escapeHTML(atParticipantsArticle.optString(Article.ARTICLE_TITLE)) + "</a>";
                         desTemplate = desTemplate.replace("{article}", ArticleLink20);
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_STICK_ARTICLE:
                         final JSONObject stickArticle = articleRepository.get(dataId);
                         if (null == stickArticle) {
                             desTemplate = langPropsService.get("removedLabel");
-
                             break;
                         }
 
@@ -495,7 +446,6 @@ public class PointtransferQueryService {
                                 + stickArticle.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + Escapes.escapeHTML(stickArticle.optString(Article.ARTICLE_TITLE)) + "</a>";
                         desTemplate = desTemplate.replace("{article}", stickArticleLink);
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ACCOUNT2ACCOUNT:
                         JSONObject user9;
@@ -513,32 +463,26 @@ public class PointtransferQueryService {
                         } else {
                             desTemplate = desTemplate.replace("{memo}", langPropsService.get("noMemoLabel"));
                         }
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN_STREAK:
                         desTemplate = desTemplate.replace("{point}", record.optString(Pointtransfer.SUM));
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_CHARGE:
                         final String yuan = dataId.split("-")[0];
                         desTemplate = desTemplate.replace("{yuan}", yuan);
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_EXCHANGE:
                         final String exYuan = dataId;
                         desTemplate = desTemplate.replace("{yuan}", exYuan);
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ABUSE_DEDUCT:
                         desTemplate = desTemplate.replace("{action}", dataId);
                         desTemplate = desTemplate.replace("{point}", record.optString(Pointtransfer.SUM));
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_BROADCAST:
                         final JSONObject addArticleBroadcast = articleRepository.get(dataId);
                         if (null == addArticleBroadcast) {
                             desTemplate = langPropsService.get("removedLabel");
-
                             break;
                         }
 
@@ -546,13 +490,11 @@ public class PointtransferQueryService {
                                 + addArticleBroadcast.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + Escapes.escapeHTML(addArticleBroadcast.optString(Article.ARTICLE_TITLE)) + "</a>";
                         desTemplate = desTemplate.replace("{article}", addArticleBroadcastLink);
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_PERFECT_ARTICLE:
                         final JSONObject perfectArticle = articleRepository.get(dataId);
                         if (null == perfectArticle) {
                             desTemplate = langPropsService.get("removedLabel");
-
                             break;
                         }
 
@@ -560,7 +502,6 @@ public class PointtransferQueryService {
                                 + perfectArticle.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + Escapes.escapeHTML(perfectArticle.optString(Article.ARTICLE_TITLE)) + "</a>";
                         desTemplate = desTemplate.replace("{article}", perfectArticleLink);
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_QNA_OFFER:
                         final JSONObject reward34 = rewardRepository.get(dataId);
@@ -576,20 +517,17 @@ public class PointtransferQueryService {
                         final JSONObject article34 = articleRepository.get(articleId34);
                         if (null == article34) {
                             desTemplate = langPropsService.get("removedLabel");
-
                             break;
                         }
                         final String articleLink34 = "<a href=\""
                                 + article34.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + Escapes.escapeHTML(article34.optString(Article.ARTICLE_TITLE)) + "</a>";
                         desTemplate = desTemplate.replace("{article}", articleLink34);
-
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_CHANGE_USERNAME:
                         final String oldName = dataId.split("-")[0];
                         final String newName = dataId.split("-")[1];
                         desTemplate = desTemplate.replace("{oldName}", oldName).replace("{newName}", newName);
-
                         break;
                     default:
                         LOGGER.warn("Invalid point type [" + type + "]");
@@ -603,7 +541,6 @@ public class PointtransferQueryService {
             final int recordCnt = ret.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT);
             ret.remove(Pagination.PAGINATION);
             ret.put(Pagination.PAGINATION_RECORD_COUNT, recordCnt);
-
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets user points failed", e);

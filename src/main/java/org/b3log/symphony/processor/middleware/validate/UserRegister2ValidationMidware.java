@@ -72,7 +72,6 @@ public class UserRegister2ValidationMidware {
         if ("1".equals(option.optString(Option.OPTION_VALUE))) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("notAllowRegisterLabel")));
             context.abort();
-
             return;
         }
 
@@ -81,7 +80,6 @@ public class UserRegister2ValidationMidware {
         if (UserExt.USER_APP_ROLE_C_HACKER != appRole && UserExt.USER_APP_ROLE_C_PAINTER != appRole) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("invalidAppRoleLabel")));
             context.abort();
-
             return;
         }
 
@@ -89,7 +87,6 @@ public class UserRegister2ValidationMidware {
         if (invalidUserPassword(password)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("invalidPasswordLabel")));
             context.abort();
-
             return;
         }
 

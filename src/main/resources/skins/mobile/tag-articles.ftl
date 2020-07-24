@@ -99,20 +99,18 @@
                         </li>
                     </ul>
                     <div class="tag-artile-user fn-clear">
-                        <#if "someone" != tag.tagCreatorName>
                         <a rel="nofollow" class="fn-left" title="${creatorLabel} ${tag.tagCreatorName}" 
-                           href="${servePath}/member/${tag.tagCreatorName}"></#if>
+                           href="${servePath}/member/${tag.tagCreatorName}">
                             <div class="avatar" style="background-image:url('${tag.tagCreatorThumbnailURL}')"></div>
-                        <#if "someone" != tag.tagCreatorName></a></#if>
+                        </a>
                         <div class="fn-right">
                             <#list tag.tagParticipants as commenter>
                             <#if commenter_index < 4>
-                            <#if "someone" != commenter.tagParticipantName>
                             <a rel="nofollow" class="fn-left" 
                                title="${contributorLabel} ${commenter.tagParticipantName}"
-                               href="${servePath}/member/${commenter.tagParticipantName}"></#if>
+                               href="${servePath}/member/${commenter.tagParticipantName}">
                                 <div class="avatar" style="background-image:url('${commenter.tagParticipantThumbnailURL}')"></div>
-                            <#if "someone" != commenter.tagParticipantName></a></#if>
+                            </a>
                             </#if>
                             </#list>
                         </div>

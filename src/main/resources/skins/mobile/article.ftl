@@ -122,13 +122,11 @@
                     </a>
                 </h1>
                 <div class="article-info">
-                    <#if article.articleAnonymous == 0>
                     <a rel="author" href="${servePath}/member/${article.articleAuthorName}"
-                       title="${article.articleAuthorName}"></#if><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>
+                       title="${article.articleAuthorName}"><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div></a>
                     <div class="article-params">
-                        <#if article.articleAnonymous == 0>
                         <a rel="author" href="${servePath}/member/${article.articleAuthorName}" class="ft-gray"
-                           title="${article.articleAuthorName}"></#if><strong>${article.articleAuthorName}</strong><#if article.articleAnonymous == 0></a></#if>
+                           title="${article.articleAuthorName}"><strong>${article.articleAuthorName}</strong></a>
                         <span class="ft-gray">
                         &nbsp;•&nbsp;
                         <a rel="nofollow" class="ft-gray" href="#comments">
@@ -210,15 +208,14 @@
                         <ul>
                             <li>
                                 <div class="fn-flex">
-                                    <#if article.articleOfferedComment.commentAnonymous == 0>
-                                    <a rel="nofollow" href="${servePath}/member/${article.articleOfferedComment.commentAuthorName}"></#if>
+                                    <a rel="nofollow" href="${servePath}/member/${article.articleOfferedComment.commentAuthorName}">
                                         <div class="avatar tooltipped tooltipped-se"
                                              aria-label="${article.articleOfferedComment.commentAuthorName}" style="background-image:url('${article.articleOfferedComment.commentAuthorThumbnailURL}')"></div>
-                                        <#if article.articleOfferedComment.commentAnonymous == 0></a></#if>
+                                    </a>
                                     <div class="fn-flex-1">
                                         <div class="fn-clear comment-info ft-smaller">
                                             <span class="fn-left">
-                                                <#if article.articleOfferedComment.commentAnonymous == 0><a rel="nofollow" href="${servePath}/member/${article.articleOfferedComment.commentAuthorName}" class="ft-gray"></#if><span class="ft-gray">${article.articleOfferedComment.commentAuthorName}</span><#if article.articleOfferedComment.commentAnonymous == 0></a></#if>
+                                                <a rel="nofollow" href="${servePath}/member/${article.articleOfferedComment.commentAuthorName}" class="ft-gray"><span class="ft-gray">${article.articleOfferedComment.commentAuthorName}</span></a>
                                                 <span class="ft-fade">• ${article.articleOfferedComment.timeAgo}</span>
 
                                                 <#if article.articleOfferedComment.rewardedCnt gt 0>
@@ -254,15 +251,14 @@
                             <#list article.articleNiceComments as comment>
                             <li>
                                     <div class="fn-flex">
-                                        <#if comment.commentAnonymous == 0>
-                                        <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"></#if>
+                                        <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}">
                                             <div class="avatar tooltipped tooltipped-se"
                                                  aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
-                                        <#if comment.commentAnonymous == 0></a></#if>
+                                        </a>
                                         <div class="fn-flex-1">
                                             <div class="fn-clear comment-info ft-smaller">
                                                 <span class="fn-left">
-                                                    <#if comment.commentAnonymous == 0><a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}" class="ft-gray"></#if><span class="ft-gray">${comment.commentAuthorName}</span><#if comment.commentAnonymous == 0></a></#if>
+                                                    <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}" class="ft-gray"><span class="ft-gray">${comment.commentAuthorName}</span></a>
                                                     <span class="ft-fade">• ${comment.timeAgo}</span>
 
                                                     <#if comment.rewardedCnt gt 0>
@@ -391,12 +387,10 @@
                         <ul class="module-list">
                             <#list sideRelevantArticles as relevantArticle>
                             <li<#if !relevantArticle_has_next> class="last"</#if>>
-                                <#if "someone" != relevantArticle.articleAuthorName>
                                 <a rel="nofollow" 
-                               href="${servePath}/member/${relevantArticle.articleAuthorName}"></#if>
-                                    <span class="avatar-small slogan"
-                                          style="background-image:url('${relevantArticle.articleAuthorThumbnailURL20}')"></span>
-                                    <#if "someone" != relevantArticle.articleAuthorName></a></#if>
+                               href="${servePath}/member/${relevantArticle.articleAuthorName}">
+                                    <span class="avatar-small slogan" style="background-image:url('${relevantArticle.articleAuthorThumbnailURL20}')"></span>
+                                </a>
                                 <a rel="nofollow" class="title" href="${servePath}${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
                             </li>
                             </#list>
@@ -415,12 +409,10 @@
                         <ul class="module-list">
                             <#list sideRandomArticles as randomArticle>
                             <li<#if !randomArticle_has_next> class="last"</#if>>
-                                <#if "someone" != randomArticle.articleAuthorName>
                                 <a  rel="nofollow"
-                                href="${servePath}/member/${randomArticle.articleAuthorName}"></#if>
-                                    <span class="avatar-small slogan"
-                                          style="background-image:url('${randomArticle.articleAuthorThumbnailURL20}')"></span>
-                                    <#if "someone" != randomArticle.articleAuthorName></a></#if>
+                                href="${servePath}/member/${randomArticle.articleAuthorName}">
+                                    <span class="avatar-small slogan" style="background-image:url('${randomArticle.articleAuthorThumbnailURL20}')"></span>
+                                </a>
                                 <a class="title" rel="nofollow" href="${servePath}${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
                             </li>
                             </#list>

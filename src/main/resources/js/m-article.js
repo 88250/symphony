@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 0.5.0.2, Aug 6, 2019
+ * @version 0.5.0.3, Apr 30, 2020
  * @since 2.1.0
  */
 
@@ -49,7 +49,7 @@ var Comment = {
       }),
       complete: function (result) {
         $btn.removeAttr('disabled').css('opacity', '1')
-        if (result.responseJSON.sc === 0) {
+        if (result.responseJSON.code === 0) {
           Util.alert(Label.reportSuccLabel)
           $('#reportTextarea').val('')
           $('#reportDialog').dialog('close')
@@ -77,7 +77,7 @@ var Comment = {
         commentId: id,
       }),
       success: function (result) {
-        if (!result.sc) {
+        if (0 !== result.code) {
           Util.alert(result.msg)
           return
         } else {
@@ -100,7 +100,7 @@ var Comment = {
       type: 'POST',
       cache: false,
       success: function (result, textStatus) {
-        if (result.sc === 0) {
+        if (result.code === 0) {
           $('#' + id).remove()
         } else {
           Util.alert(result.msg)
@@ -129,7 +129,7 @@ var Comment = {
       type: 'GET',
       cache: false,
       success: function (result, textStatus) {
-        if (result.sc === 0) {
+        if (result.code === 0) {
           // doc.lineCount
           Comment.editor.setValue(result.commentContent)
         }
@@ -247,7 +247,7 @@ var Comment = {
         enable: true,
         position: 'top',
       },
-      height: 160,
+      height: 200,
       counter: 4096,
       placeholder: Label.commentEditorPlaceholderLabel,
       ctrlEnter: function () {
@@ -290,7 +290,7 @@ var Comment = {
           Util.alert(errorThrown)
         },
         success: function (result, textStatus) {
-          if (result.sc) {
+          if (0 === result.code) {
             $(it).removeAttr('onclick')
             var $heart = $(
               '<svg class="ft-red"><use xlink:href="#heart"></use></svg>'),
@@ -378,7 +378,7 @@ var Comment = {
         $(it).css('opacity', '0.3')
       },
       success: function (result, textStatus) {
-        if (!result.sc) {
+        if (0 !== result.code) {
           Util.alert(result.msg)
           return false
         }
@@ -397,29 +397,18 @@ var Comment = {
           var data = comments[i]
 
           template += '<li><div class="fn-flex">'
-
-          if (data.commentAuthorName !== 'someone') {
-            template += '<a rel="nofollow" href="/member/' +
-              data.commentAuthorName + '">'
-          }
+          template += '<a rel="nofollow" href="/member/' + data.commentAuthorName + '">'
           template += '<div class="avatar tooltipped tooltipped-se" aria-label="' +
             data.commentAuthorName + '" style="background-image:url('
             + data.commentAuthorThumbnailURL + ')"></div>'
-          if (data.commentAuthorName !== 'someone') {
-            template += '</a>'
-          }
+          template += '</a>'
 
           template += '<div class="fn-flex-1">'
             + '<div class="comment-info ft-smaller">'
-
-          if (data.commentAuthorName !== 'someone') {
             template += '<a class="ft-gray" rel="nofollow" href="/member/' +
               data.commentAuthorName + '">'
-          }
           template += data.commentAuthorName
-          if (data.commentAuthorName !== 'someone') {
-            template += '</a>'
-          }
+          template += '</a>'
 
           template += '<span class="ft-fade"> • ' + data.timeAgo
           if (data.rewardedCnt > 0) {
@@ -504,7 +493,7 @@ var Comment = {
       success: function (result, textStatus) {
         $('.form button.red').removeAttr('disabled').css('opacity', '1')
 
-        if (0 === result.sc) {
+        if (0 === result.code) {
           // edit cmt
           if (commentId) {
             $('#' + commentId + ' > .fn-flex > .fn-flex-1 > .vditor-reset').
@@ -646,7 +635,7 @@ var Article = {
         $voteUp.removeClass('disabled')
         var upCnt = parseInt($voteUp.text()),
           downCnt = parseInt($voteDown.text())
-        if (result.sc) {
+        if (0 === result.code) {
           if (0 === result.type) { // cancel up
             $voteUp.html('<svg class="icon-thumbs-up"><use xlink:href="#thumbs-up"></use></svg> ' +
               (upCnt - 1)).removeClass('ft-red')
@@ -698,7 +687,7 @@ var Article = {
         $voteDown.removeClass('disabled')
         var upCnt = parseInt($voteUp.text()),
           downCnt = parseInt($voteDown.text())
-        if (result.sc) {
+        if (0 === result.code) {
           if (1 === result.type) { // cancel down
             $voteDown.html('<svg class="icon-thumbs-down"><use xlink:href="#thumbs-down"></use></svg> ' +
               (downCnt - 1)).removeClass('ft-red')
@@ -826,7 +815,7 @@ var Article = {
       url: Label.servePath + '/' + type + '/' + id + '/revisions',
       cache: false,
       success: function (result, textStatus) {
-        if (result.sc) {
+        if (0 === result.code) {
           if (0 === result.revisions.length // for legacy data
             || 1 === result.revisions.length) {
             $('#revision > .revisions').remove()
@@ -1032,7 +1021,7 @@ var Article = {
         type: 'POST',
         cache: false,
         success: function (result, textStatus) {
-          if (result.sc) {
+          if (0 === result.code) {
             $('#articleRewardContent').html(result.articleRewardContent)
             Util.parseHljs()
             Util.parseMarkdown()
@@ -1079,7 +1068,7 @@ var Article = {
       type: 'POST',
       cache: false,
       success: function (result, textStatus) {
-        if (result.sc) {
+        if (0 === result.code) {
           var thxCnt = parseInt($('#thankArticle').text())
           $('#thankArticle').
             removeAttr('onclick').
@@ -1302,7 +1291,7 @@ var Article = {
     }
 
     $.ajax({
-      url: Label.servePath + '/notifications/read',
+      url: Label.servePath + '/notifications/make-read',
       type: 'POST',
       cache: false,
       data: JSON.stringify(requestJSONObject),

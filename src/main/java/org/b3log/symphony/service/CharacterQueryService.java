@@ -22,16 +22,15 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.repository.CharacterRepository;
 import org.json.JSONObject;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -104,10 +103,9 @@ public class CharacterQueryService {
      */
     public Set<JSONObject> getWrittenCharacters() {
         try {
-            return CollectionUtils.jsonArrayToSet(characterRepository.get(new Query()).optJSONArray(Keys.RESULTS));
+            return new HashSet<>(characterRepository.getList(new Query()));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets characters failed", e);
-
             return Collections.emptySet();
         }
     }

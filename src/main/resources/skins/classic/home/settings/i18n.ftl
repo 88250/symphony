@@ -33,7 +33,7 @@
         </select>
         <br/><br/>
         <label>${timezoneLabel}</label>
-        <select id="userTimezone"">
+        <select id="userTimezone">
             <#list timezones as timezone>
             <option value="${timezone.id}" <#if timezone.id == user.userTimezone>selected</#if>>${timezone.name}</option>
             </#list>

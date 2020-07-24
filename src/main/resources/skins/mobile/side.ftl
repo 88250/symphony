@@ -97,11 +97,9 @@
         <ul class="module-list">
             <#list sideHotArticles as hotArticle>
             <li<#if !hotArticle_has_next> class="last"</#if>>
-                <#if "someone" != hotArticle.articleAuthorName>
-                <a rel="nofollow" href="${servePath}/member/${hotArticle.articleAuthorName}"></#if>
-                    <span class="avatar-small slogan"
-                          style="background-image:url('${hotArticle.articleAuthorThumbnailURL20}')"></span>
-                <#if "someone" != hotArticle.articleAuthorName></a></#if>
+                <a rel="nofollow" href="${servePath}/member/${hotArticle.articleAuthorName}">
+                    <span class="avatar-small slogan" style="background-image:url('${hotArticle.articleAuthorThumbnailURL20}')"></span>
+                </a>
                 <a rel="nofollow" class="title" title="${hotArticle.articleTitle}" href="${hotArticle.articlePermalink}">${hotArticle.articleTitleEmoj}</a>
             </li>
             </#list>

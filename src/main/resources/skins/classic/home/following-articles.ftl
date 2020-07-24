@@ -37,11 +37,10 @@
         <#list userHomeFollowingArticles as article>
         <li class="fn-flex<#if !(paginationPageCount?? && paginationPageCount!=0 && paginationPageCount!=1) && article_index == userHomeFollowingArticles?size - 1>
              last</#if>">
-            <#if "someone" != article.articleAuthorName>
             <a aria-label="${article.articleAuthorName}" class="tooltipped tooltipped-s"
-               target="_blank" rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if>
+               target="_blank" rel="nofollow" href="${servePath}/member/${article.articleAuthorName}">
                 <div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div>
-                <#if "someone" != article.articleAuthorName></a></#if>
+            </a>
             <div class="fn-flex-1">
                 <h2>
                     <@icon article.articlePerfect article.articleType></@icon>

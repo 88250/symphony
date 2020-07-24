@@ -28,7 +28,10 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.*;
+import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Paginator;
+import org.b3log.latke.util.Stopwatchs;
+import org.b3log.latke.util.Times;
 import org.b3log.symphony.model.Breezemoon;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
@@ -38,7 +41,6 @@ import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Images;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -181,18 +183,15 @@ public class BreezemoonQueryService {
             Stopwatchs.start("Query following user breezemoons");
 
             result = breezemoonRepository.get(query);
-            final JSONArray data = result.optJSONArray(Keys.RESULTS);
-            final List<JSONObject> bms = CollectionUtils.jsonArrayToList(data);
+            final List<JSONObject> bms = (List<JSONObject>) result.opt(Keys.RESULTS);
             if (bms.isEmpty()) {
                 return getBreezemoons(userId, "", page, pageSize, windowSize);
             }
 
             organizeBreezemoons(userId, bms);
             ret.put(Breezemoon.BREEZEMOONS, (Object) bms);
-
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets following user breezemoons failed", e);
-
             return null;
         } finally {
             Stopwatchs.end();
@@ -254,18 +253,15 @@ public class BreezemoonQueryService {
         final List<Integer> pageNums = Paginator.paginate(page, pageSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> bms = CollectionUtils.jsonArrayToList(data);
+        final List<JSONObject> bms = (List<JSONObject>) result.opt(Keys.RESULTS);
         try {
             organizeBreezemoons(currentUserId, bms);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Get breezemoons failed", e);
-
             return null;
         }
 
         ret.put(Breezemoon.BREEZEMOONS, (Object) bms);
-
         return ret;
     }
 
@@ -311,30 +307,23 @@ public class BreezemoonQueryService {
             result = breezemoonRepository.get(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Get breezemoons failed", e);
-
             return null;
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-
         final JSONObject pagination = new JSONObject();
         ret.put(Pagination.PAGINATION, pagination);
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
-        final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> breezemoons = CollectionUtils.jsonArrayToList(data);
+        final List<JSONObject> breezemoons = (List<JSONObject>) result.opt(Keys.RESULTS);
         try {
             organizeBreezemoons("admin", breezemoons);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Organize breezemoons failed", e);
-
             return null;
         }
-
-        ret.put(Breezemoon.BREEZEMOONS, breezemoons);
-
+        ret.put(Breezemoon.BREEZEMOONS, (Object) breezemoons);
         return ret;
     }
 
@@ -368,10 +357,9 @@ public class BreezemoonQueryService {
 
                 final String authorId = bm.optString(Breezemoon.BREEZEMOON_AUTHOR_ID);
                 final JSONObject author = userRepository.get(authorId);
-                if (UserExt.USER_XXX_STATUS_C_PRIVATE == author.optInt(UserExt.USER_BREEZEMOON_STATUS)
+                if (UserExt.USER_XXX_STATUS_C_DISABLED == author.optInt(UserExt.USER_BREEZEMOON_STATUS)
                         && !StringUtils.equals(currentUserId, authorId) && !"admin".equals(currentUserId)) {
                     iterator.remove();
-
                     continue;
                 }
                 bm.put(Breezemoon.BREEZEMOON_T_AUTHOR_NAME, author.optString(User.USER_NAME));

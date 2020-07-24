@@ -48,7 +48,6 @@ public class UpdatePasswordValidationMidware {
         if (StringUtils.isBlank(oldPwd)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("emptyOldPwdLabel")));
             context.abort();
-
             return;
         }
 
@@ -56,7 +55,6 @@ public class UpdatePasswordValidationMidware {
         if (UserRegister2ValidationMidware.invalidUserPassword(pwd)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("invalidPasswordLabel")));
             context.abort();
-
             return;
         }
 

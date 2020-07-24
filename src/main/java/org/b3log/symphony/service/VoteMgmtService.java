@@ -131,7 +131,6 @@ public class VoteMgmtService {
                 final JSONObject article = articleRepository.get(dataId);
                 if (null == article) {
                     LOGGER.log(Level.ERROR, "Not found article [id={}] to vote cancel", dataId);
-
                     return;
                 }
 
@@ -155,7 +154,6 @@ public class VoteMgmtService {
                 final JSONObject comment = commentRepository.get(dataId);
                 if (null == comment) {
                     LOGGER.log(Level.ERROR, "Not found comment [id={}] to vote cancel", dataId);
-
                     return;
                 }
 
@@ -232,7 +230,6 @@ public class VoteMgmtService {
             final JSONObject article = articleRepository.get(dataId);
             if (null == article) {
                 LOGGER.log(Level.ERROR, "Not found article [id={}] to vote up", dataId);
-
                 return;
             }
 
@@ -257,7 +254,6 @@ public class VoteMgmtService {
             final JSONObject comment = commentRepository.get(dataId);
             if (null == comment) {
                 LOGGER.log(Level.ERROR, "Not found comment [id={}] to vote up", dataId);
-
                 return;
             }
 
@@ -303,7 +299,6 @@ public class VoteMgmtService {
             final JSONObject article = articleRepository.get(dataId);
             if (null == article) {
                 LOGGER.log(Level.ERROR, "Not found article [id={}] to vote down", dataId);
-
                 return;
             }
 
@@ -328,7 +323,6 @@ public class VoteMgmtService {
             final JSONObject comment = commentRepository.get(dataId);
             if (null == comment) {
                 LOGGER.log(Level.ERROR, "Not found comment [id={}] to vote up", dataId);
-
                 return;
             }
 

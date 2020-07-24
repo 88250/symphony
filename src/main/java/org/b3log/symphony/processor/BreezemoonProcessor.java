@@ -129,7 +129,6 @@ public class BreezemoonProcessor {
 
             if (!UserExt.finshedGuide(user)) {
                 context.sendRedirect(Latkes.getServePath() + "/guide");
-
                 return;
             }
 
@@ -165,7 +164,7 @@ public class BreezemoonProcessor {
      * @param context the specified context
      */
     public void addBreezemoon(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
@@ -191,10 +190,10 @@ public class BreezemoonProcessor {
         try {
             breezemoonMgmtService.addBreezemoon(breezemoon);
 
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
+            context.renderJSONValue(Keys.CODE, StatusCodes.SUCC);
         } catch (final Exception e) {
             context.renderMsg(e.getMessage());
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
+            context.renderJSONValue(Keys.CODE, StatusCodes.ERR);
         }
     }
 
@@ -213,7 +212,7 @@ public class BreezemoonProcessor {
      */
     public void updateBreezemoon(final RequestContext context) {
         final String id = context.pathVar("id");
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
         final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
         if (isInvalid(context, requestJSONObject)) {
@@ -242,10 +241,10 @@ public class BreezemoonProcessor {
 
             breezemoonMgmtService.updateBreezemoon(breezemoon);
 
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
+            context.renderJSONValue(Keys.CODE, StatusCodes.SUCC);
         } catch (final Exception e) {
             context.renderMsg(e.getMessage());
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
+            context.renderJSONValue(Keys.CODE, StatusCodes.ERR);
         }
     }
 
@@ -256,7 +255,7 @@ public class BreezemoonProcessor {
      */
     public void removeBreezemoon(final RequestContext context) {
         final String id = context.pathVar("id");
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         try {
             final JSONObject breezemoon = breezemoonQueryService.getBreezemoon(id);
@@ -271,10 +270,10 @@ public class BreezemoonProcessor {
 
             breezemoonMgmtService.removeBreezemoon(id);
 
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
+            context.renderJSONValue(Keys.CODE, StatusCodes.SUCC);
         } catch (final Exception e) {
             context.renderMsg(e.getMessage());
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
+            context.renderJSONValue(Keys.CODE, StatusCodes.ERR);
         }
     }
 
@@ -284,20 +283,17 @@ public class BreezemoonProcessor {
         final long length = StringUtils.length(breezemoonContent);
         if (1 > length || 512 < length) {
             context.renderMsg(langPropsService.get("breezemoonLengthLabel"));
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
-
+            context.renderJSONValue(Keys.CODE, StatusCodes.ERR);
             return true;
         }
 
         if (optionQueryService.containReservedWord(breezemoonContent)) {
             context.renderMsg(langPropsService.get("contentContainReservedWordLabel"));
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
-
+            context.renderJSONValue(Keys.CODE, StatusCodes.ERR);
             return true;
         }
 
         requestJSONObject.put(Breezemoon.BREEZEMOON_CONTENT, breezemoonContent);
-
         return false;
     }
 }

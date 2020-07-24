@@ -73,7 +73,7 @@ public class PermissionMidware {
         try {
             final JSONObject exception = new JSONObject();
             exception.put(Keys.MSG, langPropsService.get("noPermissionLabel"));
-            exception.put(Keys.STATUS_CODE, 403);
+            exception.put(Keys.CODE, 403);
 
             final String prefix = "permission.rule.url.";
             final String requestURI = StringUtils.substringAfter(context.requestURI(), Latkes.getContextPath());
@@ -88,14 +88,12 @@ public class PermissionMidware {
 
                 context.sendError(500);
                 context.abort();
-
                 return;
             }
 
             final Set<String> requisitePermissions = Symphonys.URL_PERMISSION_RULES.get(rule);
             if (null == requisitePermissions) {
                 context.handle();
-
                 return;
             }
 
@@ -114,7 +112,6 @@ public class PermissionMidware {
 
                 context.sendError(403, errDataModel);
                 context.abort();
-
                 return;
             }
 

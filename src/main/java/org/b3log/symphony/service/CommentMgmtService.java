@@ -31,7 +31,6 @@ import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Ids;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.*;
@@ -161,7 +160,7 @@ public class CommentMgmtService {
             final JSONObject comment = commentRepository.get(commentId);
             final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
             final Query query = new Query().setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId));
-            final List<JSONObject> comments = CollectionUtils.jsonArrayToList(commentRepository.get(query).optJSONArray(Keys.RESULTS));
+            final List<JSONObject> comments = commentRepository.getList(query);
             for (final JSONObject c : comments) {
                 final int offered = c.optInt(Comment.COMMENT_QNA_OFFERED);
                 if (Comment.COMMENT_QNA_OFFERED_C_YES == offered) {

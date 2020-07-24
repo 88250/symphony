@@ -65,7 +65,6 @@ public class PointTransferValidationMidware {
         if (StringUtils.isBlank(userName) || UserExt.COM_BOT_NAME.equals(userName)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("notFoundUserLabel")));
             context.abort();
-
             return;
         }
 
@@ -73,7 +72,6 @@ public class PointTransferValidationMidware {
         if (amount < 1 || amount > 5000) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("amountInvalidLabel")));
             context.abort();
-
             return;
         }
 
@@ -81,14 +79,12 @@ public class PointTransferValidationMidware {
         if (null == toUser) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("notFoundUserLabel")));
             context.abort();
-
             return;
         }
 
         if (UserExt.USER_STATUS_C_VALID != toUser.optInt(UserExt.USER_STATUS)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("userStatusInvalidLabel")));
             context.abort();
-
             return;
         }
 
@@ -98,14 +94,12 @@ public class PointTransferValidationMidware {
         if (UserExt.USER_STATUS_C_VALID != currentUser.optInt(UserExt.USER_STATUS)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("userStatusInvalidLabel")));
             context.abort();
-
             return;
         }
 
         if (currentUser.optString(User.USER_NAME).equals(toUser.optString(User.USER_NAME))) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("cannotTransferSelfLabel")));
             context.abort();
-
             return;
         }
 
@@ -114,7 +108,6 @@ public class PointTransferValidationMidware {
         if (balance - amount < balanceMinLimit) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("insufficientBalanceLabel")));
             context.abort();
-
             return;
         }
 
@@ -122,7 +115,6 @@ public class PointTransferValidationMidware {
         if (128 < StringUtils.length(memo)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("memoTooLargeLabel")));
             context.abort();
-
             return;
         }
         memo = Jsoup.clean(memo, Whitelist.none());

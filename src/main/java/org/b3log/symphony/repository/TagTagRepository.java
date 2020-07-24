@@ -23,7 +23,6 @@ import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.util.Symphonys;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -129,19 +128,11 @@ public class TagTagRepository extends AbstractRepository {
      * </pre>
      * @throws RepositoryException repository exception
      */
-    public JSONObject getByTag1IdAndTag2Id(final String tag1Id, final String tag2Id)
-            throws RepositoryException {
+    public JSONObject getByTag1IdAndTag2Id(final String tag1Id, final String tag2Id) throws RepositoryException {
         final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Tag.TAG + "1_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tag1Id));
         filters.add(new PropertyFilter(Tag.TAG + "2_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tag2Id));
-
         final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-
-        final JSONArray result = get(query).optJSONArray(Keys.RESULTS);
-        if (result.length() < 1) {
-            return null;
-        }
-
-        return result.optJSONObject(0);
+        return getFirst(query);
     }
 }

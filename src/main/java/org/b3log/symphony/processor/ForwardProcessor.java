@@ -64,7 +64,6 @@ public class ForwardProcessor {
      * Shows jump page.
      *
      * @param context the specified context
-     * @throws Exception exception
      */
     public void showForward(final RequestContext context) {
         final Request request = context.getRequest();
@@ -77,7 +76,6 @@ public class ForwardProcessor {
         final String referer = Headers.getHeader(request, "referer", "");
         if (!StringUtils.startsWith(referer, Latkes.getServePath())) {
             context.sendRedirect(Latkes.getServePath());
-
             return;
         }
 
@@ -87,7 +85,6 @@ public class ForwardProcessor {
         final JSONObject user = Sessions.getUser();
         if (null != user && UserExt.USER_XXX_STATUS_C_DISABLED == user.optInt(UserExt.USER_FORWARD_PAGE_STATUS)) {
             context.sendRedirect(to);
-
             return;
         }
 

@@ -66,7 +66,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.21.17, Sep 18, 2019
+ * @version 1.11.21.18, Apr 5, 2020
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -167,7 +167,6 @@ public final class Markdowns {
             if (StringUtils.startsWithIgnoreCase(data, "data:")
                     || StringUtils.startsWithIgnoreCase(data, "javascript")) {
                 obj.remove();
-
                 continue;
             }
 
@@ -332,7 +331,6 @@ public final class Markdowns {
                 String src = a.attr("href");
                 if (StringUtils.containsIgnoreCase(src, "javascript:")) {
                     a.remove();
-
                     return;
                 }
 
@@ -341,8 +339,10 @@ public final class Markdowns {
                     return;
                 }
 
-                src = URLs.encode(src);
-                a.attr("href", Latkes.getServePath() + "/forward?goto=" + src);
+                if (!MediaPlayers.isMedia(src)) {
+                    src = URLs.encode(src);
+                    a.attr("href", Latkes.getServePath() + "/forward?goto=" + src);
+                }
                 a.attr("target", "_blank");
                 a.attr("rel", "nofollow");
             });
@@ -370,7 +370,6 @@ public final class Markdowns {
             for (final Thread thread : threads) {
                 if (thread.getId() == threadId[0]) {
                     thread.stop();
-
                     break;
                 }
             }
@@ -443,7 +442,8 @@ public final class Markdowns {
 
     private static void inputWhitelist(final Whitelist whitelist) {
         whitelist.addTags("span", "hr", "kbd", "samp", "tt", "del", "s", "strike", "u", "details", "summary").
-                addAttributes("iframe", "src", "width", "height", "border", "marginwidth", "marginheight").
+                addAttributes("sup", "class", "id").
+                addAttributes("iframe", "src", "sandbox", "width", "height", "border", "marginwidth", "marginheight").
                 addAttributes("audio", "controls", "src").
                 addAttributes("video", "controls", "src", "width", "height").
                 addAttributes("source", "src", "media", "type").
@@ -453,11 +453,19 @@ public final class Markdowns {
                 addAttributes("embed", "src", "type", "width", "height", "wmode", "allowNetworking").
                 addAttributes("pre", "class").
                 addAttributes("code", "class").
+                addAttributes("li", "class", "id").
                 addAttributes("div", "class").
                 addAttributes("span", "class").
-                addAttributes("p", "align");
+                addAttributes("img", "class").
+                addAttributes("p", "align").
+                addAttributes("th", "align").
+                addAttributes("a", "class", "rel").
+                addAttributes("td", "align");
+        whitelist.addProtocols("a", "href", "#");
+        whitelist.addProtocols("iframe", "src", "http", "https");
         for (int i = 1; i <= 6; i++) {
-            whitelist.addAttributes("h" + i, "align");
+            whitelist.addAttributes("h" + i, "align", "id");
         }
+        whitelist.preserveRelativeLinks(true);
     }
 }

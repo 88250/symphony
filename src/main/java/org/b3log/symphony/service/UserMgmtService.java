@@ -46,7 +46,6 @@ import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.Geos;
 import org.b3log.symphony.util.Gravatars;
 import org.b3log.symphony.util.Symphonys;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
@@ -419,8 +418,8 @@ public class UserMgmtService {
             user.put(UserExt.USER_CURRENT_CHECKIN_STREAK, 0);
             user.put(UserExt.USER_POINT, 0);
             user.put(UserExt.USER_USED_POINT, 0);
-            user.put(UserExt.USER_JOIN_POINT_RANK, UserExt.USER_JOIN_XXX_C_JOIN);
-            user.put(UserExt.USER_JOIN_USED_POINT_RANK, UserExt.USER_JOIN_XXX_C_JOIN);
+            user.put(UserExt.USER_JOIN_POINT_RANK, UserExt.USER_XXX_STATUS_C_ENABLED);
+            user.put(UserExt.USER_JOIN_USED_POINT_RANK, UserExt.USER_XXX_STATUS_C_ENABLED);
             user.put(UserExt.USER_TAGS, "");
             user.put(UserExt.USER_SKIN, Symphonys.SKIN_DIR_NAME);
             user.put(UserExt.USER_MOBILE_SKIN, Symphonys.MOBILE_SKIN_DIR_NAME);
@@ -432,17 +431,17 @@ public class UserMgmtService {
             final int status = requestJSONObject.optInt(UserExt.USER_STATUS, UserExt.USER_STATUS_C_NOT_VERIFIED);
             user.put(UserExt.USER_STATUS, status);
             user.put(UserExt.USER_COMMENT_VIEW_MODE, UserExt.USER_COMMENT_VIEW_MODE_C_REALTIME);
-            user.put(UserExt.USER_ONLINE_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
-            user.put(UserExt.USER_ARTICLE_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
-            user.put(UserExt.USER_COMMENT_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
-            user.put(UserExt.USER_FOLLOWING_ARTICLE_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
-            user.put(UserExt.USER_WATCHING_ARTICLE_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
-            user.put(UserExt.USER_FOLLOWING_TAG_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
-            user.put(UserExt.USER_FOLLOWING_USER_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
-            user.put(UserExt.USER_FOLLOWER_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
-            user.put(UserExt.USER_BREEZEMOON_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
-            user.put(UserExt.USER_POINT_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
-            user.put(UserExt.USER_UA_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
+            user.put(UserExt.USER_ONLINE_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
+            user.put(UserExt.USER_ARTICLE_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
+            user.put(UserExt.USER_COMMENT_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
+            user.put(UserExt.USER_FOLLOWING_ARTICLE_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
+            user.put(UserExt.USER_WATCHING_ARTICLE_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
+            user.put(UserExt.USER_FOLLOWING_TAG_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
+            user.put(UserExt.USER_FOLLOWING_USER_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
+            user.put(UserExt.USER_FOLLOWER_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
+            user.put(UserExt.USER_BREEZEMOON_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
+            user.put(UserExt.USER_POINT_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
+            user.put(UserExt.USER_UA_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
             user.put(UserExt.USER_NOTIFY_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
             user.put(UserExt.USER_SUB_MAIL_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
             user.put(UserExt.USER_LIST_PAGE_SIZE, Symphonys.ARTICLE_LIST_CNT);
@@ -557,19 +556,14 @@ public class UserMgmtService {
                     filters.add(new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL,
                             UserExt.USER_STATUS_C_NOT_VERIFIED));
                     query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-
-                    final JSONArray others = userRepository.get(query).optJSONArray(Keys.RESULTS);
-                    for (int i = 0; i < others.length(); i++) {
-                        final JSONObject u = others.optJSONObject(i);
+                    final List<JSONObject> others = userRepository.getList(query);
+                    for (final JSONObject u : others) {
                         final String id = u.optString(Keys.OBJECT_ID);
                         final String mail = u.optString(User.USER_EMAIL);
-
                         u.put(User.USER_NAME, UserExt.NULL_USER_NAME);
                         u.put(User.USER_EMAIL, "");
                         u.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_NOT_VERIFIED);
-
                         userRepository.update(id, u);
-
                         LOGGER.log(Level.INFO, "Defeated a user [email=" + mail + "]");
                     }
 
@@ -579,7 +573,7 @@ public class UserMgmtService {
                         trans.rollback();
                     }
 
-                    LOGGER.log(Level.ERROR, "Defeat others error", e);
+                    LOGGER.log(Level.ERROR, "Defeat others failed", e);
                 }
 
                 final JSONObject notification = new JSONObject();
@@ -747,22 +741,15 @@ public class UserMgmtService {
         filters.add(new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_NOT_VERIFIED));
         filters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN_OR_EQUAL, yesterdayTime));
         filters.add(new PropertyFilter(User.USER_NAME, FilterOperator.NOT_EQUAL, UserExt.NULL_USER_NAME));
-
         final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-
         try {
-            final JSONObject result = userRepository.get(query);
-            final JSONArray users = result.optJSONArray(Keys.RESULTS);
-
-            for (int i = 0; i < users.length(); i++) {
-                final JSONObject user = users.optJSONObject(i);
+            final List<JSONObject> users = userRepository.getList(query);
+            for (final JSONObject user : users) {
                 user.put(User.USER_NAME, UserExt.NULL_USER_NAME);
                 final String email = user.optString(User.USER_EMAIL);
                 user.put(User.USER_EMAIL, "");
-
                 final String id = user.optString(Keys.OBJECT_ID);
                 userRepository.update(id, user);
-
                 LOGGER.log(Level.INFO, "Reset unverified user [email=" + email + "]");
             }
         } catch (final RepositoryException e) {
@@ -782,15 +769,12 @@ public class UserMgmtService {
         filters.add(new PropertyFilter(User.USER + '_' + Keys.OBJECT_ID,
                 FilterOperator.EQUAL, user.optString(Keys.OBJECT_ID)));
         filters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, Tag.TAG_TYPE_C_USER_SELF));
-
         final Query query = new Query();
         query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-
-        final JSONArray results = userTagRepository.get(query).optJSONArray(Keys.RESULTS);
-        for (int i = 0; i < results.length(); i++) {
-            final JSONObject rel = results.optJSONObject(i);
+        final List<JSONObject> results = userTagRepository.getList(query);
+        for (int i = 0; i < results.size(); i++) {
+            final JSONObject rel = results.get(i);
             final String id = rel.optString(Keys.OBJECT_ID);
-
             userTagRepository.remove(id);
         }
 

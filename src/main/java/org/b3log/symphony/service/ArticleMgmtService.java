@@ -39,7 +39,6 @@ import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.*;
 import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.*;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -360,12 +359,10 @@ public class ArticleMgmtService {
             }
 
             Query query = new Query().setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId)).setPageCount(1);
-            final JSONArray comments = commentRepository.get(query).optJSONArray(Keys.RESULTS);
-            final int commentCnt = comments.length();
-            for (int i = 0; i < commentCnt; i++) {
-                final JSONObject comment = comments.optJSONObject(i);
+            final List<JSONObject> comments = (List<JSONObject>) commentRepository.get(query).opt(Keys.RESULTS);
+            final int commentCnt = comments.size();
+            for (final JSONObject comment : comments) {
                 final String commentId = comment.optString(Keys.OBJECT_ID);
-
                 commentRepository.removeComment(commentId);
             }
 
@@ -395,11 +392,9 @@ public class ArticleMgmtService {
             // Remove article revisions
             query = new Query().setFilter(CompositeFilterOperator.and(
                     new PropertyFilter(Revision.REVISION_DATA_ID, FilterOperator.EQUAL, articleId),
-                    new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, Revision.DATA_TYPE_C_ARTICLE)
-            ));
-            final JSONArray articleRevisions = revisionRepository.get(query).optJSONArray(Keys.RESULTS);
-            for (int i = 0; i < articleRevisions.length(); i++) {
-                final JSONObject articleRevision = articleRevisions.optJSONObject(i);
+                    new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, Revision.DATA_TYPE_C_ARTICLE)));
+            final List<JSONObject> articleRevisions = (List<JSONObject>) revisionRepository.get(query).opt(Keys.RESULTS);
+            for (final JSONObject articleRevision : articleRevisions) {
                 revisionRepository.remove(articleRevision.optString(Keys.OBJECT_ID));
             }
 
@@ -408,7 +403,7 @@ public class ArticleMgmtService {
                 final String tagId = tagArticleRel.optString(Tag.TAG + "_" + Keys.OBJECT_ID);
                 final JSONObject tag = tagRepository.get(tagId);
                 int cnt = tag.optInt(Tag.TAG_REFERENCE_CNT) - 1;
-                cnt = cnt < 0 ? 0 : cnt;
+                cnt = Math.max(cnt, 0);
                 tag.put(Tag.TAG_REFERENCE_CNT, cnt);
                 tag.put(Tag.TAG_RANDOM_DOUBLE, Math.random());
 
@@ -466,7 +461,6 @@ public class ArticleMgmtService {
                     if (transaction.isActive()) {
                         transaction.rollback();
                     }
-
                     return;
                 }
 
@@ -1269,13 +1263,12 @@ public class ArticleMgmtService {
                 throw new ServiceException(langPropsService.get("insufficientBalanceLabel"));
             }
 
-            final Query query = new Query().
-                    setFilter(new PropertyFilter(Article.ARTICLE_STICK, FilterOperator.GREATER_THAN, 0L));
-            final JSONArray articles = articleRepository.get(query).optJSONArray(Keys.RESULTS);
-            if (articles.length() > 1) {
+            final Query query = new Query().setFilter(new PropertyFilter(Article.ARTICLE_STICK, FilterOperator.GREATER_THAN, 0L));
+            final List<JSONObject> articles = articleRepository.getList(query);
+            if (!articles.isEmpty()) {
                 final Set<String> ids = new HashSet<>();
-                for (int i = 0; i < articles.length(); i++) {
-                    ids.add(articles.optJSONObject(i).optString(Keys.OBJECT_ID));
+                for (final JSONObject jsonObject : articles) {
+                    ids.add(jsonObject.optString(Keys.OBJECT_ID));
                 }
 
                 if (!ids.contains(articleId)) {
@@ -1356,25 +1349,22 @@ public class ArticleMgmtService {
     @Transactional
     public void expireStick() throws ServiceException {
         try {
-            final Query query = new Query().
-                    setFilter(new PropertyFilter(Article.ARTICLE_STICK, FilterOperator.GREATER_THAN, 0L));
-            final JSONArray articles = articleRepository.get(query).optJSONArray(Keys.RESULTS);
-            if (articles.length() < 1) {
+            final Query query = new Query().setFilter(new PropertyFilter(Article.ARTICLE_STICK, FilterOperator.GREATER_THAN, 0L));
+            final List<JSONObject> articles = articleRepository.getList(query);
+            if (articles.isEmpty()) {
                 return;
             }
 
             final long stepTime = Symphonys.STICK_ARTICLE_TIME;
             final long now = System.currentTimeMillis();
 
-            for (int i = 0; i < articles.length(); i++) {
-                final JSONObject article = articles.optJSONObject(i);
+            for (final JSONObject article : articles) {
                 final long stick = article.optLong(Article.ARTICLE_STICK);
                 if (stick >= Long.MAX_VALUE) {
                     continue; // Skip admin stick
                 }
 
                 final long expired = stick + stepTime;
-
                 if (expired < now) {
                     article.put(Article.ARTICLE_STICK, 0L);
                     articleRepository.update(article.optString(Keys.OBJECT_ID), article, Article.ARTICLE_STICK);
@@ -1382,7 +1372,6 @@ public class ArticleMgmtService {
             }
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Expires sticked articles failed", e);
-
             throw new ServiceException();
         }
     }

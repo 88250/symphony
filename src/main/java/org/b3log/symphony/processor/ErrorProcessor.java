@@ -34,6 +34,7 @@ import org.b3log.symphony.model.Role;
 import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.RoleQueryService;
 import org.b3log.symphony.util.Sessions;
+import org.b3log.symphony.util.StatusCodes;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -103,7 +104,7 @@ public class ErrorProcessor {
                 dataModel.putAll(contextDataModel);
             }
         } else {
-            context.renderJSON().renderMsg(statusCode);
+            context.renderJSON(StatusCodes.ERR).renderMsg(statusCode);
         }
     }
 }

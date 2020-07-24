@@ -71,7 +71,6 @@ public class ChatMsgAddValidationMidware {
                 && !Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("tooFrequentCmtLabel")));
             context.abort();
-
             return;
         }
 
@@ -80,14 +79,12 @@ public class ChatMsgAddValidationMidware {
         if (StringUtils.isBlank(content) || content.length() > 4096) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("commentErrorLabel")));
             context.abort();
-
             return;
         }
 
         if (optionQueryService.containReservedWord(content)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
             context.abort();
-
             return;
         }
 

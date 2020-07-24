@@ -17,12 +17,12 @@
  */
 package org.b3log.symphony.repository;
 
-import org.b3log.latke.Keys;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Emotion;
-import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Emotion repository.
@@ -52,23 +52,20 @@ public class EmotionRepository extends AbstractRepository {
     public String getUserEmojis(final String userId) throws RepositoryException {
         final Query query = new Query().setFilter(CompositeFilterOperator.and(
                 new PropertyFilter(Emotion.EMOTION_USER_ID, FilterOperator.EQUAL, userId),
-                new PropertyFilter(Emotion.EMOTION_TYPE, FilterOperator.EQUAL, Emotion.EMOTION_TYPE_C_EMOJI)
-        )).addSort(Emotion.EMOTION_SORT, SortDirection.ASCENDING);
-
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-        if (0 == array.length()) {
+                new PropertyFilter(Emotion.EMOTION_TYPE, FilterOperator.EQUAL, Emotion.EMOTION_TYPE_C_EMOJI))).
+                addSort(Emotion.EMOTION_SORT, SortDirection.ASCENDING);
+        final List<JSONObject> result = getList(query);
+        if (result.isEmpty()) {
             return null;
         }
 
         final StringBuilder retBuilder = new StringBuilder();
-        for (int i = 0; i < array.length(); i++) {
-            retBuilder.append(array.optJSONObject(i).optString(Emotion.EMOTION_CONTENT));
-            if (i != array.length() - 1) {
+        for (int i = 0; i < result.size(); i++) {
+            retBuilder.append(result.get(i).optString(Emotion.EMOTION_CONTENT));
+            if (i != result.size() - 1) {
                 retBuilder.append(",");
             }
         }
-
         return retBuilder.toString();
     }
 

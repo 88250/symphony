@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.17.0.20, Feb 11, 2020
+    Version: 2.17.0.35, Jun 20, 2020
     Author: Liang Ding
     Author: Zephyr
 -->
@@ -12,16 +12,16 @@
     <groupId>org.b3log</groupId>
     <artifactId>symphony</artifactId>
     <packaging>jar</packaging>
-    <version>3.6.1</version>
+    <version>3.6.3</version>
     <name>Symphony</name>
     <url>https://sym.b3log.org</url>
     <description>
-        一款用 Java 实现的现代化社区（论坛/BBS/社交网络/博客）平台。
+        一款用 Java 实现的现代化社区（论坛/BBS/社交网络/博客）系统平台。
     </description>
     <inceptionYear>2012</inceptionYear>
 
     <properties>
-        <latke.version>3.2.6</latke.version>
+        <latke.version>3.4.10</latke.version>
 
         <jsoup.version>1.12.1</jsoup.version>
         <flexmark.version>0.50.40</flexmark.version>
@@ -30,7 +30,6 @@
         <emoji-java.version>5.1.0</emoji-java.version>
         <user-agent-utils.version>1.21</user-agent-utils.version>
         <es.version>2.3.1</es.version>
-        <guava.version>22.0</guava.version>
         <owasp.version>1.2.2</owasp.version>
         <snakeyaml.version>1.18</snakeyaml.version>
         <javax.mail.version>1.6.2</javax.mail.version>
@@ -218,12 +217,6 @@
             <artifactId>elasticsearch</artifactId>
             <version>${es.version}</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
         </dependency>
 
         <dependency>

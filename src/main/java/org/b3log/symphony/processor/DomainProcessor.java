@@ -99,7 +99,6 @@ public class DomainProcessor {
 
             if (!UserExt.finshedGuide(user)) {
                 context.sendRedirect(Latkes.getServePath() + "/guide");
-
                 return;
             }
         }
@@ -107,7 +106,6 @@ public class DomainProcessor {
         final JSONObject domain = domainQueryService.getByURI(domainURI);
         if (null == domain) {
             context.sendError(404);
-
             return;
         }
 

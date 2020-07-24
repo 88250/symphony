@@ -26,11 +26,9 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.Invitecode;
 import org.b3log.symphony.repository.InvitecodeRepository;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Collections;
@@ -74,14 +72,11 @@ public class InvitecodeQueryService {
         final Query query = new Query().setFilter(
                 CompositeFilterOperator.and(
                         new PropertyFilter(Invitecode.GENERATOR_ID, FilterOperator.EQUAL, generatorId),
-                        new PropertyFilter(Invitecode.STATUS, FilterOperator.EQUAL, Invitecode.STATUS_C_UNUSED)
-                ));
-
+                        new PropertyFilter(Invitecode.STATUS, FilterOperator.EQUAL, Invitecode.STATUS_C_UNUSED)));
         try {
-            return CollectionUtils.jsonArrayToList(invitecodeRepository.get(query).optJSONArray(Keys.RESULTS));
+            return invitecodeRepository.getList(query);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets valid invitecode failed", e);
-
             return Collections.emptyList();
         }
     }
@@ -94,18 +89,10 @@ public class InvitecodeQueryService {
      */
     public JSONObject getInvitecode(final String code) {
         final Query query = new Query().setFilter(new PropertyFilter(Invitecode.CODE, FilterOperator.EQUAL, code));
-
         try {
-            final JSONObject result = invitecodeRepository.get(query);
-            final JSONArray codes = result.optJSONArray(Keys.RESULTS);
-            if (0 == codes.length()) {
-                return null;
-            }
-
-            return codes.optJSONObject(0);
+            return invitecodeRepository.getFirst(query);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Gets invitecode error", e);
-
+            LOGGER.log(Level.ERROR, "Gets invitecode failed", e);
             return null;
         }
     }
@@ -144,29 +131,22 @@ public class InvitecodeQueryService {
         final Query query = new Query().setPage(currentPageNum, pageSize).
                 addSort(Invitecode.STATUS, SortDirection.DESCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-
         JSONObject result;
         try {
             result = invitecodeRepository.get(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets invitecodes failed", e);
-
             return null;
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-
         final JSONObject pagination = new JSONObject();
         ret.put(Pagination.PAGINATION, pagination);
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> invitecodes = CollectionUtils.jsonArrayToList(data);
-
-        ret.put(Invitecode.INVITECODES, invitecodes);
-
+        ret.put(Invitecode.INVITECODES, result.opt(Keys.RESULTS));
         return ret;
     }
 
@@ -209,17 +189,10 @@ public class InvitecodeQueryService {
      */
     public JSONObject getInvitecodeByUserId(final String userId) throws ServiceException {
         final Query query = new Query().setFilter(new PropertyFilter(Invitecode.USER_ID, FilterOperator.EQUAL, userId));
-
         try {
-            final JSONArray data = invitecodeRepository.get(query).optJSONArray(Keys.RESULTS);
-            if (1 > data.length()) {
-                return null;
-            }
-
-            return data.optJSONObject(0);
+            return invitecodeRepository.getFirst(query);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets an invitecode failed", e);
-
             throw new ServiceException(e);
         }
     }

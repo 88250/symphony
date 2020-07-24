@@ -18,6 +18,7 @@
 package org.b3log.symphony;
 
 import org.apache.commons.cli.*;
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,7 +41,7 @@ import org.b3log.symphony.util.Symphonys;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.1.2, Feb 11, 2020
+ * @version 2.0.1.4, May 21, 2020
  * @since 3.4.8
  */
 public final class Server extends BaseServer {
@@ -53,7 +54,7 @@ public final class Server extends BaseServer {
     /**
      * Symphony version.
      */
-    public static final String VERSION = "3.6.1";
+    public static final String VERSION = "3.6.2";
 
     /**
      * Main.
@@ -67,6 +68,9 @@ public final class Server extends BaseServer {
         final Options options = new Options();
         final Option listenPortOpt = Option.builder("lp").longOpt("listen_port").argName("LISTEN_PORT").hasArg().desc("listen port, default is 8080").build();
         options.addOption(listenPortOpt);
+
+        final Option unixDomainSocketPathOpt = Option.builder().longOpt("unix_domain_socket_path").argName("UNIX_DOMAIN_SOCKET_PATH").hasArg().desc("unix domain socket path").build();
+        options.addOption(unixDomainSocketPathOpt);
 
         final Option serverSchemeOpt = Option.builder("ss").longOpt("server_scheme").argName("SERVER_SCHEME").hasArg().desc("browser visit protocol, default is http").build();
         options.addOption(serverSchemeOpt);
@@ -104,19 +108,12 @@ public final class Server extends BaseServer {
             commandLine = commandLineParser.parse(options, args);
         } catch (final ParseException e) {
             helpFormatter.printHelp(cmdSyntax, header, options, footer, true);
-
             return;
         }
 
         if (commandLine.hasOption("h")) {
             helpFormatter.printHelp(cmdSyntax, header, options, footer, true);
-
             return;
-        }
-
-        String portArg = commandLine.getOptionValue("listen_port");
-        if (!Strings.isNumeric(portArg)) {
-            portArg = "8080";
         }
 
         try {
@@ -214,6 +211,16 @@ public final class Server extends BaseServer {
             Symphonys.EXECUTOR_SERVICE.shutdown();
             Latkes.shutdown();
         }));
-        server.start(Integer.parseInt(portArg));
+
+        final String unixDomainSocketPath = commandLine.getOptionValue("unix_domain_socket_path");
+        if (StringUtils.isNotBlank(unixDomainSocketPath)) {
+            server.start(unixDomainSocketPath);
+        } else {
+            String portArg = commandLine.getOptionValue("listen_port");
+            if (!Strings.isNumeric(portArg)) {
+                portArg = "8080";
+            }
+            server.start(Integer.parseInt(portArg));
+        }
     }
 }

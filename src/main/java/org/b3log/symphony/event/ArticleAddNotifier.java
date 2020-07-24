@@ -37,7 +37,6 @@ import org.b3log.symphony.service.RoleQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Escapes;
 import org.b3log.symphony.util.Symphonys;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Date;
@@ -168,9 +167,9 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
                     requestJSONObject.put(UserExt.USER_LATEST_LOGIN_TIME, latestLoginTime);
                     requestJSONObject.put(UserExt.USER_CITY, city);
                     final JSONObject result = userQueryService.getUsersByCity(requestJSONObject);
-                    final JSONArray users = result.optJSONArray(User.USERS);
-                    for (int i = 0; i < users.length(); i++) {
-                        final String userId = users.optJSONObject(i).optString(Keys.OBJECT_ID);
+                    final List<JSONObject> users = (List<JSONObject>) result.opt(User.USERS);
+                    for (final JSONObject user : users) {
+                        final String userId = user.optString(Keys.OBJECT_ID);
                         if (userId.equals(articleAuthorId)) {
                             continue;
                         }
@@ -181,7 +180,7 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
                         notificationMgmtService.addBroadcastNotification(notification);
                     }
 
-                    LOGGER.info("City [" + city + "] broadcast [users=" + users.length() + "]");
+                    LOGGER.info("City [" + city + "] broadcast [users=" + users.size() + "]");
                 }
             }
 
@@ -189,18 +188,17 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
             if (StringUtils.containsIgnoreCase(tags, Symphonys.SYS_ANNOUNCE_TAG)) {
                 final long latestLoginTime = DateUtils.addDays(new Date(), -15).getTime();
 
-                final JSONObject result = userQueryService.getLatestLoggedInUsers(
-                        latestLoginTime, 1, Integer.MAX_VALUE, Integer.MAX_VALUE);
-                final JSONArray users = result.optJSONArray(User.USERS);
-                for (int i = 0; i < users.length(); i++) {
-                    final String userId = users.optJSONObject(i).optString(Keys.OBJECT_ID);
+                final JSONObject result = userQueryService.getLatestLoggedInUsers(latestLoginTime, 1, Integer.MAX_VALUE, Integer.MAX_VALUE);
+                final List<JSONObject> users = (List<JSONObject>) result.opt(User.USERS);
+                for (final JSONObject user : users) {
+                    final String userId = user.optString(Keys.OBJECT_ID);
                     final JSONObject notification = new JSONObject();
                     notification.put(Notification.NOTIFICATION_USER_ID, userId);
                     notification.put(Notification.NOTIFICATION_DATA_ID, articleId);
                     notificationMgmtService.addSysAnnounceArticleNotification(notification);
                 }
 
-                LOGGER.info("System announcement [" + articleTitle + "] broadcast [users=" + users.length() + "]");
+                LOGGER.info("System announcement [" + articleTitle + "] broadcast [users=" + users.size() + "]");
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends the article add notification failed", e);

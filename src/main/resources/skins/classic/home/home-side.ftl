@@ -32,7 +32,7 @@
                 </#if>
                 <#if (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName)) || 0 == user.userOnlineStatus>
                     <span class="tooltipped tooltipped-n" aria-label="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>">
-                        <span class="<#if user.userOnlineFlag>online<#else>offline</#if>"><img src="${staticServePath}/images/H-20.png" /></span>
+                        <span class="<#if user.userOnlineFlag>online<#else>offline</#if>"><svg><use xlink:href="#logo"></use></svg></span>
                     </span>
                 </#if>
                 <span class="tooltipped tooltipped-n offline" aria-label="${roleLabel}"> ${user.roleName}</span>
@@ -48,20 +48,20 @@
                       onclick="$('#reportDialog').data('id', '${user.oId}').dialog('open')"
                 ><svg><use xlink:href="#icon-report"></use></svg></span>
             </div>
-            
+
             <#if isLoggedIn && (currentUser.userName != user.userName)>
             <#if isFollowing>
-            <button class="follow" onclick="Util.unfollow(this, '${followingId}', 'user')"> 
+            <button class="follow" onclick="Util.unfollow(this, '${followingId}', 'user')">
                 ${unfollowLabel}
             </button>
             <#else>
-            <button class="follow" onclick="Util.follow(this, '${followingId}', 'user')"> 
+            <button class="follow" onclick="Util.follow(this, '${followingId}', 'user')">
                 ${followLabel}
             </button>
             </#if>
             </#if>
         </div>
-        
+
         <div class="user-details">
         <#if user.userIntro!="">
         <div class="user-intro" id="userIntroDom">
@@ -83,7 +83,7 @@
         </div>
         <#if "" != user.userTags>
         <div class="user-info">
-            <span class="ft-gray">${selfTagLabel}</span> 
+            <span class="ft-gray">${selfTagLabel}</span>
             <span id="userTagsDom"><#list user.userTags?split(',') as tag> ${tag?html}<#if tag_has_next>,</#if></#list></span>
         </div>
         </#if>
@@ -102,8 +102,8 @@
         </div>
         <div class="user-info">
             <span class="ft-gray">${checkinStreakPart0Label}</span>
-            ${user.userLongestCheckinStreak?c} 
-            <span class="ft-gray">${checkinStreakPart1Label}</span> 
+            ${user.userLongestCheckinStreak?c}
+            <span class="ft-gray">${checkinStreakPart1Label}</span>
             ${user.userCurrentCheckinStreak?c}
             <span class="ft-gray">${checkinStreakPart2Label}</span>
         </div>

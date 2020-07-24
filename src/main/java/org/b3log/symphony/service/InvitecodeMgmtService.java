@@ -31,8 +31,9 @@ import org.b3log.symphony.model.Invitecode;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.repository.InvitecodeRepository;
 import org.b3log.symphony.util.Symphonys;
-import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Invitecode management service.
@@ -75,17 +76,13 @@ public class InvitecodeMgmtService {
             result = invitecodeRepository.get(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets invitecodes failed", e);
-
             return;
         }
 
-        final JSONArray data = result.optJSONArray(Keys.RESULTS);
-
+        final List<JSONObject> data = (List<JSONObject>) result.opt(Keys.RESULTS);
         try {
-            for (int i = 0; i < data.length(); i++) {
-                final JSONObject invitecode = data.optJSONObject(i);
+            for (final JSONObject invitecode : data) {
                 final String invitecodeId = invitecode.optString(Keys.OBJECT_ID);
-
                 invitecodeRepository.remove(invitecodeId);
             }
         } catch (final Exception e) {

@@ -153,7 +153,7 @@ public class CommentProcessor {
      * @param context the specified context
      */
     public void acceptComment(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         final JSONObject requestJSONObject = context.requestJSON();
         final JSONObject currentUser = Sessions.getUser();
@@ -163,28 +163,25 @@ public class CommentProcessor {
         try {
             final JSONObject comment = commentQueryService.getComment(commentId);
             if (null == comment) {
-                context.renderFalseResult().renderMsg("Not found comment to accept");
-
+                context.renderMsg("Not found comment to accept");
                 return;
             }
             final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
             if (StringUtils.equals(userId, commentAuthorId)) {
-                context.renderFalseResult().renderMsg(langPropsService.get("thankSelfLabel"));
-
+                context.renderMsg(langPropsService.get("thankSelfLabel"));
                 return;
             }
 
             final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
             final JSONObject article = articleQueryService.getArticle(articleId);
             if (!StringUtils.equals(userId, article.optString(Article.ARTICLE_AUTHOR_ID))) {
-                context.renderFalseResult().renderMsg(langPropsService.get("sc403Label"));
-
+                context.renderMsg(langPropsService.get("sc403Label"));
                 return;
             }
 
             commentMgmtService.acceptComment(commentId);
 
-            context.renderTrueResult();
+            context.renderJSON(StatusCodes.SUCC);
         } catch (final ServiceException e) {
             context.renderMsg(e.getMessage());
         }
@@ -199,7 +196,6 @@ public class CommentProcessor {
         final String id = context.pathVar("id");
         if (StringUtils.isBlank(id)) {
             context.sendError(404);
-
             return;
         }
 
@@ -208,28 +204,26 @@ public class CommentProcessor {
         final JSONObject comment = commentQueryService.getComment(id);
         if (null == comment) {
             context.sendError(404);
-
             return;
         }
 
         final String authorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
         if (!authorId.equals(currentUserId)) {
             context.sendError(403);
-
             return;
         }
 
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
         try {
             commentMgmtService.removeComment(id);
 
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
+            context.renderJSONValue(Keys.CODE, StatusCodes.SUCC);
             context.renderJSONValue(Comment.COMMENT_T_ID, id);
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
 
             context.renderMsg(msg);
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
+            context.renderJSONValue(Keys.CODE, StatusCodes.ERR);
         }
     }
 
@@ -243,9 +237,8 @@ public class CommentProcessor {
         final JSONObject viewer = Sessions.getUser();
         final List<JSONObject> revisions = revisionQueryService.getCommentRevisions(viewer, id);
         final JSONObject ret = new JSONObject();
-        ret.put(Keys.STATUS_CODE, true);
+        ret.put(Keys.CODE, StatusCodes.SUCC);
         ret.put(Revision.REVISIONS, (Object) revisions);
-
         context.renderJSON(ret);
     }
 
@@ -256,25 +249,23 @@ public class CommentProcessor {
      */
     public void getCommentContent(final RequestContext context) {
         final String id = context.pathVar("id");
-        context.renderJSON().renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
+        context.renderJSON(StatusCodes.ERR);
 
         final JSONObject comment = commentQueryService.getComment(id);
         if (null == comment) {
             LOGGER.warn("Not found comment [id=" + id + "] to update");
-
             return;
         }
 
         final JSONObject currentUser = Sessions.getUser();
         if (!currentUser.optString(Keys.OBJECT_ID).equals(comment.optString(Comment.COMMENT_AUTHOR_ID))) {
             context.sendError(403);
-
             return;
         }
 
         context.renderJSONValue(Comment.COMMENT_CONTENT, comment.optString(Comment.COMMENT_CONTENT));
         context.renderJSONValue(Comment.COMMENT_VISIBLE, comment.optInt(Comment.COMMENT_VISIBLE));
-        context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
+        context.renderJSONValue(Keys.CODE, StatusCodes.SUCC);
     }
 
     /**
@@ -293,7 +284,7 @@ public class CommentProcessor {
      */
     public void updateComment(final RequestContext context) {
         final String id = context.pathVar("id");
-        context.renderJSON().renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
+        context.renderJSON(StatusCodes.ERR);
 
         final Request request = context.getRequest();
 
@@ -301,14 +292,12 @@ public class CommentProcessor {
             final JSONObject comment = commentQueryService.getComment(id);
             if (null == comment) {
                 LOGGER.warn("Not found comment [id=" + id + "] to update");
-
                 return;
             }
 
             final JSONObject currentUser = Sessions.getUser();
             if (!currentUser.optString(Keys.OBJECT_ID).equals(comment.optString(Comment.COMMENT_AUTHOR_ID))) {
                 context.sendError(403);
-
                 return;
             }
 
@@ -339,10 +328,10 @@ public class CommentProcessor {
             commentContent = Emotions.convert(commentContent);
             commentContent = Markdowns.toHTML(commentContent);
             commentContent = Markdowns.clean(commentContent, "");
-            commentContent = MP3Players.render(commentContent);
-            commentContent = VideoPlayers.render(commentContent);
+            commentContent = MediaPlayers.renderAudio(commentContent);
+            commentContent = MediaPlayers.renderVideo(commentContent);
 
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
+            context.renderJSONValue(Keys.CODE, StatusCodes.SUCC);
             context.renderJSONValue(Comment.COMMENT_CONTENT, commentContent);
         } catch (final ServiceException e) {
             context.renderMsg(e.getMessage());
@@ -375,7 +364,7 @@ public class CommentProcessor {
                             originalCmtId, Reward.TYPE_C_COMMENT));
         }
 
-        context.renderJSON(true).renderJSONValue(Comment.COMMENT_T_REPLIES, originalCmt);
+        context.renderJSON(StatusCodes.SUCC).renderJSONValue(Comment.COMMENT_T_REPLIES, originalCmt);
     }
 
     /**
@@ -394,8 +383,7 @@ public class CommentProcessor {
         }
 
         if (StringUtils.isBlank(commentId)) {
-            context.renderJSON(true).renderJSONValue(Comment.COMMENT_T_REPLIES, Collections.emptyList());
-
+            context.renderJSON(StatusCodes.SUCC).renderJSONValue(Comment.COMMENT_T_REPLIES, Collections.emptyList());
             return;
         }
 
@@ -415,7 +403,7 @@ public class CommentProcessor {
             reply.put(Common.REWARED_COUNT, rewardCount);
         }
 
-        context.renderJSON(true).renderJSONValue(Comment.COMMENT_T_REPLIES, replies);
+        context.renderJSON(StatusCodes.SUCC).renderJSONValue(Comment.COMMENT_T_REPLIES, replies);
     }
 
     /**
@@ -437,7 +425,7 @@ public class CommentProcessor {
      * @param context the specified context
      */
     public void addComment(final RequestContext context) {
-        context.renderJSON().renderJSONValue(Keys.STATUS_CODE, StatusCodes.ERR);
+        context.renderJSON(StatusCodes.ERR);
 
         final Request request = context.getRequest();
         final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
@@ -482,14 +470,12 @@ public class CommentProcessor {
                 for (final String userName : userNames) {
                     if (userName.equals(currentUserName)) {
                         invited = true;
-
                         break;
                     }
                 }
 
                 if (!invited) {
                     context.sendError(403);
-
                     return;
                 }
             }
@@ -509,7 +495,7 @@ public class CommentProcessor {
                 followMgmtService.watchArticle(commentAuthorId, articleId);
             }
 
-            context.renderJSONValue(Keys.STATUS_CODE, StatusCodes.SUCC);
+            context.renderJSONValue(Keys.CODE, StatusCodes.SUCC);
         } catch (final ServiceException e) {
             context.renderMsg(e.getMessage());
         }
@@ -521,7 +507,7 @@ public class CommentProcessor {
      * @param context the specified context
      */
     public void thankComment(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.ERR);
 
         final JSONObject requestJSONObject = context.requestJSON();
         final JSONObject currentUser = Sessions.getUser();
@@ -530,7 +516,7 @@ public class CommentProcessor {
         try {
             commentMgmtService.thankComment(commentId, currentUser.optString(Keys.OBJECT_ID));
 
-            context.renderTrueResult().renderMsg(langPropsService.get("thankSentLabel"));
+            context.renderJSON(StatusCodes.SUCC).renderMsg(langPropsService.get("thankSentLabel"));
         } catch (final ServiceException e) {
             context.renderMsg(e.getMessage());
         }

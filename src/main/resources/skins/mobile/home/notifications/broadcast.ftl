@@ -23,11 +23,10 @@
 <ul class="notification">
     <#list broadcastNotifications as notification>
     <li class="fn-flex<#if notification.hasRead> read</#if>">
-        <#if "someone" != notification.authorName>
         <a target="_blank" rel="nofollow" href="${servePath}/member/${notification.authorName}" 
-           title="${notification.authorName}"></#if>
+           title="${notification.authorName}">
             <div class="avatar" style="background-image:url('${notification.thumbnailURL}')"></div>
-        <#if "someone" != notification.authorName></a></#if>
+        </a>
         <div class="fn-flex-1 has-view">
             <h2>
                 <@icon notification.articlePerfect notification.articleType></@icon>

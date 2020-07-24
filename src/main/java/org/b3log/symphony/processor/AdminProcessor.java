@@ -50,6 +50,7 @@ import org.b3log.symphony.processor.middleware.validate.UserRegisterValidationMi
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Escapes;
 import org.b3log.symphony.util.Sessions;
+import org.b3log.symphony.util.StatusCodes;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -117,7 +118,7 @@ import java.util.*;
  * @author Bill Ho
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 3.0.0.0, Feb 11, 2020
+ * @version 3.0.0.1, May 16, 2020
  * @since 1.1.0
  */
 @Singleton
@@ -405,7 +406,7 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
         final JSONObject result = operationQueryService.getAuditlogs(requestJSONObject);
-        dataModel.put(Operation.OPERATIONS, CollectionUtils.jsonArrayToList(result.optJSONArray(Operation.OPERATIONS)));
+        dataModel.put(Operation.OPERATIONS, result.opt(Operation.OPERATIONS));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -468,7 +469,7 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
         final JSONObject result = reportQueryService.getReports(requestJSONObject);
-        dataModel.put(Report.REPORTS, CollectionUtils.jsonArrayToList(result.optJSONArray(Report.REPORTS)));
+        dataModel.put(Report.REPORTS, result.opt(Report.REPORTS));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -497,7 +498,6 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.put(Keys.MSG, "Still [" + count + "] users are using this role.");
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -535,7 +535,7 @@ public class AdminProcessor {
         fields.add(Breezemoon.BREEZEMOON_AUTHOR_ID);
         fields.add(Breezemoon.BREEZEMOON_STATUS);
         final JSONObject result = breezemoonQueryService.getBreezemoons(requestJSONObject, fields);
-        dataModel.put(Breezemoon.BREEZEMOONS, CollectionUtils.jsonArrayToList(result.optJSONArray(Breezemoon.BREEZEMOONS)));
+        dataModel.put(Breezemoon.BREEZEMOONS, result.opt(Breezemoon.BREEZEMOONS));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -598,7 +598,6 @@ public class AdminProcessor {
             operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_BREEZEMOON, breezemoonId));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Updates a breezemoon failed", e);
-
             return;
         }
 
@@ -633,8 +632,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     public void removeUnusedTags(final RequestContext context) {
-        context.renderJSON(true);
-
+        context.renderJSON(StatusCodes.SUCC);
         tagMgmtService.removeUnusedTags();
         operationMgmtService.addOperation(Operation.newOperation(context.getRequest(), Operation.OPERATION_CODE_C_REMOVE_UNUSED_TAGS, ""));
     }
@@ -649,7 +647,6 @@ public class AdminProcessor {
         final String roleName = context.param(Role.ROLE_NAME);
         if (StringUtils.isBlank(roleName)) {
             context.sendRedirect(Latkes.getServePath() + "/admin/roles");
-
             return;
         }
 
@@ -856,7 +853,6 @@ public class AdminProcessor {
             dataModel.put(Keys.MSG, e.getMessage());
 
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -873,7 +869,6 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -955,7 +950,9 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
         final JSONObject result = invitecodeQueryService.getInvitecodes(requestJSONObject);
-        dataModel.put(Invitecode.INVITECODES, CollectionUtils.jsonArrayToList(result.optJSONArray(Invitecode.INVITECODES)));
+        final List<JSONObject> invitecodes = (List<JSONObject>) result.opt(Invitecode.INVITECODES);
+        invitecodes.forEach(Escapes::escapeHTML);
+        dataModel.put(Invitecode.INVITECODES, invitecodes);
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -1012,7 +1009,6 @@ public class AdminProcessor {
             operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_INVITECODE, invitecodeId));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Updates an invitecode failed", e);
-
             return;
         }
 
@@ -1048,7 +1044,6 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.put(Keys.MSG, langPropsService.get("notFoundUserLabel"));
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1088,7 +1083,6 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1110,13 +1104,11 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.put(Keys.MSG, langPropsService.get("invalidReservedWordLabel"));
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
         if (optionQueryService.isReservedWord(word)) {
             context.sendRedirect(Latkes.getServePath() + "/admin/reserved-words");
-
             return;
         }
 
@@ -1132,7 +1124,6 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1187,9 +1178,9 @@ public class AdminProcessor {
     public void showReservedWords(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/reserved-words.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-
-        dataModel.put(Common.WORDS, optionQueryService.getReservedWords());
-
+        final List<JSONObject> words = optionQueryService.getReservedWords();
+        words.forEach(Escapes::escapeHTML);
+        dataModel.put(Common.WORDS, words);
         dataModelService.fillHeaderAndFooter(context, dataModel);
     }
 
@@ -1202,10 +1193,8 @@ public class AdminProcessor {
         final String id = context.pathVar("id");
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/reserved-word.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-
         final JSONObject word = optionQueryService.getOption(id);
         dataModel.put(Common.WORD, word);
-
         dataModelService.fillHeaderAndFooter(context, dataModel);
     }
 
@@ -1298,7 +1287,7 @@ public class AdminProcessor {
         }
 
         final JSONObject result = userQueryService.getUsers(requestJSONObject);
-        dataModel.put(User.USERS, CollectionUtils.jsonArrayToList(result.optJSONArray(User.USERS)));
+        dataModel.put(User.USERS, result.opt(User.USERS));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -1374,7 +1363,6 @@ public class AdminProcessor {
             }
 
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1398,7 +1386,6 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1458,18 +1445,15 @@ public class AdminProcessor {
                 case UserExt.USER_JOIN_USED_POINT_RANK:
                 case UserExt.USER_FORWARD_PAGE_STATUS:
                     user.put(name, Integer.valueOf(value));
-
                     break;
                 case User.USER_PASSWORD:
                     final String oldPwd = user.getString(name);
                     if (!oldPwd.equals(value) && StringUtils.isNotBlank(value)) {
                         user.put(name, DigestUtils.md5Hex(value));
                     }
-
                     break;
                 default:
                     user.put(name, value);
-
                     break;
             }
         }
@@ -1484,7 +1468,6 @@ public class AdminProcessor {
             operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_USER, userId));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Updates a user failed", e);
-
             return;
         }
 
@@ -1506,7 +1489,6 @@ public class AdminProcessor {
 
         if (oldEmail.equals(newEmail)) {
             context.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
-
             return;
         }
 
@@ -1521,7 +1503,6 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1543,7 +1524,6 @@ public class AdminProcessor {
 
         if (oldUserName.equals(newUserName)) {
             context.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
-
             return;
         }
 
@@ -1558,7 +1538,6 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1581,7 +1560,6 @@ public class AdminProcessor {
             LOGGER.warn("Charge point memo format error");
 
             context.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
-
             return;
         }
 
@@ -1602,7 +1580,6 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1631,7 +1608,6 @@ public class AdminProcessor {
                 final Map<String, Object> dataModel = renderer.getDataModel();
                 dataModel.put(Keys.MSG, langPropsService.get("insufficientBalanceLabel"));
                 dataModelService.fillHeaderAndFooter(context, dataModel);
-
                 return;
             }
 
@@ -1650,7 +1626,6 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1673,7 +1648,6 @@ public class AdminProcessor {
                     || UserExt.USER_STATUS_C_VALID != user.optInt(UserExt.USER_STATUS)
                     || UserExt.NULL_USER_NAME.equals(user.optString(User.USER_NAME))) {
                 response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
-
                 return;
             }
 
@@ -1689,7 +1663,6 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1718,7 +1691,6 @@ public class AdminProcessor {
 
                 dataModel.put(Keys.MSG, langPropsService.get("insufficientBalanceLabel"));
                 dataModelService.fillHeaderAndFooter(context, dataModel);
-
                 return;
             }
 
@@ -1737,7 +1709,6 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -1780,7 +1751,7 @@ public class AdminProcessor {
         articleFields.add(Article.ARTICLE_STATUS);
         articleFields.add(Article.ARTICLE_STICK);
         final JSONObject result = articleQueryService.getArticles(requestJSONObject, articleFields);
-        dataModel.put(Article.ARTICLES, CollectionUtils.jsonArrayToList(result.optJSONArray(Article.ARTICLES)));
+        dataModel.put(Article.ARTICLES, result.opt(Article.ARTICLES));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -1891,7 +1862,7 @@ public class AdminProcessor {
         commentFields.add(Comment.COMMENT_STATUS);
         commentFields.add(Comment.COMMENT_CONTENT);
         final JSONObject result = commentQueryService.getComments(requestJSONObject, commentFields);
-        dataModel.put(Comment.COMMENTS, CollectionUtils.jsonArrayToList(result.optJSONArray(Comment.COMMENTS)));
+        dataModel.put(Comment.COMMENTS, result.opt(Comment.COMMENTS));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -2051,7 +2022,7 @@ public class AdminProcessor {
         tagFields.add(Tag.TAG_URI);
         tagFields.add(Tag.TAG_CSS);
         final JSONObject result = tagQueryService.getTags(requestJSONObject, tagFields);
-        dataModel.put(Tag.TAGS, CollectionUtils.jsonArrayToList(result.optJSONArray(Tag.TAGS)));
+        dataModel.put(Tag.TAGS, result.opt(Tag.TAGS));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -2083,7 +2054,6 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, langPropsService.get("notFoundTagLabel"));
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -2135,7 +2105,6 @@ public class AdminProcessor {
                 operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_UPDATE_TAG, tagId));
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Updates a tag failed", e);
-
                 return;
             }
         }
@@ -2178,7 +2147,13 @@ public class AdminProcessor {
         domainFields.add(Domain.DOMAIN_STATUS);
         domainFields.add(Domain.DOMAIN_URI);
         final JSONObject result = domainQueryService.getDomains(requestJSONObject, domainFields);
-        dataModel.put(Common.ALL_DOMAINS, CollectionUtils.jsonArrayToList(result.optJSONArray(Domain.DOMAINS)));
+        final List<JSONObject> domains = (List<JSONObject>) result.opt(Domain.DOMAINS);
+        for (final JSONObject domain : domains) {
+            final String iconPath = domain.optString(Domain.DOMAIN_ICON_PATH);
+            Escapes.escapeHTML(domain);
+            domain.put(Domain.DOMAIN_ICON_PATH, iconPath);
+        }
+        dataModel.put(Common.ALL_DOMAINS, domains);
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -2207,7 +2182,6 @@ public class AdminProcessor {
         dataModel.put(Domain.DOMAIN, domain);
 
         dataModelService.fillHeaderAndFooter(context, dataModel);
-
     }
 
     /**
@@ -2280,7 +2254,6 @@ public class AdminProcessor {
             dataModel.put(Keys.MSG, langPropsService.get("invalidDomainTitleLabel"));
 
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -2289,7 +2262,6 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.put(Keys.MSG, langPropsService.get("duplicatedDomainLabel"));
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -2308,7 +2280,6 @@ public class AdminProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             dataModel.put(Keys.MSG, e.getMessage());
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -2367,7 +2338,6 @@ public class AdminProcessor {
                 final Map<String, Object> dataModel = renderer.getDataModel();
                 dataModel.put(Keys.MSG, e.getMessage());
                 dataModelService.fillHeaderAndFooter(context, dataModel);
-
                 return;
             }
 
@@ -2382,7 +2352,6 @@ public class AdminProcessor {
 
                 dataModel.put(Keys.MSG, e.getMessage());
                 dataModelService.fillHeaderAndFooter(context, dataModel);
-
                 return;
             }
         }
@@ -2397,7 +2366,6 @@ public class AdminProcessor {
             dataModel.put(Keys.MSG, msg);
 
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
 
@@ -2422,21 +2390,13 @@ public class AdminProcessor {
 
         final String tagTitle = context.param(Tag.TAG_TITLE);
         final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
-
         if (null == tag) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "admin/error.ftl");
             final Map<String, Object> dataModel = renderer.getDataModel();
-
             dataModel.put(Keys.MSG, langPropsService.get("invalidTagLabel"));
-
             dataModelService.fillHeaderAndFooter(context, dataModel);
-
             return;
         }
-
-        final JSONObject domainTag = new JSONObject();
-        domainTag.put(Domain.DOMAIN + "_" + Keys.OBJECT_ID, domainId);
-        domainTag.put(Tag.TAG + "_" + Keys.OBJECT_ID, tag.optString(Keys.OBJECT_ID));
 
         domainMgmtService.removeDomainTag(domainId, tag.optString(Keys.OBJECT_ID));
         operationMgmtService.addOperation(Operation.newOperation(request, Operation.OPERATION_CODE_C_REMOVE_DOMAIN_TAG, domainId));
@@ -2450,7 +2410,7 @@ public class AdminProcessor {
      * @param context the specified context
      */
     public void rebuildArticleSearchIndex(final RequestContext context) {
-        context.renderJSON(true);
+        context.renderJSON(StatusCodes.SUCC);
 
         if (Symphonys.ES_ENABLED) {
             searchMgmtService.rebuildESIndex();

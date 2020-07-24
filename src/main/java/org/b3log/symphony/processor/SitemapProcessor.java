@@ -31,7 +31,7 @@ import org.b3log.symphony.service.SitemapQueryService;
  * Sitemap processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Feb 11, 2020
+ * @version 2.0.0.1, Apr 8, 2020
  * @since 1.6.0
  */
 @Singleton
@@ -55,27 +55,14 @@ public class SitemapProcessor {
      */
     public void sitemap(final RequestContext context) {
         final TextXmlRenderer renderer = new TextXmlRenderer();
-
         context.setRenderer(renderer);
-
         final Sitemap sitemap = new Sitemap();
-
-        try {
-            LOGGER.log(Level.INFO, "Generating sitemap....");
-
-            sitemapQueryService.genIndex(sitemap);
-            sitemapQueryService.genDomains(sitemap);
-            sitemapQueryService.genArticles(sitemap);
-
-            final String content = sitemap.toString();
-
-            LOGGER.log(Level.INFO, "Generated sitemap");
-
-            renderer.setContent(content);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Get blog article feed error", e);
-
-            context.getResponse().sendError(500);
-        }
+        LOGGER.log(Level.DEBUG, "Generating sitemap....");
+        sitemapQueryService.genIndex(sitemap);
+        sitemapQueryService.genDomains(sitemap);
+        // sitemapQueryService.genArticles(sitemap);
+        final String content = sitemap.toString();
+        LOGGER.log(Level.DEBUG, "Generated sitemap");
+        renderer.setContent(content);
     }
 }

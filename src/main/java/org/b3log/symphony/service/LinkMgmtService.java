@@ -125,7 +125,6 @@ public class LinkMgmtService {
             old.put(Link.LINK_CLICK_CNT, link.optInt(Link.LINK_CLICK_CNT));
 
             singlePing(old);
-
             return;
         }
 

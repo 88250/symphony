@@ -1740,7 +1740,7 @@
         {
           "name": "articleEditorType",
           "type": "int",
-          "description": "0：CodeMirror-Markdown"
+          "description": "0：Markdown"
         },
         {
           "name": "articleStatus",

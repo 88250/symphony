@@ -168,7 +168,6 @@ public class UserRegisterValidationMidware {
         if ("1".equals(option.optString(Option.OPTION_VALUE))) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("notAllowRegisterLabel")));
             context.abort();
-
             return;
         }
 
@@ -197,7 +196,6 @@ public class UserRegisterValidationMidware {
             if (StringUtils.isBlank(invitecode) || INVITECODE_LENGHT != invitecode.length()) {
                 context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("invalidInvitecodeLabel")));
                 context.abort();
-
                 return;
             }
 
@@ -205,14 +203,12 @@ public class UserRegisterValidationMidware {
             if (null == ic) {
                 context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("invalidInvitecodeLabel")));
                 context.abort();
-
                 return;
             }
 
             if (Invitecode.STATUS_C_UNUSED != ic.optInt(Invitecode.STATUS)) {
                 context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("usedInvitecodeLabel")));
                 context.abort();
-
                 return;
             }
         }
@@ -223,7 +219,6 @@ public class UserRegisterValidationMidware {
             if (CaptchaProcessor.invalidCaptcha(captcha)) {
                 context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("captchaErrorLabel")));
                 context.abort();
-
                 return;
             }
         }
@@ -235,35 +230,30 @@ public class UserRegisterValidationMidware {
         if (UserExt.isReservedUserName(name)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("reservedUserNameLabel")));
             context.abort();
-
             return;
         }
 
         if (invalidUserName(name)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("invalidUserNameLabel")));
             context.abort();
-
             return;
         }
 
         if (!Strings.isEmail(email)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("invalidEmailLabel")));
             context.abort();
-
             return;
         }
 
         if (!UserExt.isValidMailDomain(email)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("invalidEmail1Label")));
             context.abort();
-
             return;
         }
 
         if (UserExt.USER_APP_ROLE_C_HACKER != appRole && UserExt.USER_APP_ROLE_C_PAINTER != appRole) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("invalidAppRoleLabel")));
             context.abort();
-
             return;
         }
 

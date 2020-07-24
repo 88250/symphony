@@ -37,7 +37,6 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.*;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -123,7 +122,6 @@ public class CityProcessor {
         final JSONObject user = Sessions.getUser();
         if (!UserExt.finshedGuide(user)) {
             context.sendRedirect(Latkes.getServePath() + "/guide");
-
             return;
         }
 
@@ -133,7 +131,6 @@ public class CityProcessor {
 
         if (UserExt.USER_GEO_STATUS_C_PUBLIC != user.optInt(UserExt.USER_GEO_STATUS)) {
             dataModel.put(UserExt.USER_GEO_STATUS, false);
-
             return;
         }
 
@@ -149,7 +146,6 @@ public class CityProcessor {
 
         if (StringUtils.isBlank(userCity)) {
             dataModel.put(Common.CITY_FOUND, false);
-
             return;
         }
 
@@ -204,7 +200,6 @@ public class CityProcessor {
         final JSONObject user = Sessions.getUser();
         if (!UserExt.finshedGuide(user)) {
             context.sendRedirect(Latkes.getServePath() + "/guide");
-
             return;
         }
 
@@ -213,7 +208,6 @@ public class CityProcessor {
         dataModel.put(Common.CITY, langService.get("sameCityLabel"));
         if (UserExt.USER_GEO_STATUS_C_PUBLIC != user.optInt(UserExt.USER_GEO_STATUS)) {
             dataModel.put(UserExt.USER_GEO_STATUS, false);
-
             return;
         }
 
@@ -229,7 +223,6 @@ public class CityProcessor {
 
         if (StringUtils.isBlank(userCity)) {
             dataModel.put(Common.CITY_FOUND, false);
-
             return;
         }
 
@@ -246,12 +239,10 @@ public class CityProcessor {
         requestJSONObject.put(UserExt.USER_LATEST_LOGIN_TIME, latestLoginTime);
         requestJSONObject.put(UserExt.USER_CITY, queryCity);
         final JSONObject result = userQueryService.getUsersByCity(requestJSONObject);
-        final JSONArray cityUsers = result.optJSONArray(User.USERS);
+        final List<JSONObject> cityUsers = (List<JSONObject>) result.opt(User.USERS);
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
-        if (null != cityUsers && cityUsers.length() > 0) {
-            for (int i = 0; i < cityUsers.length(); i++) {
-                users.add(cityUsers.getJSONObject(i));
-            }
+        if (!cityUsers.isEmpty()) {
+            users.addAll(cityUsers);
             dataModel.put(User.USERS, users);
         }
 

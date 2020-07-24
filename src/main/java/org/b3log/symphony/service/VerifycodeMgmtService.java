@@ -34,7 +34,6 @@ import org.b3log.symphony.model.Verifycode;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.repository.VerifycodeRepository;
 import org.b3log.symphony.util.Mails;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.*;
@@ -81,12 +80,7 @@ public class VerifycodeMgmtService {
     public void removeByCode(final String code) {
         final Query query = new Query().setFilter(new PropertyFilter(Verifycode.CODE, FilterOperator.EQUAL, code));
         try {
-            final JSONArray results = verifycodeRepository.get(query).optJSONArray(Keys.RESULTS);
-            if (1 > results.length()) {
-                return;
-            }
-
-            verifycodeRepository.remove(results.optJSONObject(0).optString(Keys.OBJECT_ID));
+            verifycodeRepository.remove(query);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Removes by code [" + code + "] failed", e);
         }
@@ -127,15 +121,8 @@ public class VerifycodeMgmtService {
     public void removeExpiredVerifycodes() {
         final Query query = new Query().setFilter(new PropertyFilter(Verifycode.EXPIRED,
                 FilterOperator.LESS_THAN, new Date().getTime()));
-
         try {
-            final JSONObject result = verifycodeRepository.get(query);
-            final JSONArray verifycodes = result.optJSONArray(Keys.RESULTS);
-
-            for (int i = 0; i < verifycodes.length(); i++) {
-                final String id = verifycodes.optJSONObject(i).optString(Keys.OBJECT_ID);
-                verifycodeRepository.remove(id);
-            }
+            verifycodeRepository.remove(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Expires verifycodes failed", e);
         }
@@ -150,14 +137,9 @@ public class VerifycodeMgmtService {
         filters.add(new PropertyFilter(Verifycode.TYPE, FilterOperator.EQUAL, Verifycode.TYPE_C_EMAIL));
         filters.add(new PropertyFilter(Verifycode.STATUS, FilterOperator.EQUAL, Verifycode.STATUS_C_UNSENT));
         final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-
         try {
-            final JSONObject result = verifycodeRepository.get(query);
-            final JSONArray verifycodes = result.optJSONArray(Keys.RESULTS);
-
-            for (int i = 0; i < verifycodes.length(); i++) {
-                final JSONObject verifycode = verifycodes.optJSONObject(i);
-
+            final List<JSONObject> verifycodes = verifycodeRepository.getList(query);
+            for (final JSONObject verifycode : verifycodes) {
                 final String userId = verifycode.optString(Verifycode.USER_ID);
                 final JSONObject user = userRepository.get(userId);
                 if (null == user) {
@@ -178,21 +160,17 @@ public class VerifycodeMgmtService {
                     case Verifycode.BIZ_TYPE_C_REGISTER:
                         dataModel.put(Common.URL, Latkes.getServePath() + "/register?code=" + code);
                         subject = langPropsService.get("registerEmailSubjectLabel", Latkes.getLocale());
-
                         break;
                     case Verifycode.BIZ_TYPE_C_RESET_PWD:
                         dataModel.put(Common.URL, Latkes.getServePath() + "/reset-pwd?code=" + code);
                         subject = langPropsService.get("forgetEmailSubjectLabel", Latkes.getLocale());
-
                         break;
                     case Verifycode.BIZ_TYPE_C_BIND_EMAIL:
                         dataModel.put(Keys.CODE, code);
                         subject = langPropsService.get("bindEmailSubjectLabel", Latkes.getLocale());
-
                         break;
                     default:
                         LOGGER.warn("Send email verify code failed with wrong biz type [" + bizType + "]");
-
                         continue;
                 }
 

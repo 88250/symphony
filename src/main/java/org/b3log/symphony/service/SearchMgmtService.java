@@ -108,7 +108,6 @@ public class SearchMgmtService {
                 if (200 != response.statusCode()) {
                     LOGGER.warn(response.toString());
                 }
-
                 break;
             } catch (final Exception e) {
                 LOGGER.log(Level.WARN, "Clear index failed", e);
@@ -210,7 +209,6 @@ public class SearchMgmtService {
                 if (200 != response.statusCode()) {
                     LOGGER.warn(response.bodyText());
                 }
-
                 break;
             } catch (final Exception e) {
                 LOGGER.log(Level.WARN, "Index failed", e);
@@ -224,7 +222,7 @@ public class SearchMgmtService {
             try {
                 Thread.sleep(100);
             } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Sleep error", e);
+                LOGGER.log(Level.ERROR, "Sleep failed", e);
             }
         }
     }
@@ -253,7 +251,6 @@ public class SearchMgmtService {
                 if (200 != response.statusCode()) {
                     LOGGER.warn(response.toString());
                 }
-
                 break;
             } catch (final Exception e) {
                 LOGGER.log(Level.WARN, "Remove object failed", e);

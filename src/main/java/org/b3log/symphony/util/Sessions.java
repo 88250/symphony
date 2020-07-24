@@ -46,7 +46,7 @@ import java.util.Set;
  * Session utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.1.1.0, Jan 22, 2019
+ * @version 2.1.2.0, May 31, 2020
  */
 public final class Sessions {
 
@@ -104,7 +104,6 @@ public final class Sessions {
         if (null == data) {
             data = new JSONObject().put(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, isBot);
             THREAD_LOCAL_DATA.set(data);
-
             return;
         }
 
@@ -135,7 +134,6 @@ public final class Sessions {
         if (null == data) {
             data = new JSONObject().put(Common.IS_MOBILE, isMobile);
             THREAD_LOCAL_DATA.set(data);
-
             return;
         }
 
@@ -166,7 +164,6 @@ public final class Sessions {
         if (null == data) {
             data = new JSONObject().put(UserExt.USER_AVATAR_VIEW_MODE, avatarViewMode);
             THREAD_LOCAL_DATA.set(data);
-
             return;
         }
 
@@ -197,7 +194,6 @@ public final class Sessions {
         if (null == data) {
             data = new JSONObject().put(Common.IS_LOGGED_IN, isLoggedIn);
             THREAD_LOCAL_DATA.set(data);
-
             return;
         }
 
@@ -228,7 +224,6 @@ public final class Sessions {
         if (null == data) {
             data = new JSONObject().put(User.USER, user);
             THREAD_LOCAL_DATA.set(data);
-
             return;
         }
 
@@ -246,7 +241,7 @@ public final class Sessions {
             return "classic";
         }
 
-        return data.optString(Keys.TEMAPLTE_DIR_NAME);
+        return data.optString(Keys.TEMPLATE_DIR_NAME);
     }
 
     /**
@@ -257,13 +252,12 @@ public final class Sessions {
     public static void setTemplateDir(final String templateDir) {
         JSONObject data = THREAD_LOCAL_DATA.get();
         if (null == data) {
-            data = new JSONObject().put(Keys.TEMAPLTE_DIR_NAME, templateDir);
+            data = new JSONObject().put(Keys.TEMPLATE_DIR_NAME, templateDir);
             THREAD_LOCAL_DATA.set(data);
-
             return;
         }
 
-        data.put(Keys.TEMAPLTE_DIR_NAME, templateDir);
+        data.put(Keys.TEMPLATE_DIR_NAME, templateDir);
     }
 
     /**
@@ -336,8 +330,10 @@ public final class Sessions {
             final String ret = Crypts.encryptByAES(cookieJSONObject.toString(), Symphonys.COOKIE_SECRET);
             final Cookie cookie = new Cookie(COOKIE_NAME, ret);
             cookie.setPath("/");
-            cookie.setMaxAge(rememberLogin ? COOKIE_EXPIRY : -1);
-            cookie.setHttpOnly(true); // HTTP Only
+            if (rememberLogin) {
+                cookie.setMaxAge(COOKIE_EXPIRY);
+            }
+            cookie.setHttpOnly(true);
             cookie.setSecure(StringUtils.equalsIgnoreCase(Latkes.getServerScheme(), "https"));
 
             response.addCookie(cookie);

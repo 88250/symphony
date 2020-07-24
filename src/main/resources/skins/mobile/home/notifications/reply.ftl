@@ -23,11 +23,10 @@
 <ul class="notification">
     <#list replyNotifications as notification>
     <li class="fn-flex comment-list-item<#if notification.hasRead> read</#if>">
-        <#if "someone" != notification.commentAuthorName>
         <a target="_blank" rel="nofollow" href="${servePath}/member/${notification.commentAuthorName}" 
-           title="${notification.commentAuthorName}"></#if>
+           title="${notification.commentAuthorName}">
             <div class="avatar" style="background-image:url('${notification.commentAuthorThumbnailURL}')"></div>
-        <#if "someone" != notification.commentAuthorName></a></#if>
+        </a>
         <div class="fn-flex-1">
             <div>
                 <h2>

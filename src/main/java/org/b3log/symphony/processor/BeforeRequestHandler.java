@@ -89,7 +89,7 @@ public class BeforeRequestHandler implements Handler {
 
         final Request request = context.getRequest();
         final Session httpSession = request.getSession();
-        httpSession.setAttribute(Keys.TEMAPLTE_DIR_NAME, templateDirName);
+        httpSession.setAttribute(Keys.TEMPLATE_DIR_NAME, templateDirName);
 
         try {
             final BeanManager beanManager = BeanManager.getInstance();
@@ -110,7 +110,7 @@ public class BeforeRequestHandler implements Handler {
             }
 
             final String skin = Sessions.isMobile() ? user.optString(UserExt.USER_MOBILE_SKIN) : user.optString(UserExt.USER_SKIN);
-            httpSession.setAttribute(Keys.TEMAPLTE_DIR_NAME, skin);
+            httpSession.setAttribute(Keys.TEMPLATE_DIR_NAME, skin);
             Sessions.setTemplateDir(skin);
             Sessions.setAvatarViewMode(user.optInt(UserExt.USER_AVATAR_VIEW_MODE));
             Sessions.setUser(user);
@@ -155,7 +155,6 @@ public class BeforeRequestHandler implements Handler {
         if (BrowserType.ROBOT == browserType) {
             LOGGER.log(Level.DEBUG, "Request made from a search engine [User-Agent={}]", context.header(Common.USER_AGENT));
             Sessions.setBot(true);
-
             return;
         }
 

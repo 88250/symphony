@@ -20,7 +20,6 @@ package org.b3log.symphony.processor.middleware.validate;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
@@ -41,7 +40,7 @@ import java.util.LinkedHashSet;
  * Validates for user profiles update.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.0.0, Feb 11, 2020
+ * @version 3.0.0.1, May 30, 2020
  * @since 0.2.0
  */
 @Singleton
@@ -74,15 +73,11 @@ public class UpdateProfilesValidationMidware {
     public static final int MAX_USER_INTRO_LENGTH = 255;
 
     public void handle(final RequestContext context) {
-        final Request request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
-        request.setAttribute(Keys.REQUEST, requestJSONObject);
-
         final String userURL = requestJSONObject.optString(User.USER_URL);
         if (StringUtils.isNotBlank(userURL) && invalidUserURL(userURL)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, "URL" + langPropsService.get("colonLabel") + langPropsService.get("invalidUserURLLabel")));
             context.abort();
-
             return;
         }
 
@@ -90,7 +85,6 @@ public class UpdateProfilesValidationMidware {
         if (StringUtils.isNotBlank(userQQ) && (!Strings.isNumeric(userQQ) || userQQ.length() > MAX_USER_QQ_LENGTH)) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserQQLabel")));
             context.abort();
-
             return;
         }
 
@@ -98,7 +92,6 @@ public class UpdateProfilesValidationMidware {
         if (StringUtils.isNotBlank(userNickname) && userNickname.length() > MAX_USER_NICKNAME_LENGTH) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserNicknameLabel")));
             context.abort();
-
             return;
         }
 
@@ -106,7 +99,6 @@ public class UpdateProfilesValidationMidware {
         if (StringUtils.isNotBlank(userIntro) && userIntro.length() > MAX_USER_INTRO_LENGTH) {
             context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserIntroLabel")));
             context.abort();
-
             return;
         }
 
@@ -126,7 +118,6 @@ public class UpdateProfilesValidationMidware {
             if (null == tagTitles || 0 == tagTitles.length) {
                 context.renderJSON(new JSONObject().put(Keys.MSG, tagErrMsg));
                 context.abort();
-
                 return;
             }
 
@@ -139,27 +130,23 @@ public class UpdateProfilesValidationMidware {
                 if (StringUtils.isBlank(tagTitle)) {
                     context.renderJSON(new JSONObject().put(Keys.MSG, tagErrMsg));
                     context.abort();
-
                     return;
                 }
 
                 if (Tag.containsWhiteListTags(tagTitle)) {
                     tagBuilder.append(tagTitle).append(",");
-
                     continue;
                 }
 
                 if (!Tag.TAG_TITLE_PATTERN.matcher(tagTitle).matches()) {
                     context.renderJSON(new JSONObject().put(Keys.MSG, tagErrMsg));
                     context.abort();
-
                     return;
                 }
 
                 if (tagTitle.length() > Tag.MAX_TAG_TITLE_LENGTH) {
                     context.renderJSON(new JSONObject().put(Keys.MSG, tagErrMsg));
                     context.abort();
-
                     return;
                 }
 
@@ -168,7 +155,6 @@ public class UpdateProfilesValidationMidware {
                         && ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
                     context.renderJSON(new JSONObject().put(Keys.MSG, langPropsService.get("selfTagLabel") + langPropsService.get("colonLabel") + langPropsService.get("articleTagReservedLabel") + " [" + tagTitle + "]"));
                     context.abort();
-
                     return;
                 }
 

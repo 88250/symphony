@@ -52,21 +52,18 @@ public class UserCheckMidware {
         if (null == user) {
             context.sendError(404);
             context.abort();
-
             return;
         }
 
         if (UserExt.USER_STATUS_C_NOT_VERIFIED == user.optInt(UserExt.USER_STATUS)) {
             context.sendError(404);
             context.abort();
-
             return;
         }
 
         if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
             context.sendError(404);
             context.abort();
-
             return;
         }
 

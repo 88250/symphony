@@ -35,6 +35,7 @@ import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.NotificationQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Sessions;
+import org.b3log.symphony.util.StatusCodes;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -128,11 +129,9 @@ public class NotificationProcessor {
         switch (type) {
             case "commented":
                 notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_COMMENTED);
-
                 break;
             case "reply":
                 notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_REPLY);
-
                 break;
             case "at":
                 notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_AT);
@@ -142,13 +141,11 @@ public class NotificationProcessor {
                 notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_COMMENT_VOTE_DOWN);
                 notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_ARTICLE_VOTE_UP);
                 notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_ARTICLE_VOTE_DOWN);
-
                 break;
             case "following":
                 notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_FOLLOWING_USER);
                 notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_FOLLOWING_ARTICLE_UPDATE);
                 notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_FOLLOWING_ARTICLE_COMMENT);
-
                 break;
             case "point":
                 notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_POINT_ARTICLE_REWARD);
@@ -162,19 +159,16 @@ public class NotificationProcessor {
                 notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_ABUSE_POINT_DEDUCT);
                 notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_INVITECODE_USED);
                 notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_INVITATION_LINK_USED);
-
                 break;
             case "broadcast":
                 notificationMgmtService.removeNotifications(userId, Notification.DATA_TYPE_C_BROADCAST);
-
                 break;
             default:
-                context.renderJSON(false);
-
+                context.renderJSON(StatusCodes.ERR);
                 return;
         }
 
-        context.renderJSON(true);
+        context.renderJSON(StatusCodes.SUCC);
     }
 
     /**
@@ -183,7 +177,7 @@ public class NotificationProcessor {
      * @param context the specified context
      */
     public void removeNotification(final RequestContext context) {
-        context.renderJSON(true);
+        context.renderJSON(StatusCodes.SUCC);
 
         final JSONObject requestJSONObject = context.requestJSON();
         final JSONObject currentUser = Sessions.getUser();
@@ -253,7 +247,7 @@ public class NotificationProcessor {
 
         notificationMgmtService.makeAllRead(userId);
 
-        context.renderJSON(true);
+        context.renderJSON(StatusCodes.SUCC);
     }
 
     /**
@@ -270,11 +264,9 @@ public class NotificationProcessor {
         switch (type) {
             case "commented":
                 notificationMgmtService.makeRead(userId, Notification.DATA_TYPE_C_COMMENTED);
-
                 break;
             case "reply":
                 notificationMgmtService.makeRead(userId, Notification.DATA_TYPE_C_REPLY);
-
                 break;
             case "at":
                 notificationMgmtService.makeRead(userId, Notification.DATA_TYPE_C_AT);
@@ -284,22 +276,19 @@ public class NotificationProcessor {
                 notificationMgmtService.makeRead(userId, Notification.DATA_TYPE_C_COMMENT_VOTE_DOWN);
                 notificationMgmtService.makeRead(userId, Notification.DATA_TYPE_C_ARTICLE_VOTE_UP);
                 notificationMgmtService.makeRead(userId, Notification.DATA_TYPE_C_ARTICLE_VOTE_DOWN);
-
                 break;
             case "following":
                 notificationMgmtService.makeRead(userId, Notification.DATA_TYPE_C_FOLLOWING_USER);
                 notificationMgmtService.makeRead(userId, Notification.DATA_TYPE_C_FOLLOWING_ARTICLE_UPDATE);
                 notificationMgmtService.makeRead(userId, Notification.DATA_TYPE_C_FOLLOWING_ARTICLE_COMMENT);
-
                 break;
             default:
-                context.renderJSON(false);
-
+                context.renderJSON(StatusCodes.ERR);
                 return;
         }
 
 
-        context.renderJSON(true);
+        context.renderJSON(StatusCodes.SUCC);
     }
 
     /**
@@ -316,7 +305,7 @@ public class NotificationProcessor {
 
         notificationMgmtService.makeRead(userId, articleId, commentIds);
 
-        context.renderJSON(true);
+        context.renderJSON(StatusCodes.SUCC);
     }
 
     /**
@@ -328,7 +317,6 @@ public class NotificationProcessor {
         final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             context.sendError(403);
-
             return;
         }
 
@@ -337,14 +325,12 @@ public class NotificationProcessor {
         final int unreadCommentedNotificationCnt = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENTED);
         if (unreadCommentedNotificationCnt > 0) {
             context.sendRedirect(Latkes.getServePath() + "/notifications/commented");
-
             return;
         }
 
         final int unreadReplyNotificationCnt = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_REPLY);
         if (unreadReplyNotificationCnt > 0) {
             context.sendRedirect(Latkes.getServePath() + "/notifications/reply");
-
             return;
         }
 
@@ -358,21 +344,18 @@ public class NotificationProcessor {
                 + notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_ARTICLE_VOTE_DOWN);
         if (unreadAtNotificationCnt > 0) {
             context.sendRedirect(Latkes.getServePath() + "/notifications/at");
-
             return;
         }
 
         final int unreadPointNotificationCnt = notificationQueryService.getUnreadPointNotificationCount(userId);
         if (unreadPointNotificationCnt > 0) {
             context.sendRedirect(Latkes.getServePath() + "/notifications/point");
-
             return;
         }
 
         final int unreadFollowingNotificationCnt = notificationQueryService.getUnreadFollowingNotificationCount(userId);
         if (unreadFollowingNotificationCnt > 0) {
             context.sendRedirect(Latkes.getServePath() + "/notifications/following");
-
             return;
         }
 
@@ -380,14 +363,12 @@ public class NotificationProcessor {
                 = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_BROADCAST);
         if (unreadBroadcastCnt > 0) {
             context.sendRedirect(Latkes.getServePath() + "/notifications/broadcast");
-
             return;
         }
 
         final int unreadSysAnnounceCnt = notificationQueryService.getUnreadSysAnnounceNotificationCount(userId);
         if (unreadSysAnnounceCnt > 0) {
             context.sendRedirect(Latkes.getServePath() + "/notifications/sys-announce");
-
             return;
         }
 
@@ -405,7 +386,6 @@ public class NotificationProcessor {
         final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             context.sendError(403);
-
             return;
         }
 
@@ -494,7 +474,6 @@ public class NotificationProcessor {
         final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             context.sendError(403);
-
             return;
         }
 
@@ -539,7 +518,6 @@ public class NotificationProcessor {
         final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             context.sendError(403);
-
             return;
         }
 
@@ -584,7 +562,6 @@ public class NotificationProcessor {
         final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             context.sendError(403);
-
             return;
         }
 
@@ -638,7 +615,6 @@ public class NotificationProcessor {
         final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             context.sendError(403);
-
             return;
         }
 
@@ -684,7 +660,6 @@ public class NotificationProcessor {
         final JSONObject currentUser = Sessions.getUser();
         if (null == currentUser) {
             context.sendError(403);
-
             return;
         }
 
@@ -731,7 +706,7 @@ public class NotificationProcessor {
 
         fillNotificationCount(userId, dataModel);
 
-        context.renderJSON(new JSONObject(dataModel)).renderTrueResult().
+        context.renderJSON(new JSONObject(dataModel)).renderJSONValue(Keys.CODE, StatusCodes.SUCC).
                 renderJSONValue(UserExt.USER_NOTIFY_STATUS, currentUser.optInt(UserExt.USER_NOTIFY_STATUS));
     }
 }

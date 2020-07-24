@@ -56,7 +56,7 @@ public class CacheMgmtService {
     /**
      * Global locks
      */
-    private static Cache LOCKS = CacheFactory.getCache("locks");
+    private static final Cache LOCKS = CacheFactory.getCache("locks");
 
     /**
      * Tag cache.

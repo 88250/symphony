@@ -27,14 +27,12 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.processor.channel.ArticleListChannel;
 import org.b3log.symphony.processor.channel.ChatroomChannel;
 import org.b3log.symphony.processor.channel.UserChannel;
 import org.b3log.symphony.repository.OptionRepository;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Collections;
@@ -126,23 +124,17 @@ public class OptionQueryService {
      */
     public JSONObject getStatistic() {
         final JSONObject ret = new JSONObject();
-
         final Query query = new Query().
-                setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, Option.CATEGORY_C_STATISTIC))
-                .setPageCount(1);
+                setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, Option.CATEGORY_C_STATISTIC)).
+                setPageCount(1);
         try {
-            final JSONObject result = optionRepository.get(query);
-            final JSONArray options = result.optJSONArray(Keys.RESULTS);
-
-            for (int i = 0; i < options.length(); i++) {
-                final JSONObject option = options.optJSONObject(i);
+            final List<JSONObject> options = optionRepository.getList(query);
+            for (final JSONObject option : options) {
                 ret.put(option.optString(Keys.OBJECT_ID), option.optInt(Option.OPTION_VALUE));
             }
-
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets statistic failed", e);
-
             return null;
         }
     }
@@ -179,16 +171,11 @@ public class OptionQueryService {
      * @return reserved words
      */
     public List<JSONObject> getReservedWords() {
-        final Query query = new Query().
-                setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, Option.CATEGORY_C_RESERVED_WORDS));
+        final Query query = new Query().setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, Option.CATEGORY_C_RESERVED_WORDS));
         try {
-            final JSONObject result = optionRepository.get(query);
-            final JSONArray options = result.optJSONArray(Keys.RESULTS);
-
-            return CollectionUtils.jsonArrayToList(options);
+            return optionRepository.getList(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets reserved words failed", e);
-
             return Collections.emptyList();
         }
     }
@@ -237,22 +224,15 @@ public class OptionQueryService {
      * @return misc
      */
     public List<JSONObject> getMisc() {
-        final Query query = new Query().
-                setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, Option.CATEGORY_C_MISC));
+        final Query query = new Query().setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, Option.CATEGORY_C_MISC));
         try {
-            final JSONObject result = optionRepository.get(query);
-            final JSONArray options = result.optJSONArray(Keys.RESULTS);
-
-            for (int i = 0; i < options.length(); i++) {
-                final JSONObject option = options.optJSONObject(i);
-
+            final List<JSONObject> ret = optionRepository.getList(query);
+            for (final JSONObject option : ret) {
                 option.put("label", langPropsService.get(option.optString(Keys.OBJECT_ID) + "Label"));
             }
-
-            return CollectionUtils.jsonArrayToList(options);
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets misc failed", e);
-
             return null;
         }
     }

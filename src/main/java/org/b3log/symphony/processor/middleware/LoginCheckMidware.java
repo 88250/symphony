@@ -39,7 +39,6 @@ public class LoginCheckMidware {
         if (null == currentUser) {
             context.sendError(401);
             context.abort();
-
             return;
         }
 

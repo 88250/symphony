@@ -19,7 +19,6 @@ package org.b3log.symphony.processor;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.http.Dispatcher;
-import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
@@ -33,6 +32,7 @@ import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.FollowMgmtService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.util.Sessions;
+import org.b3log.symphony.util.StatusCodes;
 import org.json.JSONObject;
 
 import java.util.HashSet;
@@ -111,7 +111,7 @@ public class FollowProcessor {
      * @param context the specified context
      */
     public void followUser(final RequestContext context) {
-        context.renderJSON();
+        context.renderJSON(StatusCodes.SUCC);
 
         final JSONObject requestJSONObject = context.requestJSON();
         final String followingUserId = requestJSONObject.optString(Follow.FOLLOWING_ID);
@@ -129,8 +129,6 @@ public class FollowProcessor {
         }
 
         FOLLOWS.add(followingUserId + followerUserId);
-
-        context.renderTrueResult();
     }
 
     /**
@@ -147,17 +145,12 @@ public class FollowProcessor {
      * @param context the specified context
      */
     public void unfollowUser(final RequestContext context) {
-        context.renderJSON();
-
-        final Request request = context.getRequest();
+        context.renderJSON(StatusCodes.SUCC);
         final JSONObject requestJSONObject = context.requestJSON();
         final String followingUserId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = Sessions.getUser();
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
-
         followMgmtService.unfollowUser(followerUserId, followingUserId);
-
-        context.renderTrueResult();
     }
 
     /**
@@ -174,16 +167,12 @@ public class FollowProcessor {
      * @param context the specified context
      */
     public void followTag(final RequestContext context) {
-        context.renderJSON();
-        final Request request = context.getRequest();
+        context.renderJSON(StatusCodes.SUCC);
         final JSONObject requestJSONObject = context.requestJSON();
         final String followingTagId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = Sessions.getUser();
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
-
         followMgmtService.followTag(followerUserId, followingTagId);
-
-        context.renderTrueResult();
     }
 
     /**
@@ -200,17 +189,12 @@ public class FollowProcessor {
      * @param context the specified context
      */
     public void unfollowTag(final RequestContext context) {
-        context.renderJSON();
-
-        final Request request = context.getRequest();
+        context.renderJSON(StatusCodes.SUCC);
         final JSONObject requestJSONObject = context.requestJSON();
         final String followingTagId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = Sessions.getUser();
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
-
         followMgmtService.unfollowTag(followerUserId, followingTagId);
-
-        context.renderTrueResult();
     }
 
     /**
@@ -227,31 +211,22 @@ public class FollowProcessor {
      * @param context the specified context
      */
     public void followArticle(final RequestContext context) {
-        context.renderJSON();
-
-        final Request request = context.getRequest();
+        context.renderJSON(StatusCodes.SUCC);
         final JSONObject requestJSONObject = context.requestJSON();
         final String followingArticleId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = Sessions.getUser();
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
-
         followMgmtService.followArticle(followerUserId, followingArticleId);
-
         final JSONObject article = articleQueryService.getArticle(followingArticleId);
         final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
-
         if (!FOLLOWS.contains(articleAuthorId + followingArticleId + "-" + followerUserId) &&
                 !articleAuthorId.equals(followerUserId)) {
             final JSONObject notification = new JSONObject();
             notification.put(Notification.NOTIFICATION_USER_ID, articleAuthorId);
             notification.put(Notification.NOTIFICATION_DATA_ID, followingArticleId + "-" + followerUserId);
-
             notificationMgmtService.addArticleNewFollowerNotification(notification);
         }
-
         FOLLOWS.add(articleAuthorId + followingArticleId + "-" + followerUserId);
-
-        context.renderTrueResult();
     }
 
     /**
@@ -268,17 +243,12 @@ public class FollowProcessor {
      * @param context the specified context
      */
     public void unfollowArticle(final RequestContext context) {
-        context.renderJSON();
-
-        final Request request = context.getRequest();
+        context.renderJSON(StatusCodes.SUCC);
         final JSONObject requestJSONObject = context.requestJSON();
         final String followingArticleId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = Sessions.getUser();
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
-
         followMgmtService.unfollowArticle(followerUserId, followingArticleId);
-
-        context.renderTrueResult();
     }
 
     /**
@@ -295,31 +265,22 @@ public class FollowProcessor {
      * @param context the specified context
      */
     public void watchArticle(final RequestContext context) {
-        context.renderJSON();
-
-        final Request request = context.getRequest();
+        context.renderJSON(StatusCodes.SUCC);
         final JSONObject requestJSONObject = context.requestJSON();
         final String followingArticleId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = Sessions.getUser();
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
-
         followMgmtService.watchArticle(followerUserId, followingArticleId);
-
         final JSONObject article = articleQueryService.getArticle(followingArticleId);
         final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
-
         if (!FOLLOWS.contains(articleAuthorId + followingArticleId + "-" + followerUserId) &&
                 !articleAuthorId.equals(followerUserId)) {
             final JSONObject notification = new JSONObject();
             notification.put(Notification.NOTIFICATION_USER_ID, articleAuthorId);
             notification.put(Notification.NOTIFICATION_DATA_ID, followingArticleId + "-" + followerUserId);
-
             notificationMgmtService.addArticleNewWatcherNotification(notification);
         }
-
         FOLLOWS.add(articleAuthorId + followingArticleId + "-" + followerUserId);
-
-        context.renderTrueResult();
     }
 
     /**
@@ -336,16 +297,11 @@ public class FollowProcessor {
      * @param context the specified context
      */
     public void unwatchArticle(final RequestContext context) {
-        context.renderJSON();
-
-        final Request request = context.getRequest();
+        context.renderJSON(StatusCodes.SUCC);
         final JSONObject requestJSONObject = context.requestJSON();
         final String followingArticleId = requestJSONObject.optString(Follow.FOLLOWING_ID);
         final JSONObject currentUser = Sessions.getUser();
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
-
         followMgmtService.unwatchArticle(followerUserId, followingArticleId);
-
-        context.renderTrueResult();
     }
 }

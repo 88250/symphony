@@ -33,7 +33,6 @@ import org.b3log.symphony.model.*;
 import org.b3log.symphony.repository.*;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Symphonys;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -232,10 +231,9 @@ public class NotificationQueryService {
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         try {
             final JSONObject queryResult = notificationRepository.get(query);
-            final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
+            final List<JSONObject> results = (List<JSONObject>) queryResult.opt(Keys.RESULTS);
             ret.put(Pagination.PAGINATION_RECORD_COUNT, queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
-            for (int i = 0; i < results.length(); i++) {
-                final JSONObject notification = results.optJSONObject(i);
+            for (final JSONObject notification : results) {
                 final String dataId = notification.optString(Notification.NOTIFICATION_DATA_ID);
                 final int dataType = notification.optInt(Notification.NOTIFICATION_DATA_TYPE);
                 String desTemplate;
@@ -243,7 +241,6 @@ public class NotificationQueryService {
                 switch (dataType) {
                     case Notification.DATA_TYPE_C_SYS_ANNOUNCE_NEW_USER:
                         desTemplate = langPropsService.get("notificationSysNewUser1Label");
-
                         break;
                     case Notification.DATA_TYPE_C_SYS_ANNOUNCE_ARTICLE:
                         desTemplate = langPropsService.get("notificationSysArticleLabel");
@@ -251,7 +248,6 @@ public class NotificationQueryService {
                         final JSONObject article15 = articleRepository.get(dataId);
                         if (null == article15) {
                             desTemplate = langPropsService.get("removedLabel");
-
                             break;
                         }
 
@@ -259,7 +255,6 @@ public class NotificationQueryService {
                                 + Latkes.getServePath() + article15.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + article15.optString(Article.ARTICLE_TITLE) + "</a>";
                         desTemplate = desTemplate.replace("{article}", articleLink15);
-
                         break;
                     case Notification.DATA_TYPE_C_SYS_ANNOUNCE_ROLE_CHANGED:
                         desTemplate = langPropsService.get("notificationSysRoleChangedLabel");
@@ -271,7 +266,6 @@ public class NotificationQueryService {
 
                         desTemplate = desTemplate.replace("{oldRole}", oldRole.optString(Role.ROLE_NAME));
                         desTemplate = desTemplate.replace("{newRole}", newRole.optString(Role.ROLE_NAME));
-
                         break;
                     default:
                         throw new AssertionError();
@@ -422,10 +416,9 @@ public class NotificationQueryService {
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         try {
             final JSONObject queryResult = notificationRepository.get(query);
-            final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
+            final List<JSONObject> results = (List<JSONObject>) queryResult.opt(Keys.RESULTS);
             ret.put(Pagination.PAGINATION_RECORD_COUNT, queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
-            for (int i = 0; i < results.length(); i++) {
-                final JSONObject notification = results.optJSONObject(i);
+            for (final JSONObject notification : results) {
                 final String dataId = notification.optString(Notification.NOTIFICATION_DATA_ID);
                 final int dataType = notification.optInt(Notification.NOTIFICATION_DATA_TYPE);
                 String desTemplate = "";
@@ -441,7 +434,6 @@ public class NotificationQueryService {
                         final JSONObject article12 = articleRepository.get(articleId12);
                         if (null == article12) {
                             desTemplate = langPropsService.get("removedLabel");
-
                             break;
                         }
 
@@ -452,7 +444,6 @@ public class NotificationQueryService {
                                 + Latkes.getServePath() + article12.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + article12.optString(Article.ARTICLE_TITLE) + "</a>";
                         desTemplate = desTemplate.replace("{article}", articleLink12);
-
                         break;
                     case Notification.DATA_TYPE_C_POINT_ARTICLE_REWARD:
                         desTemplate = langPropsService.get("notificationArticleRewardLabel");
@@ -464,7 +455,6 @@ public class NotificationQueryService {
                         final JSONObject article7 = articleRepository.get(articleId7);
                         if (null == article7) {
                             desTemplate = langPropsService.get("removedLabel");
-
                             break;
                         }
 
@@ -475,7 +465,6 @@ public class NotificationQueryService {
                                 + Latkes.getServePath() + article7.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + article7.optString(Article.ARTICLE_TITLE) + "</a>";
                         desTemplate = desTemplate.replace("{article}", articleLink7);
-
                         break;
                     case Notification.DATA_TYPE_C_POINT_CHARGE:
                         desTemplate = langPropsService.get("notificationPointChargeLabel");
@@ -487,7 +476,6 @@ public class NotificationQueryService {
 
                         desTemplate = desTemplate.replace("{yuan}", yuan);
                         desTemplate = desTemplate.replace("{point}", String.valueOf(sum5));
-
                         break;
                     case Notification.DATA_TYPE_C_POINT_EXCHANGE:
                         desTemplate = langPropsService.get("notificationPointExchangeLabel");
@@ -498,7 +486,6 @@ public class NotificationQueryService {
 
                         desTemplate = desTemplate.replace("{yuan}", yuan6);
                         desTemplate = desTemplate.replace("{point}", String.valueOf(sum6));
-
                         break;
                     case Notification.DATA_TYPE_C_ABUSE_POINT_DEDUCT:
                         desTemplate = langPropsService.get("notificationAbusePointDeductLabel");
@@ -509,7 +496,6 @@ public class NotificationQueryService {
 
                         desTemplate = desTemplate.replace("{action}", memo7);
                         desTemplate = desTemplate.replace("{point}", String.valueOf(sum7));
-
                         break;
                     case Notification.DATA_TYPE_C_POINT_COMMENT_THANK:
                         desTemplate = langPropsService.get("notificationCmtThankLabel");
@@ -522,7 +508,6 @@ public class NotificationQueryService {
                         final JSONObject article8 = articleRepository.get(articleId8);
                         if (null == article8) {
                             desTemplate = langPropsService.get("removedLabel");
-
                             break;
                         }
 
@@ -533,7 +518,6 @@ public class NotificationQueryService {
                                 + Latkes.getServePath() + article8.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + article8.optString(Article.ARTICLE_TITLE) + "</a>";
                         desTemplate = desTemplate.replace("{article}", articleLink8);
-
                         break;
                     case Notification.DATA_TYPE_C_POINT_COMMENT_ACCEPT:
                         desTemplate = langPropsService.get("notificationCmtAcceptLabel");
@@ -543,7 +527,6 @@ public class NotificationQueryService {
                         final JSONObject article33 = articleRepository.get(articleId33);
                         if (null == article33) {
                             desTemplate = langPropsService.get("removedLabel");
-
                             break;
                         }
 
@@ -556,7 +539,6 @@ public class NotificationQueryService {
                                 + Latkes.getServePath() + article33.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + article33.optString(Article.ARTICLE_TITLE) + "</a>";
                         desTemplate = desTemplate.replace("{article}", Emotions.convert(articleLink33));
-
                         break;
                     case Notification.DATA_TYPE_C_POINT_TRANSFER:
                         desTemplate = langPropsService.get("notificationPointTransferLabel");
@@ -569,7 +551,6 @@ public class NotificationQueryService {
                         final String userLink101 = UserExt.getUserLink(user101);
                         desTemplate = desTemplate.replace("{user}", userLink101);
                         desTemplate = desTemplate.replace("{amount}", String.valueOf(sum101));
-
                         break;
                     case Notification.DATA_TYPE_C_INVITECODE_USED:
                         desTemplate = langPropsService.get("notificationInvitecodeUsedLabel");
@@ -578,7 +559,6 @@ public class NotificationQueryService {
                         final String invitedUserLink = UserExt.getUserLink(invitedUser);
 
                         desTemplate = desTemplate.replace("{user}", invitedUserLink);
-
                         break;
                     case Notification.DATA_TYPE_C_INVITATION_LINK_USED:
                         desTemplate = langPropsService.get("notificationInvitationLinkUsedLabel");
@@ -587,7 +567,6 @@ public class NotificationQueryService {
                         final String invitedUserLink18 = UserExt.getUserLink(invitedUser18);
 
                         desTemplate = desTemplate.replace("{user}", invitedUserLink18);
-
                         break;
                     case Notification.DATA_TYPE_C_POINT_PERFECT_ARTICLE:
                         desTemplate = langPropsService.get("notificationPointPerfectArticleLabel");
@@ -595,7 +574,6 @@ public class NotificationQueryService {
                         final JSONObject article22 = articleRepository.get(dataId);
                         if (null == article22) {
                             desTemplate = langPropsService.get("removedLabel");
-
                             break;
                         }
 
@@ -603,11 +581,9 @@ public class NotificationQueryService {
                                 + Latkes.getServePath() + article22.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + article22.optString(Article.ARTICLE_TITLE) + "</a>";
                         desTemplate = desTemplate.replace("{article}", articleLink22);
-
                         break;
                     case Notification.DATA_TYPE_C_POINT_REPORT_HANDLED:
                         desTemplate = langPropsService.get("notification36Label");
-
                         break;
                     default:
                         throw new AssertionError();
@@ -667,18 +643,16 @@ public class NotificationQueryService {
             final int cmtViewMode = user.optInt(UserExt.USER_COMMENT_VIEW_MODE);
 
             final JSONObject queryResult = notificationRepository.get(query);
-            final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
+            final List<JSONObject> results = (List<JSONObject>) queryResult.opt(Keys.RESULTS);
             ret.put(Pagination.PAGINATION_RECORD_COUNT, queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
-            for (int i = 0; i < results.length(); i++) {
-                final JSONObject notification = results.optJSONObject(i);
+            for (final JSONObject notification : results) {
                 final String commentId = notification.optString(Notification.NOTIFICATION_DATA_ID);
                 final JSONObject comment = commentQueryService.getCommentById(commentId);
 
                 final Query q = new Query().setPageCount(1).
                         select(Article.ARTICLE_PERFECT, Article.ARTICLE_TITLE, Article.ARTICLE_TYPE).
                         setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
-                final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
-                final JSONObject article = rlts.optJSONObject(0);
+                final JSONObject article = articleRepository.getFirst(q);
                 final String articleTitle = article.optString(Article.ARTICLE_TITLE);
                 final int articleType = article.optInt(Article.ARTICLE_TYPE);
                 final int articlePerfect = article.optInt(Article.ARTICLE_PERFECT);
@@ -746,18 +720,16 @@ public class NotificationQueryService {
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         try {
             final JSONObject queryResult = notificationRepository.get(query);
-            final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
+            final List<JSONObject> results = (List<JSONObject>) queryResult.opt(Keys.RESULTS);
             ret.put(Pagination.PAGINATION_RECORD_COUNT, queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
-            for (int i = 0; i < results.length(); i++) {
-                final JSONObject notification = results.optJSONObject(i);
+            for (final JSONObject notification : results) {
                 final String commentId = notification.optString(Notification.NOTIFICATION_DATA_ID);
                 final JSONObject comment = commentQueryService.getCommentById(commentId);
 
                 final Query q = new Query().setPageCount(1).
                         select(Article.ARTICLE_PERFECT, Article.ARTICLE_TITLE, Article.ARTICLE_TYPE).
                         setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
-                final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
-                final JSONObject article = rlts.optJSONObject(0);
+                final JSONObject article = articleRepository.getFirst(q);
                 final String articleTitle = article.optString(Article.ARTICLE_TITLE);
                 final int articleType = article.optInt(Article.ARTICLE_TYPE);
                 final int articlePerfect = article.optInt(Article.ARTICLE_PERFECT);
@@ -839,10 +811,9 @@ public class NotificationQueryService {
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         try {
             final JSONObject queryResult = notificationRepository.get(query);
-            final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
+            final List<JSONObject> results = (List<JSONObject>) queryResult.opt(Keys.RESULTS);
             ret.put(Pagination.PAGINATION_RECORD_COUNT, queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
-            for (int i = 0; i < results.length(); i++) {
-                final JSONObject notification = results.optJSONObject(i);
+            for (final JSONObject notification : results) {
                 final int dataType = notification.optInt(Notification.NOTIFICATION_DATA_TYPE);
                 final String dataId = notification.optString(Notification.NOTIFICATION_DATA_ID);
 
@@ -862,8 +833,7 @@ public class NotificationQueryService {
                                     select(Article.ARTICLE_PERFECT, Article.ARTICLE_TITLE, Article.ARTICLE_TYPE).
                                     setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
                                             comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
-                            final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
-                            final JSONObject article = rlts.optJSONObject(0);
+                            final JSONObject article = articleRepository.getFirst(q);
                             final String articleTitle = article.optString(Article.ARTICLE_TITLE);
                             final int articleType = article.optInt(Article.ARTICLE_TYPE);
                             final int articlePerfect = article.optInt(Article.ARTICLE_PERFECT);
@@ -909,7 +879,6 @@ public class NotificationQueryService {
 
                             rslts.add(atNotification);
                         }
-
                         break;
                     case Notification.DATA_TYPE_C_ARTICLE_NEW_FOLLOWER:
                     case Notification.DATA_TYPE_C_ARTICLE_NEW_WATCHER:
@@ -922,7 +891,6 @@ public class NotificationQueryService {
                             atNotification.put(Common.DESCRIPTION, description);
 
                             rslts.add(atNotification);
-
                             continue;
                         }
 
@@ -949,7 +917,6 @@ public class NotificationQueryService {
                         atNotification.put(Common.DESCRIPTION, description);
 
                         rslts.add(atNotification);
-
                         break;
                     case Notification.DATA_TYPE_C_COMMENT_VOTE_UP:
                     case Notification.DATA_TYPE_C_COMMENT_VOTE_DOWN:
@@ -971,7 +938,6 @@ public class NotificationQueryService {
                                 description = langPropsService.get("removedLabel");
                                 atNotification.put(Common.DESCRIPTION, description);
                                 rslts.add(atNotification);
-
                                 continue;
                             }
 
@@ -983,7 +949,6 @@ public class NotificationQueryService {
                                 description = langPropsService.get("removedLabel");
                                 atNotification.put(Common.DESCRIPTION, description);
                                 rslts.add(atNotification);
-
                                 continue;
                             }
 
@@ -993,7 +958,6 @@ public class NotificationQueryService {
                             description = langPropsService.get("removedLabel");
                             atNotification.put(Common.DESCRIPTION, description);
                             rslts.add(atNotification);
-
                             continue;
                         }
 
@@ -1002,7 +966,6 @@ public class NotificationQueryService {
                         final String cmtVoteURL = commentQueryService.getCommentURL(commentId, cmtViewMode, Symphonys.ARTICLE_COMMENTS_CNT);
                         atNotification.put(Common.DESCRIPTION, description.replace("{article}", Emotions.convert(cmtVoteURL)));
                         rslts.add(atNotification);
-
                         break;
                     case Notification.DATA_TYPE_C_ARTICLE_VOTE_UP:
                     case Notification.DATA_TYPE_C_ARTICLE_VOTE_DOWN:
@@ -1027,7 +990,6 @@ public class NotificationQueryService {
                             description = langPropsService.get("removedLabel");
                             atNotification.put(Common.DESCRIPTION, description);
                             rslts.add(atNotification);
-
                             continue;
                         }
 
@@ -1038,7 +1000,6 @@ public class NotificationQueryService {
                         description = description.replace("{article}", articleLinkVote);
                         atNotification.put(Common.DESCRIPTION, description);
                         rslts.add(atNotification);
-
                         break;
                 }
             }
@@ -1096,10 +1057,9 @@ public class NotificationQueryService {
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         try {
             final JSONObject queryResult = notificationRepository.get(query);
-            final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
+            final List<JSONObject> results = (List<JSONObject>) queryResult.opt(Keys.RESULTS);
             ret.put(Pagination.PAGINATION_RECORD_COUNT, queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
-            for (int i = 0; i < results.length(); i++) {
-                final JSONObject notification = results.optJSONObject(i);
+            for (final JSONObject notification : results) {
                 final String commentId = notification.optString(Notification.NOTIFICATION_DATA_ID);
                 final int dataType = notification.optInt(Notification.NOTIFICATION_DATA_TYPE);
                 final JSONObject followingNotification = new JSONObject();
@@ -1112,8 +1072,7 @@ public class NotificationQueryService {
                                 select(Article.ARTICLE_PERFECT, Article.ARTICLE_TITLE, Article.ARTICLE_TYPE).
                                 setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
                                         comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
-                        final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
-                        JSONObject article = rlts.optJSONObject(0);
+                        JSONObject article = articleRepository.getFirst(q);
                         final String articleTitle = article.optString(Article.ARTICLE_TITLE);
                         final int articleType = article.optInt(Article.ARTICLE_TYPE);
                         final int articlePerfect = article.optInt(Article.ARTICLE_PERFECT);
@@ -1132,7 +1091,6 @@ public class NotificationQueryService {
                         followingNotification.put(Article.ARTICLE_PERFECT, articlePerfect);
 
                         rslts.add(followingNotification);
-
                         break;
                     case Notification.DATA_TYPE_C_FOLLOWING_USER:
                     case Notification.DATA_TYPE_C_FOLLOWING_ARTICLE_UPDATE:
@@ -1162,7 +1120,6 @@ public class NotificationQueryService {
                         followingNotification.put(Article.ARTICLE_PERFECT, article.optInt(Article.ARTICLE_PERFECT));
 
                         rslts.add(followingNotification);
-
                         break;
                 }
             }
@@ -1216,10 +1173,9 @@ public class NotificationQueryService {
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         try {
             final JSONObject queryResult = notificationRepository.get(query);
-            final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
+            final List<JSONObject> results = (List<JSONObject>) queryResult.opt(Keys.RESULTS);
             ret.put(Pagination.PAGINATION_RECORD_COUNT, queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
-            for (int i = 0; i < results.length(); i++) {
-                final JSONObject notification = results.optJSONObject(i);
+            for (final JSONObject notification : results) {
                 final String articleId = notification.optString(Notification.NOTIFICATION_DATA_ID);
                 final Query q = new Query().setPageCount(1).
                         select(Article.ARTICLE_TITLE,
@@ -1231,9 +1187,7 @@ public class NotificationQueryService {
                                 Article.ARTICLE_COMMENT_CNT,
                                 Article.ARTICLE_PERFECT).
                         setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, articleId));
-                final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
-                final JSONObject article = rlts.optJSONObject(0);
-
+                final JSONObject article = articleRepository.getFirst(q);
                 if (null == article) {
                     LOGGER.warn("Not found article [id=" + articleId + "]");
                     continue;
@@ -1244,7 +1198,6 @@ public class NotificationQueryService {
                 final JSONObject author = userRepository.get(articleAuthorId);
                 if (null == author) {
                     LOGGER.warn("Not found user [id=" + articleAuthorId + "]");
-
                     continue;
                 }
 

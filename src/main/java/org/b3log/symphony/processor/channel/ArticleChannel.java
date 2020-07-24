@@ -141,7 +141,6 @@ public class ArticleChannel implements WebSocketChannel {
                         for (final String inviteUserName : userNames) {
                             if (inviteUserName.equals(userName)) {
                                 invited = true;
-
                                 break;
                             }
                         }
@@ -184,7 +183,7 @@ public class ArticleChannel implements WebSocketChannel {
                     dataModel.put(Permission.PERMISSIONS, permissions);
                 }
 
-                final String templateDirName = httpSession.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+                final String templateDirName = httpSession.getAttribute(Keys.TEMPLATE_DIR_NAME);
                 final Template template = Templates.getTemplate(templateDirName + "/common/comment.ftl");
                 final StringWriter stringWriter = new StringWriter();
                 template.process(dataModel, stringWriter);
@@ -194,7 +193,7 @@ public class ArticleChannel implements WebSocketChannel {
                 final String msgStr = message.toString();
                 session.sendText(msgStr);
             } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Notify comment error", e);
+                LOGGER.log(Level.ERROR, "Notify comment failed", e);
             }
         }
     }

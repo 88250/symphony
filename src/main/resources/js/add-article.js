@@ -22,7 +22,7 @@
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
  * @author <a href="https://qiankunpingtai.cn">qiankunpingtai</a>
- * @version 2.26.2.0, Jan 12, 2020
+ * @version 2.26.2.1, Apr 30, 2020
  */
 
 /**
@@ -110,7 +110,7 @@ var AddArticle = {
       },
       success: function (result, textStatus) {
         $(it).removeAttr('disabled').css('opacity', '1')
-        if (0 === result.sc) {
+        if (0 === result.code) {
           window.location.href = Label.servePath + '/member/' + Label.userName
         } else {
           $('#addArticleTip').
@@ -210,7 +210,7 @@ var AddArticle = {
         },
         success: function (result, textStatus) {
           $(it).removeAttr('disabled').css('opacity', '1')
-          if (0 === result.sc) {
+          if (0 === result.code) {
             window.location.href = Label.servePath + '/article/' +
               result.articleId
             localStorage.removeItem('postData')
@@ -263,6 +263,7 @@ var AddArticle = {
     var prevValue = postData.content
     // 初始化文章编辑器
     AddArticle.editor = Util.newVditor({
+      outline: true,
       typewriterMode: true,
       id: 'articleContent',
       cache: Label.articleOId ? false : true,
@@ -360,7 +361,7 @@ var AddArticle = {
           'articleId': Label.articleOId, // 更新时才有值
         }),
         success: function (result, textStatus) {
-          if (!result.sc) {
+          if (0 !== result.code) {
             if ($('#articleTitleTip').length === 1) {
               $('#articleTitleTip').html(result.msg)
             } else {
@@ -401,7 +402,7 @@ var AddArticle = {
         resize: {
           enable: false,
         },
-        height: 160,
+        height: 200,
         counter: 4096,
         placeholder: $('#articleRewardContent').data('placeholder'),
         after: function () {
@@ -614,7 +615,7 @@ var AddArticle = {
               html('<ul><li>' + errorThrown + '</li></ul>')
           },
           success: function (result, textStatus) {
-            if (result.sc) {
+            if (0 === result.code) {
               if ($.ua.device.type !== 'mobile') {
                 $('#articleTagsSelectedPanel').
                   css('left', ($('.post .tags-selected').width() + 10) + 'px')
