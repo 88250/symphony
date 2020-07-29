@@ -76,7 +76,7 @@
 ## ✨  特性
 
 * [Sym 简介幻灯片](https://sym.b3log.org/syme-intro.pptx)
-* [Sym 功能点脑图](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913)
+* [Sym 功能点脑图](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a)
 
 ```
 内容编辑器
@@ -683,7 +683,7 @@ API
 
 ```
 
-[![Sym功能点](https://img.hacpai.com/file/2020/03/image-a2ae13cc.png)](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913)
+[![Sym功能.png](https://b3logfile.com/file/2020/07/Sym功能-5f8c0fed.png)](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a)
 
 ## 🎨 界面
 
