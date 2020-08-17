@@ -40,7 +40,7 @@
 
 欢迎到 [Sym 官方讨论区](https://hacpai.com/tag/sym)了解更多。同时也欢迎关注 B3log 开源社区微信公众号 `B3log开源`：
 
-![b3logos.png](https://img.hacpai.com/file/2019/10/image-d3c00d78.png)
+![b3logos.jpg](https://b3logfile.com/file/2020/08/b3logos-032af045.jpg)
 
 ## ⚡ 动机
 
