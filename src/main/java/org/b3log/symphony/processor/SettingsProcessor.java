@@ -75,7 +75,7 @@ import java.util.*;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.1, May 30, 2020
+ * @version 2.0.1.0, Aug 17, 2020
  * @since 2.4.0
  */
 @Singleton
@@ -693,7 +693,7 @@ public class SettingsProcessor {
      */
     public void updateProfiles(final RequestContext context) {
         context.renderJSON(StatusCodes.ERR);
-        final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
+        final JSONObject requestJSONObject = context.requestJSON();
         final String userTags = requestJSONObject.optString(UserExt.USER_TAGS);
         final String userURL = requestJSONObject.optString(User.USER_URL);
         final String userQQ = requestJSONObject.optString(UserExt.USER_QQ);
@@ -825,7 +825,7 @@ public class SettingsProcessor {
         final JSONObject ret = new JSONObject().put(Keys.CODE, StatusCodes.ERR);
         context.renderJSON(ret);
 
-        final JSONObject requestJSONObject = (JSONObject) context.attr(Keys.REQUEST);
+        final JSONObject requestJSONObject = context.requestJSON();
 
         final int amount = requestJSONObject.optInt(Common.AMOUNT);
         final JSONObject toUser = (JSONObject) context.attr(Common.TO_USER);
