@@ -14,7 +14,7 @@
     <packaging>jar</packaging>
     <version>3.6.3</version>
     <name>Symphony</name>
-    <url>https://sym.b3log.org</url>
+    <url>https://b3log.org/sym</url>
     <description>
         一款用 Java 实现的现代化社区（论坛/BBS/社交网络/博客）系统平台。
     </description>

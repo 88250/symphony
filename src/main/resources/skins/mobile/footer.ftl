@@ -30,7 +30,7 @@
         <div>
             © 2012-present <a href="https://b3log.org" target="_blank">B3log 开源</a>
             <div class="fn-hr5"></div>
-            <a href="https://sym.b3log.org" target="_blank">Sym</a>
+            <a href="https://b3log.org/sym" target="_blank">Sym</a>
             ${version}
         </div>
         <#if footerBeiAnHao != ''>
