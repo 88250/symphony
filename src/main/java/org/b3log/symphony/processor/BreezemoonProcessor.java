@@ -127,7 +127,7 @@ public class BreezemoonProcessor {
         if (null != user) {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
 
-            if (!UserExt.finshedGuide(user)) {
+            if (!UserExt.finishedGuide(user)) {
                 context.sendRedirect(Latkes.getServePath() + "/guide");
                 return;
             }

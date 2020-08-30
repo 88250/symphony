@@ -120,7 +120,7 @@ public class CityProcessor {
         dataModel.put(Common.SELECTED, Common.CITY);
 
         final JSONObject user = Sessions.getUser();
-        if (!UserExt.finshedGuide(user)) {
+        if (!UserExt.finishedGuide(user)) {
             context.sendRedirect(Latkes.getServePath() + "/guide");
             return;
         }
@@ -198,7 +198,7 @@ public class CityProcessor {
         dataModel.put(Common.SELECTED, Common.CITY);
 
         final JSONObject user = Sessions.getUser();
-        if (!UserExt.finshedGuide(user)) {
+        if (!UserExt.finishedGuide(user)) {
             context.sendRedirect(Latkes.getServePath() + "/guide");
             return;
         }
