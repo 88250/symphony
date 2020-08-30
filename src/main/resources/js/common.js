@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
- * @version 1.49.1.0, Jun 28, 2020
+ * @version 1.49.1.1, Aug 31, 2020
  */
 
 /**
@@ -677,36 +677,41 @@ var Util = {
         emojiTail: '<a href="' + Label.servePath +
           '/settings/function" target="_blank">设置常用表情</a>',
         emoji: Label.emoji,
-        at: function (key) {
-          var atUsers = []
-          $.ajax({
-            url: Label.servePath + '/users/names',
-            type: 'POST',
-            async: false,
-            data: JSON.stringify({name: key}),
-            success: function (result) {
-              if (result.code === 0) {
-                for (var i = 0; i < result.data.length; i++) {
-                  atUsers.push({
-                    value: '@' + result.data[i].userName,
-                    html: '<img src="' + result.data[i].userAvatarURL + '"/>' +
-                      result.data[i].userName,
-                  })
-                }
-                if (key === '') {
-                  atUsers.push({
-                    html: '<img src="' + Label.staticServePath +
-                      '/images/user-thumbnail.png"/> 参与者',
-                    value: '@participants',
-                  })
-                }
-              } else {
-                alert(result.msg)
-              }
+        extend: [
+          {
+            key: '@',
+            hint: function (key) {
+              var atUsers = []
+              $.ajax({
+                url: Label.servePath + '/users/names',
+                type: 'POST',
+                async: false,
+                data: JSON.stringify({name: key}),
+                success: function (result) {
+                  if (result.code === 0) {
+                    for (var i = 0; i < result.data.length; i++) {
+                      atUsers.push({
+                        value: '@' + result.data[i].userName,
+                        html: '<img src="' + result.data[i].userAvatarURL +
+                          '"/>' +
+                          result.data[i].userName,
+                      })
+                    }
+                    if (key === '') {
+                      atUsers.push({
+                        html: '<img src="' + Label.staticServePath +
+                          '/images/user-thumbnail.png"/> 参与者',
+                        value: '@participants',
+                      })
+                    }
+                  } else {
+                    alert(result.msg)
+                  }
+                },
+              })
+              return atUsers
             },
-          })
-          return atUsers
-        },
+          }],
       },
       esc: data.esc,
       ctrlEnter: data.ctrlEnter,
@@ -727,7 +732,7 @@ var Util = {
             'info',
             'help',
           ],
-        }
+        },
       ]
       options.resize.enable = false
     } else if (data.toolbar) {
