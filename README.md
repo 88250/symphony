@@ -31,7 +31,7 @@
 
 ## 💡 简介
 
-[Symphony](https://sym.b3log.org)（[ˈs ɪmf əni]，n.交响乐）是一个现代化的社区平台，因为它：
+[Symphony](https://b3log.org/sym)（[ˈs ɪmf əni]，n.交响乐）是一个现代化的社区平台，因为它：
 
 * 实现了面向内容讨论的论坛
 * 实现了面向知识问答的社区
@@ -75,7 +75,7 @@
 
 ## ✨  特性
 
-* [Sym 简介幻灯片](https://sym.b3log.org/syme-intro.pptx)
+* [Sym 简介幻灯片](https://b3log.org/sym/syme-intro.pptx)
 * [Sym 功能点脑图](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a)
 
 ```
@@ -725,7 +725,7 @@ API
 ## 📄 授权
 
 * 社区版：使用 AGPLv3 开源，如果你选择使用社区版，则必须完全遵守 AGPLv3 的相关条款；公司使用必须购买商用授权
-* 商业版：提供完整源码以便二开，报价 ¥20000，详情请看[这里](https://sym.b3log.org/pricing.html)
+* 商业版：提供完整源码以便二开，报价 ¥20000，详情请看[这里](https://b3log.org/sym/pricing.html)
 * 云服务：提供开箱即用的云端服务，每年 ¥5000（暂时售罄）
 
 **关于商业版和社区版的对比请看[这里](https://hacpai.com/article/1500543226433)，企业网站、经营性网站、以营利为目的或实现盈利的网站请购买商业版。**

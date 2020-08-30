@@ -439,7 +439,7 @@ notification
 -------
 ```
 
-* [Sym Introduction PPT](https://sym.b3log.org/syme-intro.pptx)
+* [Sym Introduction PPT](https://b3log.org/sym/syme-intro.pptx)
 * [Sym Function Mind Map](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a)
 
 [![Sym功能.png](https://b3logfile.com/file/2020/07/Sym功能-5f8c0fed.png)](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a)
