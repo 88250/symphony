@@ -38,7 +38,7 @@ The next generation of the community system, built for the future
 * Including social networks for user sharing, making friends, games
 * `100%` open source
 
-Welcome to [Sym Official Discussion Forum](https://hacpai.com/tag/sym) to learn more.
+Welcome to [Sym Official Discussion Forum](https://ld246.com/tag/sym) to learn more.
 
 ## ⚡ Motivation
 
@@ -51,7 +51,7 @@ Many community forum systems:
 
 ## 🗃 Showcases
 
-* [HacPai](https://hacpai.com)
+* [HacPai](https://ld246.com)
 
 ## ✨  Features
 
@@ -472,11 +472,11 @@ notification
 
 ## 🛠️ Setup
 
-Please visit [Sym Setup Guide](https://hacpai.com/article/1486188905847).
+Please visit [Sym Setup Guide](https://ld246.com/article/1486188905847).
 
 ## 🏘️ Community
 
-* [Forum](https://hacpai.com/tag/sym)
+* [Forum](https://ld246.com/tag/sym)
 * [Issues](https://github.com/88250/symphony/issues/new/choose)
 
 ## 📄 License

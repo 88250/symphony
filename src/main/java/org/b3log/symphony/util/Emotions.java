@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  * Emotions utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
+ * @author <a href="https://ld246.com/member/ZephyrJung">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
  * @version 1.3.0.7, Apr 27, 2020
  * @since 0.2.0

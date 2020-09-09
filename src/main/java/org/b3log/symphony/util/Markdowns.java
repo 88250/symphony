@@ -64,7 +64,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
+ * @author <a href="https://ld246.com/member/ZephyrJung">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
  * @version 1.11.21.18, Apr 5, 2020
  * @since 0.2.0

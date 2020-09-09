@@ -48,7 +48,7 @@ import java.util.*;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://hacpai.com/member/ZephyrJung">Zephyr</a>
+ * @author <a href="https://ld246.com/member/ZephyrJung">Zephyr</a>
  * @version 1.9.0.0, Jun 23, 2020
  * @since 0.2.0
  */

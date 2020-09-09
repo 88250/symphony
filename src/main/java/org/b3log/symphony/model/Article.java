@@ -462,7 +462,7 @@ public final class Article {
     public static final int ARTICLE_TYPE_C_CITY_BROADCAST = 2;
 
     /**
-     * Article type - <a href="https://hacpai.com/article/1441942422856">thought</a>.
+     * Article type - <a href="https://ld246.com/article/1441942422856">thought</a>.
      */
     public static final int ARTICLE_TYPE_C_THOUGHT = 3;
 

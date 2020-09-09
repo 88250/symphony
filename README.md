@@ -38,7 +38,7 @@
 * 包含了面向用户分享、交友、游戏的社交网络
 * `100%` 开源
 
-欢迎到 [Sym 官方讨论区](https://hacpai.com/tag/sym)了解更多。同时也欢迎关注 B3log 开源社区微信公众号 `B3log开源`：
+欢迎到 [Sym 官方讨论区](https://ld246.com/tag/sym)了解更多。同时也欢迎关注 B3log 开源社区微信公众号 `B3log开源`：
 
 ![b3logos.jpg](https://b3logfile.com/file/2020/08/b3logos-032af045.jpg)
 
@@ -67,7 +67,7 @@
 
 商业版：
 
-* [黑客派](https://hacpai.com)
+* [链滴](https://ld246.com)
 * [乾学院](http://c.raqsoft.com.cn)
 * [快递100](https://bbs.kuaidi100.com)
 * [金蝶精斗云社区](https://cs.jdy.com)
@@ -715,11 +715,11 @@ API
 
 ## 🛠️ 安装
 
-请参考 [Sym 安装指南](https://hacpai.com/article/1486188905847)。
+请参考 [Sym 安装指南](https://ld246.com/article/1486188905847)。
 
 ## 🏘️ 社区
 
-* [讨论区](https://hacpai.com/tag/sym)
+* [讨论区](https://ld246.com/tag/sym)
 * [报告问题](https://github.com/88250/symphony/issues/new/choose)
 
 ## 📄 授权
@@ -728,7 +728,7 @@ API
 * 商业版：提供完整源码以便二开，报价 ¥20000，详情请看[这里](https://b3log.org/sym/pricing.html)
 * 云服务：提供开箱即用的云端服务，每年 ¥5000（暂时售罄）
 
-**关于商业版和社区版的对比请看[这里](https://hacpai.com/article/1500543226433)，企业网站、经营性网站、以营利为目的或实现盈利的网站请购买商业版。**
+**关于商业版和社区版的对比请看[这里](https://ld246.com/article/1500543226433)，企业网站、经营性网站、以营利为目的或实现盈利的网站请购买商业版。**
 
 ## 🙏 鸣谢
 
