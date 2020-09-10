@@ -43,7 +43,7 @@ import java.util.List;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.14.0.3, Nov 13, 2018
+ * @version 1.14.1.0, Sep 10, 2020
  * @since 0.2.5
  */
 @Service
@@ -449,6 +449,11 @@ public class NotificationQueryService {
                         desTemplate = langPropsService.get("notificationArticleRewardLabel");
 
                         final JSONObject reward7 = rewardRepository.get(dataId);
+                        if (null == reward7) {
+                            desTemplate = langPropsService.get("removedLabel");
+                            break;
+                        }
+
                         final String senderId7 = reward7.optString(Reward.SENDER_ID);
                         final JSONObject user7 = userRepository.get(senderId7);
                         final String articleId7 = reward7.optString(Reward.DATA_ID);
