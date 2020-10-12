@@ -112,6 +112,7 @@ var Util = {
    */
   parseMarkdown: function () {
     Vditor.mermaidRender(document.body)
+    Vditor.flowchartRender(document.body)
     Vditor.chartRender()
     Vditor.mindmapRender()
     Vditor.mathRender(document.body)
