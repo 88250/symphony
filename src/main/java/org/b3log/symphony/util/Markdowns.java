@@ -66,7 +66,7 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://ld246.com/member/ZephyrJung">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.21.18, Apr 5, 2020
+ * @version 1.11.21.19, Nov 23, 2020
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -139,13 +139,13 @@ public final class Markdowns {
      * @return safe HTML content
      */
     public static String clean(final String content, final String baseURI) {
-        final Document.OutputSettings outputSettings = new Document.OutputSettings();
-        outputSettings.prettyPrint(false);
-
         final Whitelist whitelist = Whitelist.relaxed().addAttributes(":all", "id", "target", "class", "data-src", "aria-name", "aria-label");
         inputWhitelist(whitelist);
+        final Document.OutputSettings outputSettings = new Document.OutputSettings();
+        outputSettings.prettyPrint(false);
         final String tmp = Jsoup.clean(content, baseURI, whitelist, outputSettings);
-        final Document doc = Jsoup.parse(tmp, baseURI, Parser.htmlParser());
+        final Document doc = Jsoup.parseBodyFragment(tmp, baseURI);
+        doc.outputSettings().prettyPrint(false);
 
         final Elements ps = doc.getElementsByTag("p");
         for (final Element p : ps) {
@@ -219,9 +219,8 @@ public final class Markdowns {
             }
         }
 
-        String ret = doc.body().html();
+        String ret = doc.html();
         ret = ret.replaceAll("(</?br\\s*/?>\\s*)+", "<br>"); // patch for Jsoup issue
-
         return ret;
     }
 
@@ -270,8 +269,10 @@ public final class Markdowns {
 
             final Whitelist whitelist = Whitelist.relaxed();
             inputWhitelist(whitelist);
-            html = Jsoup.clean(html, whitelist);
-            final Document doc = Jsoup.parse(html);
+            Document.OutputSettings outputSettings = new Document.OutputSettings();
+            outputSettings.prettyPrint(false);
+            html = Jsoup.clean(html, Latkes.getServePath(), whitelist, outputSettings);
+            final Document doc = Jsoup.parseBodyFragment(html);
             final List<org.jsoup.nodes.Node> toRemove = new ArrayList<>();
             doc.traverse(new NodeVisitor() {
                 @Override
@@ -348,7 +349,7 @@ public final class Markdowns {
             });
             doc.outputSettings().prettyPrint(false);
 
-            String ret = doc.select("body").html();
+            String ret = doc.body().html();
             ret = StringUtils.trim(ret);
 
             // cache it
@@ -454,7 +455,7 @@ public final class Markdowns {
                 addAttributes("pre", "class").
                 addAttributes("code", "class").
                 addAttributes("li", "class", "id").
-                addAttributes("div", "class").
+                addAttributes("div", "class", "data-code").
                 addAttributes("span", "class").
                 addAttributes("img", "class").
                 addAttributes("p", "align").
