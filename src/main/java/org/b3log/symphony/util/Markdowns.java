@@ -219,7 +219,7 @@ public final class Markdowns {
             }
         }
 
-        String ret = doc.html();
+        String ret = doc.body().html();
         ret = ret.replaceAll("(</?br\\s*/?>\\s*)+", "<br>"); // patch for Jsoup issue
         return ret;
     }
