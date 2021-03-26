@@ -676,6 +676,7 @@ var Util = {
       },
       lang: Label.langLabel,
       hint: {
+        parse: false,
         emojiTail: '<a href="' + Label.servePath +
           '/settings/function" target="_blank">设置常用表情</a>',
         emoji: Label.emoji,
@@ -693,7 +694,7 @@ var Util = {
                   if (result.code === 0) {
                     for (var i = 0; i < result.data.length; i++) {
                       atUsers.push({
-                        value: '@' + result.data[i].userName,
+                        value: '@' + result.data[i].userName + " ",
                         html: '<img src="' + result.data[i].userAvatarURL +
                           '"/>' +
                           result.data[i].userName,
@@ -703,7 +704,7 @@ var Util = {
                       atUsers.push({
                         html: '<img src="' + Label.staticServePath +
                           '/images/user-thumbnail.png"/> 参与者',
-                        value: '@participants',
+                        value: '@participants ',
                       })
                     }
                   } else {
