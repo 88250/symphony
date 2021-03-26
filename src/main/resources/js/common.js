@@ -633,7 +633,7 @@ var Util = {
     }
 
     var options = {
-      outline: data.outline || false,
+      outline: data.outline || { enable: false },
       after: data.after || undefined,
       typewriterMode: data.typewriterMode || false,
       cache: {
