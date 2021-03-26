@@ -119,6 +119,7 @@ var Util = {
     Vditor.codeRender(document.body, Label.langLabel)
     Vditor.abcRender()
     Vditor.graphvizRender(document.body)
+    Vditor.plantumlRender(document.body)
 
     var hasLivePhoto = false
     $('.vditor-reset').each(function () {
