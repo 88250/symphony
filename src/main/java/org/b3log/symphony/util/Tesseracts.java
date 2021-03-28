@@ -41,9 +41,8 @@ public final class Tesseracts {
      * @return the recognized character
      */
     public static String recognizeCharacter(final String imagePath) {
-        Execs.exec("tesseract " + imagePath + " " + imagePath + " -l chi_sim -psm 10", 1000 * 10);
-
         try {
+            Execs.exec(new String[]{"sh", "-c", "tesseract " + imagePath + " " + imagePath + " -l chi_sim -psm 10"}, 1000 * 10);
             return StringUtils.trim(IOUtils.toString(new FileInputStream(imagePath + ".txt"), StandardCharsets.UTF_8));
         } catch (final IOException e) {
             return "";
