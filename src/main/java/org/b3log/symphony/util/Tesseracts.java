@@ -29,7 +29,7 @@ import java.nio.charset.StandardCharsets;
  * Tesseract-OCR utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Nov 28, 2018
+ * @version 1.0.0.3, Mar 28, 2021
  * @since 1.4.0
  */
 public final class Tesseracts {
