@@ -19,9 +19,9 @@ package org.b3log.symphony.util;
 
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -58,7 +58,7 @@ public final class Gravatars {
                 h = RandomStringUtils.randomAlphanumeric(16);
             }
 
-            final HttpResponse response = HttpRequest.get("http://www.gravatar.com/avatar/" + h + "?s=256&d=" + d[RandomUtils.nextInt(d.length)]).
+            final HttpResponse response = HttpRequest.get("http://www.gravatar.com/avatar/" + h + "?s=256&d=" + d[RandomUtils.nextInt(0, d.length)]).
                     connectionTimeout(5000).timeout(5000).send();
             if (200 != response.statusCode()) {
                 LOGGER.log(Level.WARN, "Gets avatar data failed [sc=" + response.statusCode() + "]");

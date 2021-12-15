@@ -17,8 +17,8 @@
  */
 package org.b3log.symphony.service;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -196,7 +196,7 @@ public class CharacterQueryService {
         while (retries < maxRetries) {
             retries++;
 
-            final int index = RandomUtils.nextInt(characters.length());
+            final int index = RandomUtils.nextInt(0, characters.length());
             final String ret = StringUtils.trim(characters.substring(index, index + 1));
 
             final Query query = new Query();
@@ -247,7 +247,7 @@ public class CharacterQueryService {
         while (retries < maxRetries) {
             retries++;
 
-            final int index = RandomUtils.nextInt(characters.length());
+            final int index = RandomUtils.nextInt(0, characters.length());
             final String ret = StringUtils.trim(characters.substring(index, index + 1));
 
             final Query query = new Query().setFilter(

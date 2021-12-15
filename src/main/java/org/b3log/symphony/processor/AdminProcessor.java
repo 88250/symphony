@@ -18,9 +18,9 @@
 package org.b3log.symphony.processor;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -1060,7 +1060,7 @@ public class AdminProcessor {
             final Date date = DateUtils.parseDate(timeStr, new String[]{"yyyy-MM-dd'T'HH:mm"});
 
             time = date.getTime();
-            final int random = RandomUtils.nextInt(9999);
+            final int random = RandomUtils.nextInt(0, 9999);
             time += random;
         } catch (final ParseException e) {
             LOGGER.log(Level.ERROR, "Parse time failed, using current time instead");

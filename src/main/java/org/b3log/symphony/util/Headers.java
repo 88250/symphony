@@ -18,7 +18,7 @@
 package org.b3log.symphony.util;
 
 import jodd.net.MimeTypes;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.b3log.latke.http.FileUpload;
 import org.b3log.latke.http.Request;
 

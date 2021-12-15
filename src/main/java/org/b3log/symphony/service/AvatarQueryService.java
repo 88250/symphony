@@ -17,7 +17,7 @@
  */
 package org.b3log.symphony.service;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;

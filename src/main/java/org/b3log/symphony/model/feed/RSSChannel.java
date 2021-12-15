@@ -17,8 +17,8 @@
  */
 package org.b3log.symphony.model.feed;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.b3log.latke.util.XMLs;
 
 import java.util.ArrayList;

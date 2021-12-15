@@ -17,7 +17,7 @@
  */
 package org.b3log.symphony.util;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.service.LangPropsService;
 

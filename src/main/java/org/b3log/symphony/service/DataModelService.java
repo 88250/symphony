@@ -17,8 +17,8 @@
  */
 package org.b3log.symphony.service;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -493,7 +493,7 @@ public class DataModelService {
             }
         }
 
-        dataModel.put("tipsLabel", tipsLabels.get(RandomUtils.nextInt(tipsLabels.size())));
+        dataModel.put("tipsLabel", tipsLabels.get(RandomUtils.nextInt(0, tipsLabels.size())));
     }
 
     /**

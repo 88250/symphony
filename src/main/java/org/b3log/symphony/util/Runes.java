@@ -18,7 +18,7 @@
 package org.b3log.symphony.util;
 
 import com.google.common.base.CharMatcher;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

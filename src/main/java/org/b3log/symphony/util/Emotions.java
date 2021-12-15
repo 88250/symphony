@@ -18,7 +18,7 @@
 package org.b3log.symphony.util;
 
 import com.vdurmont.emoji.EmojiParser;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.regex.Pattern;
 
