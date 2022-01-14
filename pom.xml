@@ -21,7 +21,7 @@
     <inceptionYear>2012</inceptionYear>
 
     <properties>
-        <latke.version>3.4.21</latke.version>
+        <latke.version>3.4.22</latke.version>
 
         <jsoup.version>1.14.2</jsoup.version>
         <flexmark.version>0.50.40</flexmark.version>
