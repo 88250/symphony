@@ -1,4 +1,4 @@
-FROM maven:3-jdk-11-alpine as MVN_BUILD
+FROM maven:3.8.4-openjdk-11 as MVN_BUILD
 
 WORKDIR /opt/sym/
 ADD . /tmp
