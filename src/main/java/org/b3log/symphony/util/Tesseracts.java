@@ -44,7 +44,7 @@ public final class Tesseracts {
         try {
             Execs.exec(new String[]{"sh", "-c", "tesseract " + imagePath + " " + imagePath + " -l chi_sim --psm 8"}, 1000 * 3);
             return StringUtils.trim(IOUtils.toString(new FileInputStream(imagePath + ".txt"), StandardCharsets.UTF_8));
-        } catch (final IOException e) {
+        } catch (final Exception e) {
             return "";
         }
     }
