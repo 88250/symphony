@@ -3,7 +3,7 @@
 <br><br>
 The next generation of the community system, built for the future
 <br><br>
-<a title="Build Status" target="_blank" href="https://travis-ci.org/88250/symphony"><img src="https://img.shields.io/travis/88250/symphony.svg?style=flat-square"></a>
+<a title="Build Status" target="_blank" href="https://github.com/88250/symphony/actions/workflows/ci.yml"><img src="https://img.shields.io/github/workflow/status/88250/symphony/Build%20Test?style=flat-square"></a>
 <a title="Docker Image CI" target="_blank" href="https://github.com/88250/symphony/actions"><img src="https://img.shields.io/github/workflow/status/88250/symphony/Docker%20Image%20CI?label=Actions&logo=github&style=flat-square"></a>
 <a title="Code Size" target="_blank" href="https://github.com/88250/symphony"><img src="https://img.shields.io/github/languages/code-size/88250/symphony.svg?style=flat-square"></a>
 <a title="AGPLv3" target="_blank" href="https://www.gnu.org/licenses/agpl-3.0.txt"><img src="http://img.shields.io/badge/license-AGPLv3-orange.svg?style=flat-square"></a>
