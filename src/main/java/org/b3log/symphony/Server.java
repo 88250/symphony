@@ -41,7 +41,7 @@ import org.b3log.symphony.util.Symphonys;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.1.4, May 21, 2020
+ * @version 2.0.1.5, Jan 22, 2022
  * @since 3.4.8
  */
 public final class Server extends BaseServer {
@@ -54,7 +54,7 @@ public final class Server extends BaseServer {
     /**
      * Symphony version.
      */
-    public static final String VERSION = "3.6.2";
+    public static final String VERSION = "3.6.4";
 
     /**
      * Main.

@@ -12,7 +12,7 @@
     <groupId>org.b3log</groupId>
     <artifactId>symphony</artifactId>
     <packaging>jar</packaging>
-    <version>3.6.3</version>
+    <version>3.6.4</version>
     <name>Symphony</name>
     <url>https://b3log.org/sym</url>
     <description>
