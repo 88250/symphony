@@ -1,3 +1,23 @@
+## v3.6.4 / 2022-01-22
+
+### 改进功能
+
+* [匿名机制 someone 改进](https://github.com/88250/symphony/issues/31)
+* [优化编辑器](https://github.com/88250/symphony/issues/34)
+
+### 开发重构
+
+* [sc 调整为 code](https://github.com/88250/symphony/issues/30)
+* [用户隐私设置开关常量统一键名](https://github.com/88250/symphony/issues/33)
+* [升级到 JDK 11](https://github.com/88250/symphony/issues/60)
+
+### 修复缺陷
+
+* [上传文件类型应前后端保持一致](https://github.com/88250/symphony/issues/32)
+* [设置多语言模板页面标签属性问题](https://github.com/88250/symphony/issues/36)
+* [保存用户基本信息报错](https://github.com/88250/symphony/issues/38)
+* [删除打赏帖后查看通知报错](https://github.com/88250/symphony/issues/39)
+
 ## v3.6.3 / 2020-06-12
 
 ### 引入特性
