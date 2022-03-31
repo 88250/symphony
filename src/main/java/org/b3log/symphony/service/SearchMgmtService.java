@@ -17,10 +17,10 @@
  */
 package org.b3log.symphony.service;
 
+import com.google.common.base.Utf8;
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
 import jodd.net.MimeTypes;
-import okio.Utf8;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,7 +41,7 @@ import java.nio.charset.StandardCharsets;
  * <a href="https://www.algolia.com">Algolia</a> as the underlying engine.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.9, Aug 31, 2018
+ * @version 1.3.2.10, Mar 31, 2022
  * @since 1.4.0
  */
 @Service
@@ -102,9 +102,7 @@ public class SearchMgmtService {
             String host = appId + "-" + retries + ".algolianet.com";
 
             try {
-                final HttpResponse response = HttpRequest.post("https://" + host + "/1/indexes/" + index + "/clear").
-                        header("X-Algolia-API-Key", key).
-                        header("X-Algolia-Application-Id", appId).timeout(5000).send();
+                final HttpResponse response = HttpRequest.post("https://" + host + "/1/indexes/" + index + "/clear").header("X-Algolia-API-Key", key).header("X-Algolia-Application-Id", appId).timeout(5000).send();
                 if (200 != response.statusCode()) {
                     LOGGER.warn(response.toString());
                 }
@@ -132,8 +130,7 @@ public class SearchMgmtService {
             payload.put("doc", doc);
             payload.put("upsert", doc);
 
-            HttpRequest.post(Symphonys.ES_SERVER + "/" + ES_INDEX_NAME + "/" + type + "/" + doc.optString(Keys.OBJECT_ID) + "/_update").
-                    bodyText(payload.toString()).contentTypeJson().timeout(5000).sendAsync();
+            HttpRequest.post(Symphonys.ES_SERVER + "/" + ES_INDEX_NAME + "/" + type + "/" + doc.optString(Keys.OBJECT_ID) + "/_update").bodyText(payload.toString()).contentTypeJson().timeout(5000).sendAsync();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Updates doc failed", e);
         }
@@ -177,7 +174,7 @@ public class SearchMgmtService {
                 content = Jsoup.parse(content).text();
                 doc.put(Article.ARTICLE_CONTENT, content);
 
-                final long dataLength = Utf8.size(doc.toString());
+                final long dataLength = Utf8.encodedLength(doc.toString());
                 final int maxLength = 9000; // Essential plan is 20000, Community plan is 10000
                 if (dataLength >= maxLength) {
                     LOGGER.log(Level.INFO, "This article [id=" + id + "] is too big [length=" + dataLength + "], so cuts it");
@@ -188,7 +185,7 @@ public class SearchMgmtService {
                     while (idx > 0) {
                         idx -= 128;
                         content = content.substring(0, idx);
-                        if (Utf8.size(content) < maxLength) {
+                        if (Utf8.encodedLength(content) < maxLength) {
                             continueCnt++;
                         }
 
@@ -201,10 +198,7 @@ public class SearchMgmtService {
                 }
 
                 final byte[] data = doc.toString().getBytes(StandardCharsets.UTF_8);
-                final HttpResponse response = HttpRequest.put("https://" + host + "/1/indexes/" + index + "/" + id).
-                        header("X-Algolia-API-Key", key).
-                        header("X-Algolia-Application-Id", appId).body(data, MimeTypes.MIME_APPLICATION_JSON).
-                        connectionTimeout(5000).timeout(5000).send();
+                final HttpResponse response = HttpRequest.put("https://" + host + "/1/indexes/" + index + "/" + id).header("X-Algolia-API-Key", key).header("X-Algolia-Application-Id", appId).body(data, MimeTypes.MIME_APPLICATION_JSON).connectionTimeout(5000).timeout(5000).send();
                 response.charset("UTF-8");
                 if (200 != response.statusCode()) {
                     LOGGER.warn(response.bodyText());
@@ -245,9 +239,7 @@ public class SearchMgmtService {
 
             try {
                 final String id = doc.optString(Keys.OBJECT_ID);
-                final HttpResponse response = HttpRequest.delete("https://" + host + "/1/indexes/" + index + "/" + id).
-                        header("X-Algolia-API-Key", key).
-                        header("X-Algolia-Application-Id", appId).bodyText(doc.toString()).contentTypeJson().timeout(5000).send();
+                final HttpResponse response = HttpRequest.delete("https://" + host + "/1/indexes/" + index + "/" + id).header("X-Algolia-API-Key", key).header("X-Algolia-Application-Id", appId).bodyText(doc.toString()).contentTypeJson().timeout(5000).send();
                 if (200 != response.statusCode()) {
                     LOGGER.warn(response.toString());
                 }
