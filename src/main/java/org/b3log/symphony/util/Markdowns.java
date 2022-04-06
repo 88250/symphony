@@ -44,7 +44,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
-import org.jsoup.safety.Whitelist;
+import org.jsoup.safety.Safelist;
 import org.jsoup.select.Elements;
 import org.jsoup.select.NodeVisitor;
 
@@ -139,7 +139,7 @@ public final class Markdowns {
      * @return safe HTML content
      */
     public static String clean(final String content, final String baseURI) {
-        final Whitelist whitelist = Whitelist.relaxed().addAttributes(":all", "id", "target", "class", "data-src", "aria-name", "aria-label");
+        final Safelist whitelist = Safelist.relaxed().addAttributes(":all", "id", "target", "class", "data-src", "aria-name", "aria-label");
         inputWhitelist(whitelist);
         final Document.OutputSettings outputSettings = new Document.OutputSettings();
         outputSettings.prettyPrint(false);
@@ -267,7 +267,7 @@ public final class Markdowns {
                 html = "<p>" + html + "</p>";
             }
 
-            final Whitelist whitelist = Whitelist.relaxed();
+            final Safelist whitelist = Safelist.relaxed();
             inputWhitelist(whitelist);
             Document.OutputSettings outputSettings = new Document.OutputSettings();
             outputSettings.prettyPrint(false);
@@ -441,7 +441,7 @@ public final class Markdowns {
         MD_CACHE.put(hash, value);
     }
 
-    private static void inputWhitelist(final Whitelist whitelist) {
+    private static void inputWhitelist(final Safelist whitelist) {
         whitelist.addTags("span", "hr", "kbd", "samp", "tt", "del", "s", "strike", "u", "details", "summary").
                 addAttributes("sup", "class", "id").
                 addAttributes("iframe", "src", "sandbox", "width", "height", "border", "marginwidth", "marginheight").

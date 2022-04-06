@@ -49,7 +49,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
-import org.jsoup.safety.Whitelist;
+import org.jsoup.safety.Safelist;
 import org.jsoup.select.Elements;
 
 import java.text.DecimalFormat;
@@ -970,7 +970,7 @@ public class ArticleQueryService {
 
             if (null != author && UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)
                     || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
-                return Jsoup.clean(langPropsService.get("articleContentBlockLabel"), Whitelist.none());
+                return Jsoup.clean(langPropsService.get("articleContentBlockLabel"), Safelist.none());
             }
 
             final Set<String> userNames = userQueryService.getUserNames(ret);
@@ -997,7 +997,7 @@ public class ArticleQueryService {
             ret = Emotions.convert(ret);
             ret = Markdowns.toHTML(ret);
 
-            ret = Jsoup.clean(ret, Whitelist.none());
+            ret = Jsoup.clean(ret, Safelist.none());
             if (ret.length() >= length) {
                 ret = StringUtils.substring(ret, 0, length) + " ....";
             }
@@ -1726,7 +1726,7 @@ public class ArticleQueryService {
                 article.put(Article.ARTICLE_T_TITLE_EMOJI, langPropsService.get("articleTitleBlockLabel"));
                 article.put(Article.ARTICLE_T_TITLE_EMOJI_UNICODE, langPropsService.get("articleTitleBlockLabel"));
                 article.put(Article.ARTICLE_CONTENT, langPropsService.get("articleContentBlockLabel"));
-                article.put(Article.ARTICLE_T_PREVIEW_CONTENT, Jsoup.clean(langPropsService.get("articleContentBlockLabel"), Whitelist.none()));
+                article.put(Article.ARTICLE_T_PREVIEW_CONTENT, Jsoup.clean(langPropsService.get("articleContentBlockLabel"), Safelist.none()));
                 article.put(Article.ARTICLE_T_TOC, "");
                 article.put(Article.ARTICLE_REWARD_CONTENT, "");
                 article.put(Article.ARTICLE_REWARD_POINT, 0);
@@ -1885,7 +1885,7 @@ public class ArticleQueryService {
             outputSettings.prettyPrint(false);
 
             content = Jsoup.clean(content, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK),
-                    Whitelist.relaxed().addAttributes(":all", "id", "target", "class").
+                    Safelist.relaxed().addAttributes(":all", "id", "target", "class").
                             addTags("span", "hr").addAttributes("iframe", "src", "width", "height")
                             .addAttributes("audio", "controls", "src"), outputSettings);
 
@@ -1939,7 +1939,7 @@ public class ArticleQueryService {
                 throw e;
             }
 
-            final Whitelist whitelist = Whitelist.basicWithImages();
+            final Safelist whitelist = Safelist.basicWithImages();
             whitelist.addTags("object", "video");
             ret = Jsoup.clean(ret, whitelist);
 
@@ -2001,7 +2001,7 @@ public class ArticleQueryService {
                 ret = StringUtils.replaceEach(ret, objs, objsRepl);
             }
 
-            String tmp = Jsoup.clean(Jsoup.parse(ret).text(), Whitelist.none());
+            String tmp = Jsoup.clean(Jsoup.parse(ret).text(), Safelist.none());
             if (tmp.length() >= length && null != pics) {
                 tmp = StringUtils.substring(tmp, 0, length) + " ....";
                 ret = tmp.replaceAll("\"", "'");
@@ -2026,7 +2026,7 @@ public class ArticleQueryService {
                 ret = StringUtils.replaceEach(ret, urls, urlsRepl);
             }
 
-            tmp = Jsoup.clean(Jsoup.parse(ret).text(), Whitelist.none());
+            tmp = Jsoup.clean(Jsoup.parse(ret).text(), Safelist.none());
             if (tmp.length() >= length) {
                 tmp = StringUtils.substring(tmp, 0, length) + " ....";
             }

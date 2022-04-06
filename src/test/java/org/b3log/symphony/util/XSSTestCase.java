@@ -18,10 +18,11 @@
 package org.b3log.symphony.util;
 
 import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
+import org.jsoup.safety.Safelist;
+import org.testng.annotations.Test;
+
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
-import org.testng.annotations.Test;
 
 /**
  * XSS test case.
@@ -35,16 +36,16 @@ public class XSSTestCase {
     @Test
     public void xss() {
         String src = "http://error\"  onerror=\"this.src='http://7u2fje.com1.z0.glb.clouddn.com/girl.jpg';this.removeAttribute('onerror');if(!window.a){console.log('Where am I ?');window.a=1}";
-        assertFalse(Jsoup.isValid("<img src=\"" + src + "\"/>", Whitelist.basicWithImages()));
+        assertFalse(Jsoup.isValid("<img src=\"" + src + "\"/>", Safelist.basicWithImages()));
 
         src = "http://7u2fje.com1.z0.glb.clouddn.com/girl.jpg";
-        assertTrue(Jsoup.isValid("<img src=\"" + src + "\"/>", Whitelist.basicWithImages()));
+        assertTrue(Jsoup.isValid("<img src=\"" + src + "\"/>", Safelist.basicWithImages()));
 
         src = "1\" onmouseover=alert(111);\"&p=10";
-        assertTrue(Jsoup.isValid(src, Whitelist.none()));
+        assertTrue(Jsoup.isValid(src, Safelist.none()));
 
         src = src.replace("\"", "");
         src = "<div onmouseover=alert(111);></div>";
-        assertFalse(Jsoup.isValid(src, Whitelist.none()));
+        assertFalse(Jsoup.isValid(src, Safelist.none()));
     }
 }
