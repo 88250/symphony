@@ -634,6 +634,7 @@ var Util = {
     }
 
     var options = {
+      cdn: Label.staticServePath + '/js/lib/vditor',
       outline: data.outline || { enable: false },
       after: data.after || undefined,
       typewriterMode: data.typewriterMode || false,

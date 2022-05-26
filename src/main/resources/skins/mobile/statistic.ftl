@@ -20,184 +20,208 @@
 <#include "macro-head.ftl">
 <!DOCTYPE html>
 <html>
-    <head>
-        <@head title="${dataStatLabel} - ${symphonyLabel}">
-        </@head>
-    </head>
-    <body>
-        <#include "header.ftl">
-        <div class="main">
-            <div class="wrapper">
-                <div class="content vditor-reset">
-                    <h1>${dataStatLabel}</h1>
-                    <i class="ft-gray">${dataStatSubLabel}</i>
-                    <br><br>
-                    <div id="chart30" style="height:400px"></div>
-                    <br><br>
-                    <div id="chartHistory" style="height:400px"></div>
-                </div>
-                <div class="side">
-                    <#include "side.ftl">
-                </div>
-            </div>
+<head>
+    <@head title="${dataStatLabel} - ${symphonyLabel}">
+    </@head>
+</head>
+<body>
+<#include "header.ftl">
+<div class="main">
+    <div class="wrapper">
+        <div class="content vditor-reset">
+            <h1>${dataStatLabel}</h1>
+            <i class="ft-gray">${dataStatSubLabel}</i>
+            <br><br>
+            <div id="chart30" style="height:400px"></div>
+            <br><br>
+            <div id="chartHistory" style="height:400px"></div>
         </div>
-        <#include "footer.ftl">
+        <div class="side">
+            <#include "side.ftl">
+        </div>
+    </div>
+</div>
+<#include "footer.ftl">
 
-        <script src="${staticServePath}/js/lib/echarts-2.2.7/echarts.js"></script>
-        <script type="text/javascript">
-            require.config({
-                paths: {
-                    echarts: '${staticServePath}/js/lib/echarts-2.2.7'
-                }
-            });
+<script src="${staticServePath}/js/lib/vditor/dist/js/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function () {
+    echarts.init(document.getElementById('chart30')).setOption({
+      title: {
+        text: '${last30DaysLabel}',
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          lineStyle: {
+            width: 0,
+          },
+        },
+      },
+      legend: {
+        data: ['${statPostLabel}', '${statUserLabel}', '${statCmtLabel}', '${statCmtLabel}'],
+      },
+      xAxis: [
+        {
+          type: 'category',
+          boundaryGap: false,
+          data: [
+            <#list monthDays as day>
+            '${day}',
+            </#list>],
+          axisTick: {
+            show: false,
+          },
+          axisLine: {
+            show: false,
+          },
+        },
+      ],
+      yAxis: [
+        {
+          type: 'value',
+          axisTick: {
+            show: false,
+          },
+          axisLine: {
+            show: false,
+          },
+          splitLine: {
+            lineStyle: {
+              color: 'rgba(0, 0, 0, .38)',
+              type: 'dashed',
+            },
+          },
+        },
+      ],
+      series: [
+        {
+          name: '${statPostLabel}',
+          type: 'line',
+          smooth: true,
+          itemStyle: {color: '#d23f31'},
+          areaStyle: {normal: {}},
+          z: 3,
+          data: [
+            <#list articleCnts as articleCnt>
+            '${articleCnt?c}',
+            </#list>],
+        },
+        {
+          name: '${statUserLabel}',
+          type: 'line',
+          smooth: true,
+          itemStyle: {color: '#f1e05a'},
+          areaStyle: {normal: {}},
+          z: 2,
+          data: [
+            <#list userCnts as userCnt>
+            '${userCnt?c}',
+            </#list>],
+        },
+        {
+          name: '${statCmtLabel}',
+          type: 'line',
+          smooth: true,
+          itemStyle: {color: '#4285f4'},
+          areaStyle: {normal: {}},
+          z: 1,
+          data: [
+            <#list commentCnts as commentCnt>
+            '${commentCnt?c}',
+            </#list>],
+        },
+      ],
+    })
 
-            require(
-                    [
-                        'echarts',
-                        'echarts/chart/line'
-                    ],
-                    function (ec) {
-                        var fontFamily = '"Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif';
-                        
-                        var chart30 = ec.init(document.getElementById('chart30'), 'infographic');
-                        option30 = {
-                            title: {
-                                text: '${last30DaysLabel}',
-                                textStyle: {
-                                    fontFamily: fontFamily
-                                },
-                            },
-                            tooltip: {
-                                trigger: 'axis'
-                            },
-                            legend: {
-                                data: ['${statUserLabel}', '${statPostLabel}', '${statCmtLabel}']
-                            },
-                            xAxis: [
-                                {
-                                    type: 'category',
-                                    boundaryGap: false,
-                                    data: [
-                                        <#list monthDays as day>
-                                        '${day}'<#if day?has_next>,</#if>
-                                        </#list>
-                                    ]
-                                }
-                            ],
-                            yAxis: [
-                                {
-                                    type: 'value'
-                                }
-                            ],
-                            series: [
-                                {
-                                    name: '${statUserLabel}',
-                                    type: 'line',
-                                    smooth: true,
-                                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                                    data: [
-                                        <#list userCnts as userCnt>
-                                        '${userCnt?c}'<#if userCnt?has_next>,</#if>
-                                        </#list>
-                                    ]
-                                },
-                                {
-                                    name: '${statPostLabel}',
-                                    type: 'line',
-                                    smooth: true,
-                                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                                    data: [
-                                        <#list articleCnts as articleCnt>
-                                        '${articleCnt?c}'<#if articleCnt?has_next>,</#if>
-                                        </#list>
-                                    ]
-                                },
-                                {
-                                    name: '${statCmtLabel}',
-                                    type: 'line',
-                                    smooth: true,
-                                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                                    data: [
-                                        <#list commentCnts as commentCnt>
-                                        '${commentCnt?c}'<#if commentCnt?has_next>,</#if>
-                                        </#list>
-                                    ]
-                                }
-                            ]
-                        };
-
-                        chart30.setOption(option30);
-                        
-                        var chartHistory = ec.init(document.getElementById('chartHistory'), 'infographic');
-                        optionHistory = {
-                            title: {
-                                text: '${historyLabel}',
-                                textStyle: {
-                                    fontFamily: fontFamily
-                                },
-                            },
-                            tooltip: {
-                                trigger: 'axis'
-                            },
-                            legend: {
-                                data: ['${statUserLabel}', '${statPostLabel}', '${statCmtLabel}']
-                            },
-                            xAxis: [
-                                {
-                                    type: 'category',
-                                    boundaryGap: false,
-                                    data: [
-                                        <#list months as month>
-                                        '${month}'<#if month?has_next>,</#if>
-                                        </#list>
-                                    ]
-                                }
-                            ],
-                            yAxis: [
-                                {
-                                    type: 'value'
-                                }
-                            ],
-                            series: [
-                                {
-                                    name: '${statUserLabel}',
-                                    type: 'line',
-                                    smooth: true,
-                                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                                    data: [
-                                        <#list historyUserCnts as userCnt>
-                                        '${userCnt?c}'<#if userCnt?has_next>,</#if>
-                                        </#list>
-                                    ]
-                                },
-                                {
-                                    name: '${statPostLabel}',
-                                    type: 'line',
-                                    smooth: true,
-                                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                                    data: [
-                                        <#list historyArticleCnts as articleCnt>
-                                        '${articleCnt?c}'<#if articleCnt?has_next>,</#if>
-                                        </#list>
-                                    ]
-                                },
-                                {
-                                    name: '${statCmtLabel}',
-                                    type: 'line',
-                                    smooth: true,
-                                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                                    data: [
-                                        <#list historyCommentCnts as commentCnt>
-                                        '${commentCnt?c}'<#if commentCnt?has_next>,</#if>
-                                        </#list>
-                                    ]
-                                }
-                            ]
-                        };
-
-                        chartHistory.setOption(optionHistory);
-                    }
-            );
-        </script>
-    </body>
+    echarts.init(document.getElementById('chartHistory')).setOption({
+      title: {
+        text: '${historyLabel}',
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          lineStyle: {
+            width: 0,
+          },
+        },
+      },
+      legend: {
+        data: ['${statPostLabel}', '${statUserLabel}', '${statCmtLabel}', '${statCmtLabel}'],
+      },
+      xAxis: [
+        {
+          type: 'category',
+          boundaryGap: false,
+          data: [
+            <#list months as month>
+            '${month}',
+            </#list>],
+          axisTick: {
+            show: false,
+          },
+          axisLine: {
+            show: false,
+          },
+        },
+      ],
+      yAxis: [
+        {
+          type: 'value',
+          axisTick: {
+            show: false,
+          },
+          axisLine: {
+            show: false,
+          },
+          splitLine: {
+            lineStyle: {
+              color: 'rgba(0, 0, 0, .38)',
+              type: 'dashed',
+            },
+          },
+        },
+      ],
+      series: [
+        {
+          name: '${statPostLabel}',
+          type: 'line',
+          smooth: true,
+          itemStyle: {color: '#d23f31'},
+          areaStyle: {normal: {}},
+          z: 3,
+          data: [
+            <#list historyArticleCnts as articleCnt>
+            '${articleCnt?c}',
+            </#list>],
+        },
+        {
+          name: '${statUserLabel}',
+          type: 'line',
+          smooth: true,
+          itemStyle: {color: '#f1e05a'},
+          areaStyle: {normal: {}},
+          z: 2,
+          data: [
+            <#list historyUserCnts as userCnt>
+            '${userCnt?c}',
+            </#list>],
+        },
+        {
+          name: '${statCmtLabel}',
+          type: 'line',
+          smooth: true,
+          itemStyle: {color: '#4285f4'},
+          areaStyle: {normal: {}},
+          z: 1,
+          data: [
+            <#list historyCommentCnts as commentCnt>
+            '${commentCnt?c}',
+            </#list>],
+        },
+      ],
+    })
+  })
+</script>
+</body>
 </html>

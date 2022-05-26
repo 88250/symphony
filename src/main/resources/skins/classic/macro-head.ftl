@@ -28,6 +28,7 @@
 <meta http-equiv="Window-target" content="_top" />
 <link rel="stylesheet" href="${staticServePath}/css/responsive.css?${staticResourceVersion}" />
 <link rel="stylesheet" href="${staticServePath}/css/base.css?${staticResourceVersion}" />
+<link rel="stylesheet" href="${staticServePath}/js/lib/vditor/dist/index.css?v=3.8.15" />
 <link rel="icon" type="image/png" href="${staticServePath}/images/favicon.png" />
 <link rel="apple-touch-icon" href="${staticServePath}/images/faviconH.png">
 <link rel="search" type="application/opensearchdescription+xml" title="Sym" href="/opensearch.xml">
