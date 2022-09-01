@@ -23,7 +23,7 @@
     <properties>
         <latke.version>3.4.26</latke.version>
 
-        <jsoup.version>1.14.3</jsoup.version>
+        <jsoup.version>1.15.3</jsoup.version>
         <flexmark.version>0.64.0</flexmark.version>
         <qiniu.version>7.9.4</qiniu.version>
         <jodd.version>6.2.1</jodd.version>
