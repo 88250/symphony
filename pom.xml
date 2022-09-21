@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.17.0.49, Sep 20, 2022
+    Version: 2.17.0.50, Sep 21, 2022
     Author: Liang Ding
     Author: Zephyr
 -->
@@ -21,17 +21,17 @@
     <inceptionYear>2012</inceptionYear>
 
     <properties>
-        <latke.version>3.4.27</latke.version>
+        <latke.version>3.4.28</latke.version>
 
-        <jsoup.version>1.14.3</jsoup.version>
+        <jsoup.version>1.15.3</jsoup.version>
         <flexmark.version>0.64.0</flexmark.version>
-        <qiniu.version>7.9.4</qiniu.version>
-        <jodd.version>6.2.1</jodd.version>
+        <qiniu.version>7.11.0</qiniu.version>
+        <jodd.version>6.3.0</jodd.version>
         <emoji-java.version>5.1.1</emoji-java.version>
         <user-agent-utils.version>1.21</user-agent-utils.version>
         <es.version>2.3.1</es.version>
         <owasp.version>1.2.3</owasp.version>
-        <snakeyaml.version>1.30</snakeyaml.version>
+        <snakeyaml.version>1.32</snakeyaml.version>
         <javax.mail.version>1.6.2</javax.mail.version>
         <commons-cli.version>1.5.0</commons-cli.version>
 
