@@ -210,13 +210,8 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             String thankTemplate = langPropsService.get("thankConfirmLabel");
             thankTemplate = thankTemplate.replace("{point}", String.valueOf(Symphonys.POINT_THANK_COMMENT)).replace("{user}", commenterName);
             chData.put(Comment.COMMENT_T_THANK_LABEL, thankTemplate);
-            String cc = shortLinkQueryService.linkArticle(commentContent);
-            cc = Emotions.toAliases(cc);
-            cc = Emotions.convert(cc);
-            cc = Markdowns.toHTML(cc);
-            cc = Markdowns.clean(cc, "");
-            cc = MediaPlayers.renderAudio(cc);
-            cc = MediaPlayers.renderVideo(cc);
+            String cc= getCC(commentContent);
+
 
             chData.put(Comment.COMMENT_CONTENT, cc);
             chData.put(Comment.COMMENT_UA, originalComment.optString(Comment.COMMENT_UA));
@@ -369,6 +364,17 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends the comment notification failed", e);
         }
+    }
+
+    private String getCC(String commentContent) {
+        String cc = shortLinkQueryService.linkArticle(commentContent);
+        cc = Emotions.toAliases(cc);
+        cc = Emotions.convert(cc);
+        cc = Markdowns.toHTML(cc);
+        cc = Markdowns.clean(cc, "");
+        cc = MediaPlayers.renderAudio(cc);
+        cc = MediaPlayers.renderVideo(cc);
+        return  cc;
     }
 
     /**

@@ -883,7 +883,7 @@ public class SettingsProcessor {
             final int status = result.optInt(Invitecode.STATUS);
             ret.put(Keys.CODE, status);
 
-            switch (status) {
+            /*switch (status) {
                 case Invitecode.STATUS_C_USED:
                     ret.put(Keys.MSG, langPropsService.get("invitecodeUsedLabel"));
                     break;
@@ -899,6 +899,20 @@ public class SettingsProcessor {
                     break;
                 default:
                     ret.put(Keys.MSG, langPropsService.get("notFoundInvitecodeLabel"));
+            }*/
+            InviteCodeStatus inviteCodeStatus;
+            switch (status) {
+                case Invitecode.STATUS_C_USED:
+                    inviteCodeStatus = new UsedInviteCodeStatus();
+                    break;
+                case Invitecode.STATUS_C_UNUSED:
+                    inviteCodeStatus = new UnusedInviteCodeStatus(result.optLong(Keys.OBJECT_ID));
+                    break;
+                case Invitecode.STATUS_C_STOPUSE:
+                    inviteCodeStatus = new StopUseInviteCodeStatus();
+                    break;
+                default:
+                    inviteCodeStatus = new NotFoundInviteCodeStatus();
             }
         }
     }

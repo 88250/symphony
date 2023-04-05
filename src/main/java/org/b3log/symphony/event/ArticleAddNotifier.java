@@ -125,11 +125,12 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
 
             // 'following - user' Notification
             final boolean articleNotifyFollowers = data.optBoolean(Article.ARTICLE_T_NOTIFY_FOLLOWERS);
-            if (articleNotifyFollowers
+            boolean condition = articleNotifyFollowers
                     && Article.ARTICLE_TYPE_C_DISCUSSION != originalArticle.optInt(Article.ARTICLE_TYPE)
                     && Article.ARTICLE_ANONYMOUS_C_PUBLIC == originalArticle.optInt(Article.ARTICLE_ANONYMOUS)
                     && !Tag.TAG_TITLE_C_SANDBOX.equals(tags)
-                    && !StringUtils.containsIgnoreCase(tags, Symphonys.SYS_ANNOUNCE_TAG)) {
+                    && !StringUtils.containsIgnoreCase(tags, Symphonys.SYS_ANNOUNCE_TAG);
+            if (condition) {
                 final JSONObject followerUsersResult = followQueryService.getFollowerUsers(articleAuthorId, 1, Integer.MAX_VALUE);
                 final List<JSONObject> followerUsers = (List<JSONObject>) followerUsersResult.opt(Keys.RESULTS);
                 final long thirtyDaysAgo = DateUtils.addDays(new Date(), -30).getTime();

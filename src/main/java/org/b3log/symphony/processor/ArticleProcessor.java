@@ -139,13 +139,13 @@ public class ArticleProcessor {
      * Language service.
      */
     @Inject
-    private LangPropsService langPropsService;
+    LangPropsService langPropsService;
 
     /**
      * Follow query service.
      */
     @Inject
-    private FollowQueryService followQueryService;
+    FollowQueryService followQueryService;
 
     /**
      * Reward query service.
@@ -181,7 +181,7 @@ public class ArticleProcessor {
      * Domain query service.
      */
     @Inject
-    private DomainQueryService domainQueryService;
+    DomainQueryService domainQueryService;
 
     /**
      * Domain cache.
@@ -194,6 +194,8 @@ public class ArticleProcessor {
      */
     @Inject
     private DataModelService dataModelService;
+
+    ArticleProcessorHelper articleProcessorHelper;
 
     /**
      * Register request handlers.
@@ -434,7 +436,7 @@ public class ArticleProcessor {
      *
      * @param dataModel the specified data model
      */
-    private void fillDomainsWithTags(final Map<String, Object> dataModel) {
+    /*private void fillDomainsWithTags(final Map<String, Object> dataModel) {
         final List<JSONObject> domains = domainQueryService.getAllDomains();
         dataModel.put(Common.ADD_ARTICLE_DOMAINS, domains);
         for (final JSONObject domain : domains) {
@@ -463,7 +465,7 @@ public class ArticleProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Get user [name=" + user.optString(User.USER_NAME) + "] following tags failed", e);
         }
-    }
+    }*/
 
     /**
      * Shows add article.
@@ -561,7 +563,7 @@ public class ArticleProcessor {
         dataModel.put("articleContentErrorLabel", articleContentErrorLabel);
 
         fillPostArticleRequisite(dataModel, currentUser);
-        fillDomainsWithTags(dataModel);
+        articleProcessorHelper.fillDomainsWithTags(dataModel);
     }
 
     private void fillPostArticleRequisite(final Map<String, Object> dataModel, final JSONObject currentUser) {
@@ -658,7 +660,7 @@ public class ArticleProcessor {
             final long created = System.currentTimeMillis();
             final long expired = DateUtils.addMonths(new Date(created), 1).getTime();
             final String ip = Requests.getRemoteAddr(request);
-            final String ua = Headers.getHeader(request, Common.USER_AGENT, "");
+            final String userAgent = Headers.getHeader(request, Common.USER_AGENT, "");
             final String referer = Headers.getHeader(request, "Referer", "");
             final JSONObject visit = new JSONObject();
             visit.put(Visit.VISIT_IP, ip);
@@ -667,7 +669,7 @@ public class ArticleProcessor {
             visit.put(Visit.VISIT_DEVICE_ID, "");
             visit.put(Visit.VISIT_EXPIRED, expired);
             visit.put(Visit.VISIT_REFERER_URL, referer);
-            visit.put(Visit.VISIT_UA, ua);
+            visit.put(Visit.VISIT_UA, userAgent);
             visit.put(Visit.VISIT_URL, "/article/" + articleId);
             visit.put(Visit.VISIT_USER_ID, "");
             if (null != viewer) {
@@ -971,7 +973,7 @@ public class ArticleProcessor {
 
         dataModelService.fillHeaderAndFooter(context, dataModel);
 
-        fillDomainsWithTags(dataModel);
+        articleProcessorHelper.fillDomainsWithTags(dataModel);
 
         String rewardEditorPlaceholderLabel = langPropsService.get("rewardEditorPlaceholderLabel");
         rewardEditorPlaceholderLabel = rewardEditorPlaceholderLabel.replace("{point}",

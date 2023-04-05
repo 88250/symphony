@@ -38,6 +38,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Notification query service.
@@ -1234,4 +1235,41 @@ public class NotificationQueryService {
             return null;
         }
     }
+    public void fillNotificationCount(final String userId, final Map<String, Object> dataModel) {
+        final int unreadCommentedNotificationCnt = getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENTED);
+        dataModel.put(Common.UNREAD_COMMENTED_NOTIFICATION_CNT, unreadCommentedNotificationCnt);
+
+        final int unreadReplyNotificationCnt = getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_REPLY);
+        dataModel.put(Common.UNREAD_REPLY_NOTIFICATION_CNT, unreadReplyNotificationCnt);
+
+        final int unreadAtNotificationCnt
+                = getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT)
+                + getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_ARTICLE_NEW_FOLLOWER)
+                + getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_ARTICLE_NEW_WATCHER)
+                + getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENT_VOTE_UP)
+                + getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENT_VOTE_DOWN)
+                + getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_ARTICLE_VOTE_UP)
+                + getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_ARTICLE_VOTE_DOWN);
+        dataModel.put(Common.UNREAD_AT_NOTIFICATION_CNT, unreadAtNotificationCnt);
+
+        final int unreadFollowingNotificationCnt = getUnreadFollowingNotificationCount(userId);
+        dataModel.put(Common.UNREAD_FOLLOWING_NOTIFICATION_CNT, unreadFollowingNotificationCnt);
+
+        final int unreadPointNotificationCnt = getUnreadPointNotificationCount(userId);
+        dataModel.put(Common.UNREAD_POINT_NOTIFICATION_CNT, unreadPointNotificationCnt);
+
+        final int unreadBroadcastNotificationCnt = getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_BROADCAST);
+        dataModel.put(Common.UNREAD_BROADCAST_NOTIFICATION_CNT, unreadBroadcastNotificationCnt);
+
+        final int unreadSysAnnounceNotificationCnt = getUnreadSysAnnounceNotificationCount(userId);
+        dataModel.put(Common.UNREAD_SYS_ANNOUNCE_NOTIFICATION_CNT, unreadSysAnnounceNotificationCnt);
+
+        final int unreadNewFollowerNotificationCnt = getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_NEW_FOLLOWER);
+        dataModel.put(Common.UNREAD_NEW_FOLLOWER_NOTIFICATION_CNT, unreadNewFollowerNotificationCnt);
+
+        dataModel.put(Common.UNREAD_NOTIFICATION_CNT, unreadAtNotificationCnt + unreadBroadcastNotificationCnt
+                + unreadCommentedNotificationCnt + unreadFollowingNotificationCnt + unreadPointNotificationCnt
+                + unreadReplyNotificationCnt + unreadSysAnnounceNotificationCnt + unreadNewFollowerNotificationCnt);
+    }
+
 }
