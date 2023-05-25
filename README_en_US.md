@@ -483,6 +483,11 @@ Please visit [Sym Setup Guide](https://ld246.com/article/1486188905847).
 
 * The community edition uses AGPLv3 as open source. If you choose to use the community version, you must fully comply with the relevant terms of AGPLv3.
 
+## 🔓 Known Security Vulnerabilities
+
+* [Using MD5 to store passwords is insecure](https://github.com/88250/symphony/issues/74)
+* [The method of passing passwords between the front and back ends is not safe](https://github.com/88250/symphony/issues/75)
+
 ## 🙏 Acknowledgement
 
 * [jQuery](https://github.com/jquery/jquery): Front-end JavaScript tool library
