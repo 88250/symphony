@@ -486,7 +486,7 @@ Please visit [Sym Setup Guide](https://ld246.com/article/1486188905847).
 ## 🔓 Known Security Vulnerabilities
 
 * [Using MD5 to store passwords is insecure](https://github.com/88250/symphony/issues/74)
-* [The method of passing passwords between the front and back ends is not safe](https://github.com/88250/symphony/issues/75)
+* [The method of passing passwords between the front and back ends is insecure](https://github.com/88250/symphony/issues/75)
 
 ## 🙏 Acknowledgement
 
