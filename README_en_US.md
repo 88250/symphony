@@ -3,8 +3,8 @@
 <br><br>
 The next generation of the community system, built for the future
 <br><br>
-<a title="Build Status" target="_blank" href="https://github.com/88250/symphony/actions/workflows/ci.yml"><img src="https://img.shields.io/github/workflow/status/88250/symphony/Build%20Test?style=flat-square"></a>
-<a title="Docker Image CI" target="_blank" href="https://github.com/88250/symphony/actions"><img src="https://img.shields.io/github/workflow/status/88250/symphony/Docker%20Image%20CI?label=Actions&logo=github&style=flat-square"></a>
+<a title="Build Status" target="_blank" href="https://github.com/88250/symphony/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/88250/symphony/ci.yml?style=flat-square"></a>
+<a title="Docker Image CI" target="_blank" href="https://github.com/88250/symphony/actions"><img src="https://img.shields.io/github/actions/workflow/status/88250/symphony/dockerimage.yml?label=Actions&logo=github&style=flat-square"></a>
 <a title="Code Size" target="_blank" href="https://github.com/88250/symphony"><img src="https://img.shields.io/github/languages/code-size/88250/symphony.svg?style=flat-square"></a>
 <a title="AGPLv3" target="_blank" href="https://www.gnu.org/licenses/agpl-3.0.txt"><img src="http://img.shields.io/badge/license-AGPLv3-orange.svg?style=flat-square"></a>
 <a title="Releases" target="_blank" href="https://github.com/88250/symphony/releases"><img src="https://img.shields.io/github/release/88250/symphony.svg?style=flat-square"></a>
@@ -12,7 +12,7 @@ The next generation of the community system, built for the future
 <a title="Release Date" target="_blank" href="https://github.com/88250/symphony/releases"><img src="https://img.shields.io/github/release-date/88250/symphony.svg?style=flat-square&color=99CCFF"></a>
 <a title="Downloads" target="_blank" href="https://github.com/88250/symphony/releases"><img src="https://img.shields.io/github/downloads/88250/symphony/total.svg?style=flat-square"></a>
 <a title="Docker Pulls" target="_blank" href="https://hub.docker.com/r/b3log/symphony"><img src="https://img.shields.io/docker/pulls/b3log/symphony.svg?style=flat-square&color=blueviolet"></a>
-<a title="Docker Image Size" target="_blank" href="https://hub.docker.com/r/b3log/symphony"><img src="https://img.shields.io/microbadger/image-size/b3log/symphony.svg?style=flat-square&color=ff96b4"></a>
+<a title="Docker Image Size" target="_blank" href="https://hub.docker.com/r/b3log/symphony"><img src="https://img.shields.io/docker/image-size/b3log/symphony.svg?style=flat-square&color=ff96b4"></a>
 <br>
 <a title="GitHub Commits" target="_blank" href="https://github.com/88250/symphony/commits/master"><img src="https://img.shields.io/github/commit-activity/m/88250/symphony.svg?style=flat-square"></a>
 <a title="Last Commit" target="_blank" href="https://github.com/88250/symphony/commits/master"><img src="https://img.shields.io/github/last-commit/88250/symphony.svg?style=flat-square&color=FF9900"></a>
