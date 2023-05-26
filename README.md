@@ -51,28 +51,6 @@
 * 缺乏考虑实际运营需求，管理功能过于单一
 * 细节不够精致、缺乏长期维护
 
-## 🗃 案例
-
-社区版：
-
-* [宽客网](http://www.cnq.net)
-* [AIQ-机器学习](http://www.6aiq.com)
-* [许昌IT圈](http://www.xcitq.com)
-* [凤凰匯](https://www.fengd.com)
-* [俩猴网](http://www.xfx77.cn)
-* [艺赛旗 RPA](http://support.i-search.com.cn)（商用授权）
-* [北极社区](https://begeek.bwae.org)（商用授权）
-* [神州邦邦](https://c.shenzhoubb.com)（商用授权）
-* ......
-
-商业版：
-
-* [链滴](https://ld246.com)
-* [乾学院](http://c.raqsoft.com.cn)
-* [快递100](https://bbs.kuaidi100.com)
-* [金蝶精斗云社区](https://cs.jdy.com)
-* ......
-
 ## ✨  特性
 
 * [Sym 简介幻灯片](https://b3log.org/sym/syme-intro.pptx)

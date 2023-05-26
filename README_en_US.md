@@ -49,10 +49,6 @@ Many community forum systems:
 * Lack of consideration of actual operational needs, management function is too single
 * The details are not exquisite and lack long-term maintenance
 
-## 🗃 Showcases
-
-* [HacPai](https://ld246.com)
-
 ## ✨  Features
 
 ```
