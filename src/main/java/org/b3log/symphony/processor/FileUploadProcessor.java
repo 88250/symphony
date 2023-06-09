@@ -64,7 +64,7 @@ import static org.b3log.symphony.util.Symphonys.QN_ENABLED;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 3.0.0.0, Feb 11, 2020
+ * @version 3.0.1.0, Jun 9, 2023
  * @since 1.4.0
  */
 @Singleton
@@ -116,7 +116,7 @@ public class FileUploadProcessor {
         try {
             if (!FileUtil.isExistingFile(new File(path)) ||
                     !FileUtil.isExistingFolder(new File(Symphonys.UPLOAD_LOCAL_DIR)) ||
-                    !new File(path).getCanonicalPath().startsWith(new File(Symphonys.UPLOAD_LOCAL_DIR).getCanonicalPath())) {
+                    !Path.of(path).normalize().startsWith(Path.of(Symphonys.UPLOAD_LOCAL_DIR).normalize())) {
                 context.sendError(404);
                 return;
             }
