@@ -15,4 +15,4 @@ jobs:
           cache: 'maven'
       - name: Build with Maven
         run: |
-          mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -Pci
+          mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -Pci -DskipAssembly
