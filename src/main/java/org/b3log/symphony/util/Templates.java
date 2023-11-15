@@ -17,10 +17,7 @@
  */
 package org.b3log.symphony.util;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateExceptionHandler;
-import freemarker.template.Version;
+import freemarker.template.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -32,7 +29,7 @@ import java.io.File;
  * Templates utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.2, Jun 20, 2020
+ * @version 2.0.0.3, Nov 15, 2023
  * @since 1.3.0
  */
 public final class Templates {
@@ -62,19 +59,17 @@ public final class Templates {
                 // 开发时使用源码目录
                 path = StringUtils.replace(path, "/target/classes/", "/src/main/resources/");
                 path = StringUtils.replace(path, "/target/test-classes/", "/src/main/resources/");
-                LOGGER.log(Level.DEBUG, "Adjusted resource path for development environment: " + path); // 添加调试信息
             }
             if (StringUtils.contains(path, "/target/symphony/")) {
                 // 开发时使用源码目录
                 path = StringUtils.replace(path, "/target/symphony/", "/src/main/resources/");
-                LOGGER.log(Level.DEBUG, "Adjusted resource path for development environment: " + path); // 添加调试信息
             }
             path += "skins";
             TEMPLATE_CFG.setDirectoryForTemplateLoading(new File(path));
             LOGGER.log(Level.INFO, "Loaded template from directory [" + path + "]");
         } catch (final Exception e) {
             TEMPLATE_CFG.setClassForTemplateLoading(Templates.class, "/skins");
-            LOGGER.log(Level.INFO, "Failed to load template from directory, loading from classpath", e); // 记录错误信息
+            LOGGER.log(Level.INFO, "Loaded template from classpath");
         }
         TEMPLATE_CFG.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         TEMPLATE_CFG.setLogTemplateExceptions(false);
