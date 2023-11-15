@@ -56,18 +56,26 @@ public final class Templates {
         TEMPLATE_CFG = new Configuration(FREEMARKER_VER);
         TEMPLATE_CFG.setDefaultEncoding("UTF-8");
         try {
-            String path = Templates.class.getResource("/").getPath();
+            String path = Templates.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+            LOGGER.info("Code source path: " + path);
+            LOGGER.info("Initial resource path: " + path); // 添加调试信息
             if (StringUtils.contains(path, "/target/classes/") || StringUtils.contains(path, "/target/test-classes/")) {
                 // 开发时使用源码目录
                 path = StringUtils.replace(path, "/target/classes/", "/src/main/resources/");
                 path = StringUtils.replace(path, "/target/test-classes/", "/src/main/resources/");
+                LOGGER.info("Adjusted resource path for development environment: " + path); // 添加调试信息
+            }
+            if (StringUtils.contains(path, "/target/symphony/")) {
+                // 开发时使用源码目录
+                path = StringUtils.replace(path, "/target/symphony/", "/src/main/resources/");
+                LOGGER.info("Adjusted resource path for development environment: " + path); // 添加调试信息
             }
             path += "skins";
             TEMPLATE_CFG.setDirectoryForTemplateLoading(new File(path));
             LOGGER.log(Level.INFO, "Loaded template from directory [" + path + "]");
         } catch (final Exception e) {
             TEMPLATE_CFG.setClassForTemplateLoading(Templates.class, "/skins");
-            LOGGER.log(Level.INFO, "Loaded template from classpath");
+            LOGGER.error("Failed to load template from directory, loading from classpath", e); // 记录错误信息
         }
         TEMPLATE_CFG.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         TEMPLATE_CFG.setLogTemplateExceptions(false);
