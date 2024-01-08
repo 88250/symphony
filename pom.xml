@@ -29,7 +29,7 @@
         <jodd.version>6.3.0</jodd.version>
         <emoji-java.version>5.1.1</emoji-java.version>
         <user-agent-utils.version>1.21</user-agent-utils.version>
-        <es.version>2.3.1</es.version>
+        <es.version>7.17.14</es.version>
         <owasp.version>1.2.3</owasp.version>
         <snakeyaml.version>1.32</snakeyaml.version>
         <javax.mail.version>1.6.2</javax.mail.version>
