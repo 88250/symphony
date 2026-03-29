@@ -28,8 +28,8 @@
 var gulp = require('gulp')
 var concat = require('gulp-concat')
 var cleanCSS = require('gulp-clean-css')
-var uglify = require('gulp-uglify')
-var sass = require('gulp-sass')(require('node-sass'));
+const terser = require('gulp-terser');
+var sass = require('gulp-sass')(require('sass'));
 var rename = require('gulp-rename')
 var del = require('del')
 
@@ -62,7 +62,7 @@ function minArticleCSS () {
 function minJS () {
   // min js
   return gulp.src('./src/main/resources/js/*.js').
-    pipe(uglify()).
+    pipe(terser()).
     pipe(rename({suffix: '.min'})).
     pipe(gulp.dest('./src/main/resources/js/'))
 }
@@ -76,7 +76,7 @@ function minUpload () {
     './src/main/resources/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-process.js',
     './src/main/resources/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-validate.js']
   return gulp.src(jsJqueryUpload).
-    pipe(uglify()).
+    pipe(terser()).
     pipe(concat('jquery.fileupload.min.js')).
     pipe(gulp.dest('./src/main/resources/js/lib/jquery/file-upload-9.10.1/'))
 }
@@ -92,7 +92,7 @@ function minLibs () {
     './src/main/resources/js/lib/jquery/jquery.pjax.js',
     './src/main/resources/js/lib/nprogress/nprogress.js']
   return gulp.src(jsCommonLib).
-    pipe(uglify()).
+    pipe(terser()).
     pipe(concat('libs.min.js')).
     pipe(gulp.dest('./src/main/resources/js/lib/compress/'))
 }
@@ -106,7 +106,7 @@ function minArticleLibs () {
     './src/main/resources/js/lib/diff2html/diff2html-ui.min.js',
     './src/main/resources/js/lib/diff2html/diff.min.js']
   return gulp.src(jsArticleLib).
-    pipe(uglify()).
+    pipe(terser()).
     pipe(concat('article-libs.min.js')).
     pipe(gulp.dest('./src/main/resources/js/lib/compress/'))
 }

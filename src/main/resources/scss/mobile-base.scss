@@ -22,8 +22,8 @@
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.12.0.2, Mar 17, 2019
  */
-@import "variables";
-@import "common";
+@use "variables";
+@use "common";
 
 /* start common */
 .fn-hr10 {
@@ -46,7 +46,7 @@
 
 .tag:hover {
   text-decoration: none;
-  color: $black-text;
+  color: variables.$black-text;
   background-color: #ccc;
 }
 
@@ -54,7 +54,7 @@
 button,
 .btn {
   cursor: pointer;
-  color: $black-text;
+  color: variables.$black-text;
   border-radius: 3px;
   padding: 6px 12px;
   background-color: rgba(0, 0, 0, .02);
@@ -68,13 +68,13 @@ button,
 button:hover,
 .btn:hover {
   text-decoration: none;
-  border-color: $fade;
+  border-color: variables.$fade;
   background-color: #eee;
 }
 
 button:active,
 .btn:active {
-  background-color: $fade;
+  background-color: variables.$fade;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) inset;
 }
 
@@ -88,31 +88,31 @@ button.green,
 
 button.green:hover,
 .btn.green:hover {
-  background-color: $green;
+  background-color: variables.$green;
 }
 
 button.green:active {
-  background-color: $green;
+  background-color: variables.$green;
   border-color: #418737;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25) inset;
 }
 
 button.red,
 .btn.red {
-  color: $theme-accent;
+  color: variables.$theme-accent;
 }
 
 button.red:hover,
 .btn.red:hover,
 .btn.red-hover {
   color: #FFF;
-  background-color: $theme-accent;
+  background-color: variables.$theme-accent;
   border-color: #c0372a;
 }
 
 button.red:active,
 .btn.red:active {
-  background-color: $theme-accent;
+  background-color: variables.$theme-accent;
   border-color: #c9320c;
   color: #FFF;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25) inset;
@@ -140,20 +140,20 @@ button.absolute {
 /* start icon */
 a[class^="icon-"],
 a[class*=" icon-"] {
-  color: $black-text;
+  color: variables.$black-text;
 }
 
 a[class^="icon-"]:hover,
 a[class*=" icon-"]:hover {
   text-decoration: none;
-  color: $blue;
+  color: variables.$blue;
 }
 
 /* end icon */
 
 /* start tip */
 .tip.error {
-  color: $theme-accent;
+  color: variables.$theme-accent;
   background-color: #fcdede;
   border: 1px solid #d2b2b2;
 }
@@ -278,14 +278,14 @@ a[class*=" icon-"]:hover {
 }
 
 .form label {
-  color: $theme-secondary;
+  color: variables.$theme-secondary;
   font-size: 15px;
   margin: 10px 0 5px;
   float: left;
 }
 
 .form label.ft-red {
-  color: $theme-accent;
+  color: variables.$theme-accent;
 }
 
 .form label > a {
@@ -337,7 +337,7 @@ a[class*=" icon-"]:hover {
 }
 
 .pagination a:hover {
-  color: $blue;
+  color: variables.$blue;
   border-bottom-color: #CFDCE8;
   background-color: #fafbfd;
   background: linear-gradient(#fafbfd, #dce6ef);
@@ -412,7 +412,7 @@ a[class*=" icon-"]:hover {
 }
 
 .dialog-header-bg .icon-close:hover {
-  color: $black-text;
+  color: variables.$black-text;
 }
 
 .dialog-main {
@@ -472,7 +472,7 @@ a[class*=" icon-"]:hover {
   width: 100%;
   padding: 5px 0;
   z-index: 99;
-  background-color: $theme-primary;
+  background-color: variables.$theme-primary;
 }
 
 .nav .head-fn form {
@@ -510,7 +510,7 @@ a[class*=" icon-"]:hover {
 }
 
 .nav div > a:hover {
-  color: $blue;
+  color: variables.$blue;
 }
 
 .nav div > a.current {
@@ -545,14 +545,14 @@ a[class*=" icon-"]:hover {
   -o-animation: spaceboots 1s infinite;
   -ms-animation: spaceboots 1s infinite;
   animation: spaceboots 1s infinite;
-  background-color: $theme-accent;
+  background-color: variables.$theme-accent;
   color: #FFFFFF;
 }
 
 .nav .user-nav a.selected.no-msg,
 .nav .user-nav a.selected.msg {
   animation: none;
-  background-color: $theme-accent;
+  background-color: variables.$theme-accent;
   border-bottom: 0;
 }
 
@@ -597,7 +597,7 @@ a[class*=" icon-"]:hover {
   padding: 10px 0;
   text-align: center;
   font-size: 12px;
-  background-color: $theme-primary;
+  background-color: variables.$theme-primary;
 
   a {
     color: #afb1b3;
@@ -617,7 +617,7 @@ a[class*=" icon-"]:hover {
 }
 
 .list h2 > a:hover {
-  color: $black-text;
+  color: variables.$black-text;
 }
 
 .list > ul {
@@ -675,13 +675,13 @@ label.anonymous-check {
   margin: 5px 0 15px;
   text-align: center;
   a {
-    color: $black-light;
+    color: variables.$black-light;
     vertical-align: middle;
     &:hover {
-      color: $black-text;
+      color: variables.$black-text;
     }
     &.disabled {
-      color: $fade;
+      color: variables.$fade;
       cursor: default;
     }
   }
@@ -828,7 +828,7 @@ label.anonymous-check {
 }
 
 .person-info .status .fn-pointer:hover span {
-  color: $black-text;
+  color: variables.$black-text;
 }
 
 .person-info .module-panel {
@@ -909,7 +909,7 @@ label.anonymous-check {
 
 .algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
   font-weight: bold;
-  color: $theme-accent;
+  color: variables.$theme-accent;
   font-style: normal;
 }
 
@@ -991,7 +991,7 @@ label.anonymous-check {
 }
 
 .module-panel.ad .header {
-  color: $black-text;
+  color: variables.$black-text;
 }
 
 .module-panel.ad img {
@@ -1045,7 +1045,7 @@ h1.article-title > a {
 }
 
 h1.article-title > a:hover {
-  color: $black-text;
+  color: variables.$black-text;
 }
 
 #thoughtProgress {
@@ -1065,7 +1065,7 @@ h1.article-title > a:hover {
     top: -8px;
     left: 0;
     cursor: pointer;
-    color: $theme-accent;
+    color: variables.$theme-accent;
     margin-left: -10px;
   }
 }
@@ -1079,7 +1079,7 @@ label.cmt-anonymous {
 }
 
 #shareClipboard.tooltipped-hover {
-  color: $blue;
+  color: variables.$blue;
 }
 
 .comments > .comments-header {
@@ -1094,7 +1094,7 @@ label.cmt-anonymous {
 
 .comments > div.comments-header a {
   text-decoration: none;
-  color: $black-text;
+  color: variables.$black-text;
 }
 
 .comments li.shield {
@@ -1229,7 +1229,7 @@ label.cmt-anonymous {
 }
 
 .share [class^="icon-"]:hover {
-  color: $blue;
+  color: variables.$blue;
 }
 
 #replyUseName {
@@ -1261,17 +1261,17 @@ label.cmt-anonymous {
 }
 
 .article-toc li a:hover {
-  border-left: 1px solid $blue;
+  border-left: 1px solid variables.$blue;
   background-color: #F7F7F7;
   padding-left: 21px;
-  color: $blue;
+  color: variables.$blue;
   text-decoration: none;
 }
 
 .article-toc li.current a {
-  border-left: 2px solid $blue;
+  border-left: 2px solid variables.$blue;
   background-color: #f0f0f0;
-  color: $blue;
+  color: variables.$blue;
 }
 
 .article-toc li.toc-h2 a,
@@ -1314,7 +1314,7 @@ label.cmt-anonymous {
 
 /* start domains */
 .domains {
-  border-bottom: 2px solid $theme-accent;
+  border-bottom: 2px solid variables.$theme-accent;
 }
 
 .domains svg {
@@ -1334,7 +1334,7 @@ label.cmt-anonymous {
 }
 
 .domains a.selected {
-  color: $blue;
+  color: variables.$blue;
 }
 
 .domains-count {
@@ -1382,7 +1382,7 @@ label.cmt-anonymous {
 }
 
 .article-list li .commenters > a:hover {
-  color: $blue;
+  color: variables.$blue;
 }
 
 .article-list li:hover .cmts {
@@ -1434,7 +1434,7 @@ label.cmt-anonymous {
 .heat {
   position: absolute;
   height: 5px;
-  background-color: $theme-accent;
+  background-color: variables.$theme-accent;
   z-index: 1;
   bottom: -3px;
   right: 0;
@@ -1444,7 +1444,7 @@ label.cmt-anonymous {
 .point-remove {
   position: absolute;
   height: 5px;
-  background-color: $theme-accent;
+  background-color: variables.$theme-accent;
   z-index: 1;
   bottom: -3px;
   right: 0px;
@@ -1503,7 +1503,7 @@ label.cmt-anonymous {
 }
 
 .article-level0 {
-  color: $fade;
+  color: variables.$fade;
 }
 
 .article-level1 {
@@ -1519,7 +1519,7 @@ label.cmt-anonymous {
 }
 
 .article-level4 {
-  color: $theme-accent;
+  color: variables.$theme-accent;
 }
 
 /* end article list */
@@ -1550,7 +1550,7 @@ label.cmt-anonymous {
   }
 
   .tag-desc li.current > a {
-    background-color: $fade;
+    background-color: variables.$fade;
     color: #fff;
     border-color: #bbb;
   }
@@ -1569,7 +1569,7 @@ label.cmt-anonymous {
   }
 
   .md {
-    background-color: $blue-lighter;
+    background-color: variables.$blue-lighter;
 
     pre {
       white-space: pre-wrap;
@@ -1585,8 +1585,8 @@ label.cmt-anonymous {
 
   .intro {
     padding: 30px;
-    background-color: $blue-lighter;
-    color: $theme-secondary;
+    background-color: variables.$blue-lighter;
+    color: variables.$theme-secondary;
   }
 
   .form {
@@ -1859,7 +1859,7 @@ code .dec {
 .chat-room .online-cnt {
   line-height: 33px;
   margin-right: 10px;
-  color: $gray;
+  color: variables.$gray;
 }
 
 .chat-room .list {
@@ -1883,7 +1883,7 @@ code .dec {
 }
 
 .index > .slogan a:hover svg {
-  color: $blue;
+  color: variables.$blue;
 }
 
 .index .tag-desc > li:hover > span {
@@ -1938,7 +1938,7 @@ code .dec {
 
   .online,
   .offline {
-    background-color: $theme-accent;
+    background-color: variables.$theme-accent;
     color: #fff;
     font-size: 12px;
     line-height: 20px;
@@ -1953,7 +1953,7 @@ code .dec {
   }
 
   .offline {
-    background-color: $gray;
+    background-color: variables.$gray;
   }
 
   button.follow {
@@ -1966,7 +1966,7 @@ code .dec {
 .user-info {
   line-height: 26px;
   font-size: 12px;
-  color: $theme-secondary;
+  color: variables.$theme-secondary;
 }
 
 .user-intro {
@@ -1995,7 +1995,7 @@ code .dec {
 
 .pre-post a:hover {
   text-decoration: none;
-  color: $blue;
+  color: variables.$blue;
 }
 
 .pre-post a svg {
@@ -2067,7 +2067,7 @@ code .dec {
 
 .post .tags-input span.tag {
   margin: 2px 5px 0 0px;
-  color: $blue;
+  color: variables.$blue;
 }
 
 .post .tags-input .tag > span.close {
@@ -2077,7 +2077,7 @@ code .dec {
 }
 
 .post .tags-input span.tag.haved {
-  color: $black-text;
+  color: variables.$black-text;
   background-color: #ccc;
   transition: background 0.5s ease-in, color 0.3s ease-out;
 }
@@ -2113,7 +2113,7 @@ code .dec {
 
 .post .domains-tags .tag {
   cursor: pointer;
-  color: $blue;
+  color: variables.$blue;
 }
 
 .post .domains-tags > span.current {
@@ -2354,7 +2354,7 @@ code .dec {
   overflow: auto;
   z-index: 124;
   background-color: #fff;
-  box-shadow: $shadow-tip;
+  box-shadow: variables.$shadow-tip;
   width: 50%;
 
   .emoji {
@@ -2364,7 +2364,7 @@ code .dec {
     margin-bottom: 0;
 
     &:hover {
-      background-color: $fade;
+      background-color: variables.$fade;
     }
   }
 }

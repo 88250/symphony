@@ -22,7 +22,7 @@
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 2.13.0.2, Mar 17, 2019
  */
-@import "variables";
+@use "variables";
 
 /* start home common */
 .home-menu {
@@ -35,7 +35,7 @@
     padding: 10px 15px;
     text-shadow: 0 1px 0 #fff;
     border-bottom: 1px solid #eee;
-    color: $theme-secondary;
+    color: variables.$theme-secondary;
   }
 
   a:last-child {
@@ -60,7 +60,7 @@
     right: 0px;
     top: 0px;
     border-width: 10px 10px 10px 10px;
-    border-color: $theme-accent $theme-accent transparent transparent;
+    border-color: variables.$theme-accent variables.$theme-accent transparent transparent;
   }
 
   a.current::before {
@@ -70,7 +70,7 @@
     left: 0;
     width: 2px;
     content: "";
-    background-color: $theme-accent;
+    background-color: variables.$theme-accent;
   }
 }
 
@@ -80,7 +80,7 @@
 
 .home-menu a span:last-child:hover,
 .home-side-read:hover {
-  color: $blue;
+  color: variables.$blue;
 }
 
 /* end home common */
@@ -104,7 +104,7 @@
 
   .online,
   .offline {
-    background-color: $theme-accent;
+    background-color: variables.$theme-accent;
     color: #fff;
     font-size: 12px;
     line-height: 20px;
@@ -121,7 +121,7 @@
   }
 
   .offline {
-    background-color: $gray;
+    background-color: variables.$gray;
   }
 
   button.follow {
@@ -138,7 +138,7 @@
 .user-info {
   line-height: 24px;
   font-size: 12px;
-  color: $theme-secondary;
+  color: variables.$theme-secondary;
 }
 
 .user-intro {
@@ -168,7 +168,7 @@
 
 .pre-post a:hover {
   text-decoration: none;
-  color: $blue;
+  color: variables.$blue;
 }
 
 .pre-post a svg {
@@ -240,7 +240,7 @@
     margin-bottom: 0;
     width: auto;
     right: 10px;
-    background-color: $blue-lighter;
+    background-color: variables.$blue-lighter;
   }
 
   #showReward {
@@ -285,15 +285,15 @@
   .tags-input .tag > span.close {
     cursor: pointer;
     padding-left: 5px;
-    color: $theme-secondary;
+    color: variables.$theme-secondary;
 
     &:hover {
-      color: $theme-accent;
+      color: variables.$theme-accent;
     }
   }
 
   .tags-input span.tag.haved {
-    color: $black-text;
+    color: variables.$black-text;
     background-color: #ccc;
     transition: background 0.5s ease-in, color 0.3s ease-out;
   }
@@ -368,7 +368,7 @@
 }
 
 .tabs a.selected {
-  border-color: $theme-accent;
+  border-color: variables.$theme-accent;
   color: #212121;
 }
 
@@ -465,7 +465,7 @@
       float: left;
       font-size: 12px;
       line-height: 12px;
-      color: $fade;
+      color: variables.$fade;
     }
 
     &.mid {
@@ -481,7 +481,7 @@
 
     input[readonly] {
       border: 0;
-      color: $gray;
+      color: variables.$gray;
       box-shadow: 0 0 0;
       background-color: #fff;
       padding: 0;
@@ -531,11 +531,11 @@
 }
 
 .points .name a {
-  color: $theme-secondary;
+  color: variables.$theme-secondary;
 }
 
 .points .name a:hover {
-  color: $black-text;
+  color: variables.$black-text;
 }
 
 .points .type {
@@ -547,7 +547,7 @@
   text-align: center;
   width: 35px;
   padding: 0 10px;
-  color: $theme-accent;
+  color: variables.$theme-accent;
   font-weight: 700;
 }
 

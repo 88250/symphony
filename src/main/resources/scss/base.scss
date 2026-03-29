@@ -22,8 +22,8 @@
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 2.38.0.2, Jul 11, 2019
  */
-@import "variables";
-@import "common";
+@use "variables";
+@use "common";
 
 /* start common business */
 .article-list .cb-stick {
@@ -47,7 +47,7 @@
 /* start common */
 .tag {
   font-size: 12px;
-  color: $fade;
+  color: variables.$fade;
   white-space: nowrap;
   display: inline-block;
   line-height: 16px;
@@ -226,7 +226,7 @@
 button,
 .btn {
   cursor: pointer;
-  color: $black-text;
+  color: variables.$black-text;
   border-radius: 3px;
   padding: 6px 12px;
   background-color: rgba(0, 0, 0, .02);
@@ -240,13 +240,13 @@ button,
 button:hover,
 .btn:hover {
   text-decoration: none;
-  border-color: $fade;
+  border-color: variables.$fade;
   background-color: #eee;
 }
 
 button:active,
 .btn:active {
-  background-color: $fade;
+  background-color: variables.$fade;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) inset;
 }
 
@@ -260,31 +260,31 @@ button.green,
 
 button.green:hover,
 .btn.green:hover {
-  background-color: $green;
+  background-color: variables.$green;
 }
 
 button.green:active {
-  background-color: $green;
+  background-color: variables.$green;
   border-color: #418737;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25) inset;
 }
 
 button.red,
 .btn.red {
-  color: $theme-accent;
+  color: variables.$theme-accent;
 }
 
 button.red:hover,
 .btn.red:hover,
 .btn.red-hover {
   color: #FFF;
-  background-color: $theme-accent;
+  background-color: variables.$theme-accent;
   border-color: #c0372a;
 }
 
 button.red:active,
 .btn.red:active {
-  background-color: $theme-accent;
+  background-color: variables.$theme-accent;
   border-color: #c9320c;
   color: #FFF;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25) inset;
@@ -314,17 +314,17 @@ button.mid,
 /* start icon */
 a[class^="icon-"],
 a[class*=" icon-"] {
-  color: $black-text;
+  color: variables.$black-text;
 }
 
 a[class^="icon-"]:hover,
 a[class*=" icon-"]:hover {
   text-decoration: none;
-  color: $blue;
+  color: variables.$blue;
 }
 
 .radio-btn {
-  background-color: $theme-accent;
+  background-color: variables.$theme-accent;
   border-radius: 28px;
   bottom: 20px;
   color: #fff;
@@ -367,7 +367,7 @@ a[class*=" icon-"]:hover {
 }
 
 .icon-link:hover {
-  color: $blue;
+  color: variables.$blue;
 }
 
 .icon-qq:hover {
@@ -386,7 +386,7 @@ a[class*=" icon-"]:hover {
 
 /* start tip */
 .tip.error {
-  color: $theme-accent;
+  color: variables.$theme-accent;
   background-color: #ffdce0;
   border: 1px solid rgba(27, 31, 35, 0.15);
   border-radius: 2px;
@@ -481,7 +481,7 @@ a[class*=" icon-"]:hover {
 /* start editor */
 .grammar dd {
   font-size: 12px;
-  color: $gray;
+  color: variables.$gray;
 }
 
 .grammar dl {
@@ -495,7 +495,7 @@ a[class*=" icon-"]:hover {
   overflow: auto;
   z-index: 124;
   background-color: #fff;
-  box-shadow: $shadow-tip;
+  box-shadow: variables.$shadow-tip;
   width: 50%;
 
   .emoji {
@@ -505,7 +505,7 @@ a[class*=" icon-"]:hover {
     margin-bottom: 0;
 
     &:hover {
-      background-color: $fade;
+      background-color: variables.$fade;
     }
   }
 }
@@ -529,7 +529,7 @@ a[class*=" icon-"]:hover {
 .form input[type=number],
 .form select,
 .form textarea {
-  border: 1px solid $fade;
+  border: 1px solid variables.$fade;
   background-color: #FAFAFA;
   border-radius: 3px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
@@ -550,7 +550,7 @@ a[class*=" icon-"]:hover {
 }
 
 .form label {
-  color: $theme-secondary;
+  color: variables.$theme-secondary;
   font-size: 15px;
   margin: 12px 0 6px;
   float: left;
@@ -624,7 +624,7 @@ a[class*=" icon-"]:hover {
 
 .pagination span.current,
 .tabs-sub a.current {
-  background-color: $theme-primary;
+  background-color: variables.$theme-primary;
   color: #f0f0f0;
 }
 
@@ -701,7 +701,7 @@ a[class*=" icon-"]:hover {
 }
 
 .dialog-header-bg .icon-close:hover {
-  color: $black-text;
+  color: variables.$black-text;
 }
 
 .dialog-main {
@@ -758,7 +758,7 @@ a[class*=" icon-"]:hover {
 .nav {
   height: 48px;
   width: 100%;
-  background-color: $theme-primary;
+  background-color: variables.$theme-primary;
   z-index: 83;
   position: relative;
   box-sizing: border-box;
@@ -804,7 +804,7 @@ a[class*=" icon-"]:hover {
   }
 
   a.current {
-    border-bottom: 2px solid $theme-accent;
+    border-bottom: 2px solid variables.$theme-accent;
     padding-bottom: 12px;
   }
 
@@ -849,7 +849,7 @@ a[class*=" icon-"]:hover {
 
   .user-nav .no-msg,
   .user-nav .msg {
-    background-color: $theme-secondary;
+    background-color: variables.$theme-secondary;
     border-radius: 3px;
     color: #FFFFFF;
     padding: 0px 6px;
@@ -858,14 +858,14 @@ a[class*=" icon-"]:hover {
   }
 
   .user-nav .msg {
-    background-color: $theme-accent;
+    background-color: variables.$theme-accent;
     color: #FFFFFF;
   }
 
   .user-nav a.current.no-msg,
   .user-nav a.current.msg {
     animation: none;
-    background-color: $theme-accent;
+    background-color: variables.$theme-accent;
     border-bottom: 0;
   }
 
@@ -908,7 +908,7 @@ a[class*=" icon-"]:hover {
     position: relative;
     padding: 8px 10px;
     border-bottom: 1px solid #eee;
-    color: $theme-secondary;
+    color: variables.$theme-secondary;
   }
 
   .person-list a:hover {
@@ -930,7 +930,7 @@ a[class*=" icon-"]:hover {
   padding: 10px 0;
   position: relative;
   z-index: 40;
-  background-color: $theme-primary;
+  background-color: variables.$theme-primary;
 
   a {
     color: #afb1b3;
@@ -994,7 +994,7 @@ a[class*=" icon-"]:hover {
   position: relative;
 
   h2 > a {
-    color: $black-text;
+    color: variables.$black-text;
   }
 
   h2 > a:hover {
@@ -1058,7 +1058,7 @@ a[class*=" icon-"]:hover {
 .module-header h2 {
   display: inline;
   font-size: 13px;
-  color: $theme-secondary;
+  color: variables.$theme-secondary;
   font-weight: normal;
 }
 
@@ -1083,7 +1083,7 @@ a[class*=" icon-"]:hover {
 }
 
 .module .comment-content {
-  color: $gray;
+  color: variables.$gray;
   float: left;
   margin-left: 5px;
   width: 210px;
@@ -1100,7 +1100,7 @@ a[class*=" icon-"]:hover {
 }
 
 .module-list .title {
-  color: $theme-secondary;
+  color: variables.$theme-secondary;
   margin: 0px 0 0px 30px;
   display: block;
   line-height: 20px;
@@ -1120,7 +1120,7 @@ a[class*=" icon-"]:hover {
 }
 
 .module-panel.ad .header {
-  color: $black-text;
+  color: variables.$black-text;
 }
 
 .module-panel.ad img {
@@ -1160,7 +1160,7 @@ a[class*=" icon-"]:hover {
 
 .tag-desc > li > a {
   float: left;
-  color: $theme-secondary;
+  color: variables.$theme-secondary;
   padding: 2px 5px;
   border: 1px solid transparent;
   position: relative;
@@ -1180,13 +1180,13 @@ a[class*=" icon-"]:hover {
   border-bottom-style: dotted;
   border-radius: 3px 3px 0 0;
   z-index: 2;
-  color: $black-text;
+  color: variables.$black-text;
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .tag-desc > li > a > span {
   text-decoration: none;
-  color: $gray;
+  color: variables.$gray;
 }
 
 .tag-desc > li > a > img {
@@ -1260,7 +1260,7 @@ a[class*=" icon-"]:hover {
   }
 
   .status .fn-pointer:hover span {
-    color: $black-text;
+    color: variables.$black-text;
   }
 
   .module-panel {
@@ -1270,7 +1270,7 @@ a[class*=" icon-"]:hover {
   .activity-board {
     position: absolute;
     height: 2px;
-    background-color: $theme-accent;
+    background-color: variables.$theme-accent;
     top: -1px;
   }
 
@@ -1363,7 +1363,7 @@ a[class*=" icon-"]:hover {
     margin-left: 20px;
     width: 300px;
     overflow: hidden;
-    color: $theme-secondary;
+    color: variables.$theme-secondary;
   }
 
   .aa-dataset-0 {
@@ -1388,7 +1388,7 @@ a[class*=" icon-"]:hover {
 
   .aa-dropdown-menu .aa-suggestion em {
     font-weight: bold;
-    color: $theme-accent;
+    color: variables.$theme-accent;
     font-style: normal;
   }
 

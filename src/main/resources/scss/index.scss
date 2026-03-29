@@ -23,7 +23,7 @@
  * @version 2.33.1.3, Mar 17, 2019
  */
 
-@import "variables";
+@use "variables";
 
 /* start list */
 .domains-count {
@@ -134,7 +134,7 @@
     left: 120px;
     width: 30px;
     font-size: 22px;
-    color: $theme-secondary;
+    color: variables.$theme-secondary;
     text-align: center;
     margin-top: -117px;
 
@@ -180,12 +180,12 @@
     padding: 0 10px;
     background-color: #fff;
     box-sizing: border-box;
-    box-shadow: $shadow-tip;
+    box-shadow: variables.$shadow-tip;
     font-size: 16px;
     top: -50px;
 
     h1 svg {
-      color: $black-text;
+      color: variables.$black-text;
       vertical-align: baseline;
       height: 48px;
       width: 48px;
@@ -206,17 +206,17 @@
       padding: 16px 10px;
       line-height: 16px;
       height: 16px;
-      color: $theme-secondary;
+      color: variables.$theme-secondary;
       text-decoration: none;
     }
 
     .user-nav > span:hover,
     .user-nav > a:hover {
-      color: $black-text;
+      color: variables.$black-text;
     }
 
     .user-nav > span.ft-red {
-      color: $theme-accent;
+      color: variables.$theme-accent;
     }
 
     .user-nav svg {
@@ -234,7 +234,7 @@
     right: 0;
     height: 100%;
     border-radius: 0;
-    background-color: $blue-lighter;
+    background-color: variables.$blue-lighter;
 
     .module-panel {
       overflow: auto;
@@ -257,17 +257,17 @@
       }
 
       a:hover {
-        border-left: 1px solid $blue;
+        border-left: 1px solid variables.$blue;
         background-color: #F7F7F7;
         padding-left: 21px;
-        color: $blue;
+        color: variables.$blue;
         text-decoration: none;
       }
 
       &.current a {
-        border-left: 2px solid $blue;
+        border-left: 2px solid variables.$blue;
         background-color: #f0f0f0;
-        color: $blue;
+        color: variables.$blue;
       }
 
       &.toc-h2 a,
@@ -312,13 +312,13 @@
     margin: 5px 0 15px;
     text-align: center;
     a {
-      color: $black-light;
+      color: variables.$black-light;
       vertical-align: middle;
       &:hover {
-        color: $black-text;
+        color: variables.$black-text;
       }
       &.disabled {
-        color: $fade;
+        color: variables.$fade;
         cursor: default;
       }
     }
@@ -344,7 +344,7 @@
     }
 
     .wrapper {
-      background-color: $blue-lighter;
+      background-color: variables.$blue-lighter;
       bottom: 0;
       z-index: 121;
       position: absolute;
@@ -359,13 +359,13 @@
     }
 
     .editor-hide {
-      color: $theme-secondary;
+      color: variables.$theme-secondary;
       margin: -3px 0 6px;
       font-size: 22px;
     }
 
     .editor-hide:hover {
-      color: $black-text;
+      color: variables.$black-text;
     }
   }
 }
@@ -395,7 +395,7 @@
     top: -8px;
     left: 0;
     cursor: pointer;
-    color: $theme-accent;
+    color: variables.$theme-accent;
     margin-left: -10px;
   }
 }
@@ -407,29 +407,29 @@ label.cmt-anonymous {
 
 .action-btns > span,
 .action-btns > a {
-  color: $theme-secondary;
+  color: variables.$theme-secondary;
   text-decoration: none;
 }
 
 .action-btns > span:hover,
 .action-btns > a:hover {
-  color: $black-text;
+  color: variables.$black-text;
 }
 
 .action-btns > span.ft-red,
 .action-btns > a.ft-red,
 .action-btns > span.ft-red:hover,
 .action-btns > a.ft-red:hover {
-  color: $theme-accent;
+  color: variables.$theme-accent;
 }
 
 .action-btns > span.icon-reply-btn {
-  color: $theme-secondary;
+  color: variables.$theme-secondary;
   font-weight: bold;
 }
 
 .action-btns > span.icon-reply-btn:hover {
-  color: $black-text;
+  color: variables.$black-text;
 }
 
 .action-btns svg {
@@ -442,13 +442,13 @@ label.cmt-anonymous {
   }
 
   .comments-header a {
-    color: $fade;
+    color: variables.$fade;
     font-size: 16px;
     text-decoration: none;
   }
 
   .comments-header a:hover {
-    color: $gray;
+    color: variables.$gray;
   }
 
   .list > ul > li.cmt-shield-shield {
@@ -494,7 +494,7 @@ label.cmt-anonymous {
   }
 
   .comment-action > .ft-fade > .fn-pointer:hover {
-    color: $gray;
+    color: variables.$gray;
   }
 }
 
@@ -594,7 +594,7 @@ label.cmt-anonymous {
 
   .abstract {
     margin-top: 5px;
-    color: $theme-secondary;
+    color: variables.$theme-secondary;
     display: block;
     text-decoration: none;
   }
@@ -614,7 +614,7 @@ label.cmt-anonymous {
   }
 
   .author {
-    color: $theme-secondary;
+    color: variables.$theme-secondary;
     font-weight: 600;
   }
 
@@ -626,7 +626,7 @@ label.cmt-anonymous {
 .heat {
   position: absolute;
   height: 5px;
-  background-color: $theme-accent;
+  background-color: variables.$theme-accent;
   z-index: 1;
   bottom: -3px;
   right: 0;
@@ -636,7 +636,7 @@ label.cmt-anonymous {
 .point-remove {
   position: absolute;
   height: 5px;
-  background-color: $theme-accent;
+  background-color: variables.$theme-accent;
   z-index: 1;
   bottom: -3px;
   right: 0px;
@@ -695,7 +695,7 @@ label.cmt-anonymous {
 }
 
 .article-level0 {
-  color: $fade;
+  color: variables.$fade;
 }
 
 .article-level1 {
@@ -711,7 +711,7 @@ label.cmt-anonymous {
 }
 
 .article-level4 {
-  color: $theme-accent;
+  color: variables.$theme-accent;
 }
 
 .recent-rss {
@@ -719,7 +719,7 @@ label.cmt-anonymous {
   float: right;
   margin: 2px 0 0 10px;
   &:hover {
-    color: $blue !important;
+    color: variables.$blue !important;
   }
 }
 
@@ -729,7 +729,7 @@ label.cmt-anonymous {
     vertical-align: sub;
   }
   &:hover {
-    color: $blue !important;
+    color: variables.$blue !important;
   }
 }
 /* end article list */
@@ -740,9 +740,9 @@ label.cmt-anonymous {
 
   .intro {
     padding: 100px 50px;
-    background-color: $blue-lighter;
+    background-color: variables.$blue-lighter;
     width: 40%;
-    color: $theme-secondary;
+    color: variables.$theme-secondary;
   }
 
   .verify-wrap {
@@ -780,7 +780,7 @@ label.cmt-anonymous {
       position: relative;
 
       svg {
-        color: $gray;
+        color: variables.$gray;
         position: absolute;
         top: 19px;
         left: 10px;
@@ -834,7 +834,7 @@ label.cmt-anonymous {
   }
 
   .tag-desc li.current > a {
-    background-color: $blue;
+    background-color: variables.$blue;
     color: #fff;
     border-color: rgba(0,0,0,.02);
   }
@@ -873,7 +873,7 @@ label.cmt-anonymous {
   }
 
   .md {
-    background-color: $blue-lighter;
+    background-color: variables.$blue-lighter;
 
     pre {
       white-space: pre-wrap;
@@ -1036,7 +1036,7 @@ code .dec {
 .chat-room .online-cnt {
   line-height: 33px;
   margin-right: 10px;
-  color: $gray;
+  color: variables.$gray;
 }
 
 .chat-room .list {
@@ -1082,14 +1082,14 @@ code .dec {
     transition-property: color;
     transition-duration: .3s;
     text-align: center;
-    border-bottom: 2px solid $blue;
+    border-bottom: 2px solid variables.$blue;
     background-color: #FFF;
-    color: $gray;
+    color: variables.$gray;
     overflow: hidden;
   }
 
   .index-tabs > span a {
-    color: $black-text;
+    color: variables.$black-text;
     text-decoration: none;
     display: block;
     svg  {
@@ -1099,11 +1099,11 @@ code .dec {
 
   .index-tabs > span.current,
   .index-tabs > span.current:hover {
-    color: $black-text;
+    color: variables.$black-text;
   }
 
   .index-tabs > span.tags {
-    border-bottom-color: $green;
+    border-bottom-color: variables.$green;
     margin: 0 2px;
   }
 
@@ -1112,7 +1112,7 @@ code .dec {
   }
 
   .index-tabs > span.perfect {
-    border-bottom-color: $theme-accent;
+    border-bottom-color: variables.$theme-accent;
   }
 
   .index-tabs > span.check {
@@ -1137,14 +1137,14 @@ code .dec {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: $blue;
+    background-color: variables.$blue;
     transform: scaleY(0);
     transform-origin: 50% 100%;
     transition: transform .3s ease-out;
   }
 
   .index-tabs > span.tags:before {
-    background-color: $green;
+    background-color: variables.$green;
   }
 
   .index-tabs > span.users:before {
@@ -1152,7 +1152,7 @@ code .dec {
   }
 
   .index-tabs > span.perfect:before {
-    background-color: $theme-accent;
+    background-color: variables.$theme-accent;
   }
 
   .index-tabs > span.check:before {
@@ -1181,7 +1181,7 @@ code .dec {
   }
 
   .perfect-panel {
-    background-color: $blue-lighter;
+    background-color: variables.$blue-lighter;
 
     .avatar-small {
       position: absolute;
@@ -1225,7 +1225,7 @@ code .dec {
 
     .preview:hover {
       background-color: rgba(0, 0, 0, .02);
-      color: $black-text;
+      color: variables.$black-text;
     }
 
     .preview img {
@@ -1255,7 +1255,7 @@ code .dec {
   .metro-border > div {
     height: 2px;
     flex: 1;
-    background-color: $blue;
+    background-color: variables.$blue;
     margin-right: 2px;
     margin-top: -2px;
   }
@@ -1265,11 +1265,11 @@ code .dec {
   }
 
   .metro-border > div.green {
-    background-color: $green;
+    background-color: variables.$green;
   }
 
   .metro-border > div.red {
-    background-color: $red;
+    background-color: variables.$red;
   }
 
   .metro-border > div.purple {
@@ -1305,7 +1305,7 @@ code .dec {
 /* start symhub */
 .symhub {
   li a {
-    color: $theme-secondary;
+    color: variables.$theme-secondary;
     vertical-align: middle;
     font-size: 16px;
     line-height: 20px;

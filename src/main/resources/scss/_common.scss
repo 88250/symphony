@@ -21,20 +21,21 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.8.0.1, Feb 9, 2020
  */
+@use "variables";
 /* start reset */
 html {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   height: 100%;
-  background-color: $theme-primary;
+  background-color: variables.$theme-primary;
   height: 100%;
 }
 
 body {
   margin: 0;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 14px;
-  color: $black-text;
+  color: variables.$black-text;
   background-color: #fff;
 }
 
@@ -92,7 +93,7 @@ audio:not([controls]) {
 a {
   outline: 0;
   text-decoration: none;
-  color: $blue;
+  color: variables.$blue;
 }
 
 a:hover {
@@ -130,7 +131,7 @@ textarea {
   margin: 0;
   font-size: 100%;
   vertical-align: middle;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   outline: none;
 }
 
@@ -426,32 +427,32 @@ blockquote {
 }
 
 .ft-gray {
-  color: $gray;
+  color: variables.$gray;
 }
 
 .ft-fade {
-  color: $fade;
+  color: variables.$fade;
 }
 
 .ft-red {
-  color: $theme-accent;
+  color: variables.$theme-accent;
 }
 
 .ft-blue {
-  color: $blue;
+  color: variables.$blue;
 }
 
 .ft-green {
-  color: $green;
+  color: variables.$green;
 }
 
 .ft-a-title {
-  color: $theme-secondary;
+  color: variables.$theme-secondary;
   text-decoration: none;
 }
 
 .ft-a-title:hover {
-  color: $black-text;
+  color: variables.$black-text;
 }
 
 .ft-center {
@@ -468,7 +469,7 @@ blockquote {
   font-size: 12px;
   font-weight: 600;
   line-height: 1;
-  color: $theme-secondary;
+  color: variables.$theme-secondary;
   background-color: #eee;
   border-radius: 20px;
   display: inline-block;
