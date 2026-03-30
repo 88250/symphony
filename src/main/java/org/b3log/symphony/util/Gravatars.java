@@ -27,10 +27,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Gravatar (http://www.gravatar.com) utilities.
+ * Gravatar (https://www.gravatar.com) utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Feb 12, 2018
+ * @version 1.0.0.1, Mar 30, 2026
  * @since 2.5.0
  */
 public final class Gravatars {
@@ -58,7 +58,7 @@ public final class Gravatars {
                 h = RandomStringUtils.randomAlphanumeric(16);
             }
 
-            final HttpResponse response = HttpRequest.get("http://www.gravatar.com/avatar/" + h + "?s=256&d=" + d[RandomUtils.nextInt(0, d.length)]).
+            final HttpResponse response = HttpRequest.get("https://www.gravatar.com/avatar/" + h + "?s=256&d=" + d[RandomUtils.nextInt(0, d.length)]).
                     connectionTimeout(5000).timeout(5000).send();
             if (200 != response.statusCode()) {
                 LOGGER.log(Level.WARN, "Gets avatar data failed [sc=" + response.statusCode() + "]");
