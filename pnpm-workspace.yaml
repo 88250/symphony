@@ -1,0 +1,4 @@
+allowBuilds:
+  '@parcel/watcher': true
+  es5-ext: true
+  fsevents: true

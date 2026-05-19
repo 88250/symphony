@@ -35,7 +35,11 @@ var del = require('del')
 
 function sassProcess () {
   return gulp.src('./src/main/resources/scss/*.scss').
-    pipe(sass({outputStyle: 'compressed', includePaths: ['node_modules']}).
+    pipe(sass({
+    outputStyle: 'compressed',
+    includePaths: ['node_modules'],
+    silenceDeprecations: ['legacy-js-api']
+    }).
       on('error', sass.logError)).
     pipe(gulp.dest('./src/main/resources/css'))
 }
