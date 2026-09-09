@@ -5,7 +5,7 @@ ADD . /tmp
 RUN cd /tmp && mvn package -DskipTests -Pci -q && mv target/symphony/* /opt/sym/ \
 && cp -f /tmp/src/main/resources/docker/* /opt/sym/
 
-FROM openjdk:18-alpine
+FROM eclipse-temurin:17-jre-alpine
 LABEL maintainer="Liang Ding<845765@qq.com>"
 
 WORKDIR /opt/sym/
