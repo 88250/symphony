@@ -30,8 +30,10 @@ import org.b3log.latke.http.Cookie;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.Response;
+import org.b3log.latke.http.WebSocketSession;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.util.Crypts;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
@@ -374,7 +376,24 @@ public final class Sessions {
      * @return the current user, returns {@code null} if not logged in
      */
     public static JSONObject currentUser(final Request request) {
-        final Set<Cookie> cookies = request.getCookies();
+        return currentUser(request.getCookies(), Requests.getRemoteAddr(request));
+    }
+
+    /**
+     * 使用握手 Cookie 校验 WebSocket 当前用户。
+     *
+     * @param session WebSocket 会话
+     * @return 当前用户，未登录时返回 {@code null}
+     */
+    public static JSONObject currentUser(final WebSocketSession session) {
+        try {
+            return currentUser(session.getCookies(), "");
+        } finally {
+            JdbcRepository.dispose();
+        }
+    }
+
+    private static JSONObject currentUser(final Set<Cookie> cookies, final String ip) {
         if (cookies.isEmpty()) {
             return null;
         }
@@ -395,7 +414,7 @@ public final class Sessions {
 
                 JSONObject ret = SESSION_CACHE.get(userId);
                 if (null == ret) {
-                    ret = tryLogInWithCookie(cookieJSONObject, request);
+                    ret = tryLogInWithCookie(cookieJSONObject, ip);
                 }
                 if (null == ret) {
                     return null;
@@ -416,7 +435,6 @@ public final class Sessions {
                     return null;
                 }
 
-                final String ip = Requests.getRemoteAddr(request);
                 if (StringUtils.isNotBlank(ip)) {
                     ret.put(UserExt.USER_LATEST_LOGIN_IP, ip);
                     SESSION_CACHE.put(userId, ret);
@@ -432,14 +450,14 @@ public final class Sessions {
     }
 
     /**
-     * Tries to login with cookie.
+     * 使用 Cookie 尝试登录。
      *
-     * @param cookieJSONObject the specified cookie json object
-     * @param request          the specified request
-     * @return returns user if logged in, returns {@code null} otherwise
+     * @param cookieJSONObject Cookie 数据
+     * @param ip               客户端 IP，WebSocket 握手不提供时为空
+     * @return 当前用户，登录失败时返回 {@code null}
      */
     private static JSONObject tryLogInWithCookie(final JSONObject cookieJSONObject,
-                                                 final Request request) {
+                                                 final String ip) {
         final BeanManager beanManager = BeanManager.getInstance();
         final UserRepository userRepository = beanManager.getReference(UserRepository.class);
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
@@ -455,7 +473,6 @@ public final class Sessions {
                 return null;
             }
 
-            final String ip = Requests.getRemoteAddr(request);
             if (StringUtils.isNotBlank(ip)) {
                 ret.put(UserExt.USER_LATEST_LOGIN_IP, ip);
             }

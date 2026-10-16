@@ -19,15 +19,13 @@ package org.b3log.symphony.processor.channel;
 
 import org.apache.commons.lang3.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.http.Session;
 import org.b3log.latke.http.WebSocketChannel;
 import org.b3log.latke.http.WebSocketSession;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Singleton;
-import org.b3log.latke.model.User;
-import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserMgmtService;
+import org.b3log.symphony.util.Sessions;
 import org.json.JSONObject;
 
 import java.util.Collections;
@@ -57,22 +55,19 @@ public class UserChannel implements WebSocketChannel {
      */
     @Override
     public void onConnect(final WebSocketSession session) {
-        final Session httpSession = session.getHttpSession();
-
-        final JSONObject user = new JSONObject(httpSession.getAttribute(User.USER));
+        final JSONObject user = Sessions.currentUser(session);
         if (null == user) {
             return;
         }
 
         final String userId = user.optString(Keys.OBJECT_ID);
-        final Set<WebSocketSession> userSessions = SESSIONS.getOrDefault(userId, Collections.newSetFromMap(new ConcurrentHashMap()));
+        final Set<WebSocketSession> userSessions = SESSIONS.computeIfAbsent(userId,
+                key -> Collections.newSetFromMap(new ConcurrentHashMap<>()));
         userSessions.add(session);
-
-        SESSIONS.put(userId, userSessions);
 
         final BeanManager beanManager = BeanManager.getInstance();
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
-        final String ip = httpSession.getAttribute(Common.IP);
+        final String ip = user.optString(UserExt.USER_LATEST_LOGIN_IP);
         userMgmtService.updateOnlineStatus(userId, ip, true, true);
     }
 
@@ -93,17 +88,15 @@ public class UserChannel implements WebSocketChannel {
      */
     @Override
     public void onMessage(final Message message) {
-        final Session session = message.session.getHttpSession();
-        final String userStr = session.getAttribute(User.USER);
-        if (null == userStr) {
+        final JSONObject user = Sessions.currentUser(message.session);
+        if (null == user) {
             return;
         }
-        final JSONObject user = new JSONObject(userStr);
 
         final String userId = user.optString(Keys.OBJECT_ID);
         final BeanManager beanManager = BeanManager.getInstance();
         final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
-        final String ip = session.getAttribute(Common.IP);
+        final String ip = user.optString(UserExt.USER_LATEST_LOGIN_IP);
         userMgmtService.updateOnlineStatus(userId, ip, true, true);
     }
 
@@ -148,26 +141,16 @@ public class UserChannel implements WebSocketChannel {
      * @param session the specified session
      */
     private void removeSession(final WebSocketSession session) {
-        final Session httpSession = session.getHttpSession();
-        final String userStr = httpSession.getAttribute(User.USER);
-        if (null == userStr) {
-            return;
-        }
-        final JSONObject user = new JSONObject(userStr);
-        final String userId = user.optString(Keys.OBJECT_ID);
-        final BeanManager beanManager = BeanManager.getInstance();
-        final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
-        final String ip = httpSession.getAttribute(Common.IP);
-
-        Set<WebSocketSession> userSessions = SESSIONS.get(userId);
-        if (null == userSessions) {
-            userMgmtService.updateOnlineStatus(userId, ip, false, false);
-            return;
-        }
-
-        userSessions.remove(session);
-        if (userSessions.isEmpty()) {
-            userMgmtService.updateOnlineStatus(userId, ip, false, false);
+        for (final Map.Entry<String, Set<WebSocketSession>> entry : SESSIONS.entrySet()) {
+            final Set<WebSocketSession> userSessions = entry.getValue();
+            if (!userSessions.remove(session)) {
+                continue;
+            }
+            if (userSessions.isEmpty()) {
+                final BeanManager beanManager = BeanManager.getInstance();
+                final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
+                userMgmtService.updateOnlineStatus(entry.getKey(), "", false, false);
+            }
             return;
         }
     }

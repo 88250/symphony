@@ -29,6 +29,7 @@ import org.b3log.latke.model.User;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.service.ActivityMgmtService;
 import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.util.Sessions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -96,12 +97,11 @@ public class GobangChannel implements WebSocketChannel {
      */
     @Override
     public void onConnect(final WebSocketSession session) {
-        final String userStr = session.getHttpSession().getAttribute(User.USER);
-        if (null == userStr) {
+        final JSONObject user = Sessions.currentUser(session);
+        if (null == user) {
             return;
         }
 
-        final JSONObject user = new JSONObject(userStr);
         final String userId = user.optString(Keys.OBJECT_ID);
         final String userName = user.optString(User.USER_NAME);
         boolean playing = false;
@@ -197,9 +197,19 @@ public class GobangChannel implements WebSocketChannel {
      */
     @Override
     public void onMessage(final Message message) throws JSONException {
-        JSONObject jsonObject = new JSONObject(message);
-        final String player = jsonObject.optString("player");
+        final JSONObject user = Sessions.currentUser(message.session);
+        if (null == user) {
+            return;
+        }
+        final String player = user.optString(Keys.OBJECT_ID);
+        if (SESSIONS.get(player) != message.session) {
+            return;
+        }
+        final JSONObject jsonObject = new JSONObject(message.text);
         final String anti = getAntiPlayer(player);
+        if (null == anti) {
+            return;
+        }
         JSONObject sendText = new JSONObject();
         final BeanManager beanManager = BeanManager.getInstance();
         switch (jsonObject.optInt("type")) {
