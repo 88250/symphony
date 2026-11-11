@@ -32,6 +32,7 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Link;
 import org.b3log.symphony.repository.LinkRepository;
 import org.b3log.symphony.util.Links;
+import org.b3log.symphony.util.Networks;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -65,6 +66,10 @@ public class LinkMgmtService {
      * @param url the specified URL
      */
     public void addLink(final String url) {
+        if (!Networks.isSafeHttpUrl(url)) {
+            return;
+        }
+
         JSONObject link = linkRepository.getLink(url);
         final int clickCnt = null != link ? link.optInt(Link.LINK_CLICK_CNT) + 1 : 0;
         if (null != link) {
@@ -187,11 +192,16 @@ public class LinkMgmtService {
         @Override
         public void run() {
             final String linkAddr = link.optString(Link.LINK_ADDR);
+            if (!Networks.isSafeHttpUrl(linkAddr)) {
+                countDownLatch.countDown();
+                return;
+            }
+
             final long start = System.currentTimeMillis();
             int responseCode = 0;
             try {
                 final int TIMEOUT = 5000;
-                final HttpResponse response = HttpRequest.get(linkAddr).timeout(TIMEOUT).followRedirects(true).header(Common.USER_AGENT, Symphonys.USER_AGENT_BOT).send();
+                final HttpResponse response = HttpRequest.get(linkAddr).timeout(TIMEOUT).followRedirects(false).header(Common.USER_AGENT, Symphonys.USER_AGENT_BOT).send();
                 responseCode = response.statusCode();
             } catch (final Exception e) {
                 LOGGER.trace("Link [url=" + linkAddr + "] accessibility check failed [msg=" + e.getMessage() + "]");

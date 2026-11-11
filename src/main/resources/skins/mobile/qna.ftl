@@ -52,7 +52,7 @@
                             <div class="title">
                                 <#list domain.domainTags as tag>
                                     <a class="tag" rel="nofollow"
-                                       href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a>
+                                       href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle?html}</a>
                                 </#list>
                             </div>
                         </li>

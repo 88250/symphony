@@ -57,7 +57,7 @@
                                 <#if domain.domainTags?size gt 0>
                                 <div id="tags${domain.oId}" class="domain-tags<#if 0 != domain_index> fn-none</#if>">
                                     <#list domain.domainTags as tag>
-                                    <span class="tag">${tag.tagTitle}</span>
+                                    <span class="tag">${tag.tagTitle?html}</span>
                                     </#list>
                                 </div>
                                 </#if>

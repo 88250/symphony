@@ -53,7 +53,7 @@
                 <div class="ft-fade ft-smaller">
                     <#list notification.articleTagObjs as articleTag>
                     <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">
-                        ${articleTag.tagTitle}</a>
+                        ${articleTag.tagTitle?html}</a>
                     </#list> •
                     ${notification.createTime?string('yyyy-MM-dd HH:mm')}
                 </div>

@@ -35,6 +35,7 @@ import org.b3log.symphony.model.Domain;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.*;
+import org.b3log.symphony.util.Escapes;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -286,6 +287,7 @@ public class TagQueryService {
             }
 
             Tag.fillDescription(ret);
+            ret.put(Tag.TAG_CSS, Escapes.sanitizeTagCSS(ret.optString(Tag.TAG_CSS)));
 
             if (StringUtils.isBlank(ret.optString(Tag.TAG_SEO_TITLE))) {
                 ret.put(Tag.TAG_SEO_TITLE, tagURI);
@@ -329,6 +331,7 @@ public class TagQueryService {
             }
 
             Tag.fillDescription(ret);
+            ret.put(Tag.TAG_CSS, Escapes.sanitizeTagCSS(ret.optString(Tag.TAG_CSS)));
 
             if (StringUtils.isBlank(ret.optString(Tag.TAG_SEO_TITLE))) {
                 ret.put(Tag.TAG_SEO_TITLE, tagTitle);

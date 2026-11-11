@@ -55,6 +55,7 @@
         </div>
         <div class="module-panel form fn-clear form--admin">
             <form action="${servePath}/admin/tag/${tag.oId}" method="POST">
+                <input type="hidden" name="csrfToken" value="${csrfToken}"/>
                 <div class="fn__flex">
                     <label>
                         <div>${tagLabel}${updateCaseOnlyLabel}</div>

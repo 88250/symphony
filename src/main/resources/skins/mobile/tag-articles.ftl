@@ -23,9 +23,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${tag.tagSeoTitle} - ${symphonyLabel}">
-        <meta name="keywords" content="${tag.tagSeoKeywords}"/>
-        <meta name="description" content="${tag.tagSeoDesc}"/>
+        <@head title="${tag.tagSeoTitle?html} - ${symphonyLabel}">
+        <meta name="keywords" content="${tag.tagSeoKeywords?html}"/>
+        <meta name="description" content="${tag.tagSeoDesc?html}"/>
         </@head>
     </head>
     <body>
@@ -34,12 +34,12 @@
             <div class="content">
                 <div class="fn-clear title wrapper">
                     <#if tag.tagIconPath != "">
-                    <div class="avatar fn-left" style="background-image:url('${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
+                    <div class="avatar fn-left" style="background-image:url('${tag.tagIconPath?html}')" alt="${tag.tagTitle?html}"></div>
                     </#if>
                     <h1 class="fn-inline">
                         <a rel="tag" 
                            title="${tag.tagURI}" 
-                           href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a>
+                           href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle?html}</a>
                     </h1> 
                     <#if tag.tagDomains?size gt 0>/</#if>
                     <#list tag.tagDomains as domain>
@@ -69,8 +69,8 @@
                     <li>
                         <a rel="tag" href="${servePath}/tag/${relatedTag.tagURI}">
                             <#if relatedTag.tagIconPath != "">
-                            <img src="${relatedTag.tagIconPath}" alt="${relatedTag.tagTitle}" /></#if>
-                            ${relatedTag.tagTitle}</a>
+                            <img src="${relatedTag.tagIconPath?html}" alt="${relatedTag.tagTitle?html}" /></#if>
+                            ${relatedTag.tagTitle?html}</a>
                         <div<#if relatedTag.tagDescription == ''> style="width:auto"</#if>>
                             <div>${relatedTag.tagDescription}</div>
                             <span class="fn-right">

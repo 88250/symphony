@@ -42,7 +42,7 @@
                             <ul class="tags fn-clear">
                                 <#list domain.domainTags as tag>
                                 <li>
-                                    <a class="ft-gray ft-13" rel="nofollow" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a> &nbsp;
+                                    <a class="ft-gray ft-13" rel="nofollow" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle?html}</a> &nbsp;
                                 </li>
                                 </#list>
                             </ul>

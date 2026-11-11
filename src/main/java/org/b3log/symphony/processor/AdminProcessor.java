@@ -44,6 +44,7 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.event.ArticleBaiduSender;
 import org.b3log.symphony.model.*;
+import org.b3log.symphony.processor.middleware.CSRFMidware;
 import org.b3log.symphony.processor.middleware.PermissionMidware;
 import org.b3log.symphony.processor.middleware.validate.UserRegister2ValidationMidware;
 import org.b3log.symphony.processor.middleware.validate.UserRegisterValidationMidware;
@@ -52,6 +53,8 @@ import org.b3log.symphony.util.Escapes;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.StatusCodes;
 import org.b3log.symphony.util.Symphonys;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -314,7 +317,9 @@ public class AdminProcessor {
         final BeanManager beanManager = BeanManager.getInstance();
         final AdminProcessor adminProcessor = beanManager.getReference(AdminProcessor.class);
         final PermissionMidware permissionMidware = beanManager.getReference(PermissionMidware.class);
+        final CSRFMidware csrfMidware = beanManager.getReference(CSRFMidware.class);
         final Handler[] middlewares = new Handler[]{permissionMidware::check};
+        final Handler[] csrfMiddlewares = new Handler[]{permissionMidware::check, csrfMidware::check};
 
         Dispatcher.get("/admin/auditlog", adminProcessor::showAuditlog, middlewares);
         Dispatcher.get("/admin/report/ignore/{reportId}", adminProcessor::makeReportIgnored, middlewares);
@@ -356,9 +361,9 @@ public class AdminProcessor {
         Dispatcher.get("/admin/user/{userId}", adminProcessor::showUser, middlewares);
         Dispatcher.get("/admin/add-user", adminProcessor::showAddUser, middlewares);
         Dispatcher.post("/admin/add-user", adminProcessor::addUser, middlewares);
-        Dispatcher.post("/admin/user/{userId}", adminProcessor::updateUser, middlewares);
-        Dispatcher.post("/admin/user/{userId}/email", adminProcessor::updateUserEmail, middlewares);
-        Dispatcher.post("/admin/user/{userId}/username", adminProcessor::updateUserName, middlewares);
+        Dispatcher.post("/admin/user/{userId}", adminProcessor::updateUser, csrfMiddlewares);
+        Dispatcher.post("/admin/user/{userId}/email", adminProcessor::updateUserEmail, csrfMiddlewares);
+        Dispatcher.post("/admin/user/{userId}/username", adminProcessor::updateUserName, csrfMiddlewares);
         Dispatcher.post("/admin/user/{userId}/charge-point", adminProcessor::chargePoint, middlewares);
         Dispatcher.post("/admin/user/{userId}/abuse-point", adminProcessor::abusePoint, middlewares);
         Dispatcher.post("/admin/user/{userId}/init-point", adminProcessor::initPoint, middlewares);
@@ -373,7 +378,7 @@ public class AdminProcessor {
         Dispatcher.post("/admin/misc", adminProcessor::updateMisc, middlewares);
         Dispatcher.get("/admin/tags", adminProcessor::showTags, middlewares);
         Dispatcher.get("/admin/tag/{tagId}", adminProcessor::showTag, middlewares);
-        Dispatcher.post("/admin/tag/{tagId}", adminProcessor::updateTag, middlewares);
+        Dispatcher.post("/admin/tag/{tagId}", adminProcessor::updateTag, csrfMiddlewares);
         Dispatcher.get("/admin/domains", adminProcessor::showDomains, middlewares);
         Dispatcher.get("/admin/domain/{domainId}", adminProcessor::showDomain, middlewares);
         Dispatcher.post("/admin/domain/{domainId}", adminProcessor::updateDomain, middlewares);
@@ -1312,6 +1317,12 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject user = userQueryService.getUser(userId);
+        if (null == user) {
+            context.sendError(404);
+            return;
+        }
+
+        user.remove(User.USER_PASSWORD);
         Escapes.escapeHTML(user);
         dataModel.put(User.USER, user);
 
@@ -1405,7 +1416,19 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject user = userQueryService.getUser(userId);
-        dataModel.put(User.USER, user);
+        if (null == user) {
+            context.sendError(404);
+            return;
+        }
+
+        final JSONObject currentUser = Sessions.getUser();
+        final String currentRole = null != currentUser ? currentUser.optString(User.USER_ROLE) : "";
+        final String targetRole = user.optString(User.USER_ROLE);
+        if (Role.ROLE_ID_C_ADMIN.equals(targetRole) && !Role.ROLE_ID_C_ADMIN.equals(currentRole)) {
+            context.sendError(403);
+            return;
+        }
+
         final String oldRole = user.optString(User.USER_ROLE);
 
         final JSONObject result = roleQueryService.getRoles(1, Integer.MAX_VALUE, 10);
@@ -1458,8 +1481,7 @@ public class AdminProcessor {
             }
         }
 
-        final JSONObject currentUser = Sessions.getUser();
-        if (!Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE))) {
+        if (!Role.ROLE_ID_C_ADMIN.equals(currentRole)) {
             user.put(User.USER_ROLE, oldRole);
         }
 
@@ -1471,6 +1493,9 @@ public class AdminProcessor {
             return;
         }
 
+        user.remove(User.USER_PASSWORD);
+        Escapes.escapeHTML(user);
+        dataModel.put(User.USER, user);
         dataModelService.fillHeaderAndFooter(context, dataModel);
     }
 
@@ -1484,6 +1509,15 @@ public class AdminProcessor {
         final Request request = context.getRequest();
 
         final JSONObject user = userQueryService.getUser(userId);
+        if (null == user) {
+            context.sendError(404);
+            return;
+        }
+        if (!canModifyTargetUser(user)) {
+            context.sendError(403);
+            return;
+        }
+
         final String oldEmail = user.optString(User.USER_EMAIL);
         final String newEmail = context.param(User.USER_EMAIL);
 
@@ -1519,6 +1553,15 @@ public class AdminProcessor {
         final Request request = context.getRequest();
 
         final JSONObject user = userQueryService.getUser(userId);
+        if (null == user) {
+            context.sendError(404);
+            return;
+        }
+        if (!canModifyTargetUser(user)) {
+            context.sendError(403);
+            return;
+        }
+
         final String oldUserName = user.optString(User.USER_NAME);
         final String newUserName = context.param(User.USER_NAME);
 
@@ -2057,6 +2100,7 @@ public class AdminProcessor {
             return;
         }
 
+        Escapes.escapeHTML(tag);
         dataModel.put(Tag.TAG, tag);
 
         dataModelService.fillHeaderAndFooter(context, dataModel);
@@ -2075,13 +2119,37 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         JSONObject tag = tagQueryService.getTag(tagId);
+        if (null == tag) {
+            context.sendError(404);
+            return;
+        }
 
+        final JSONObject currentUser = Sessions.getUser();
+        final String currentRole = null != currentUser ? currentUser.optString(User.USER_ROLE) : "";
         final String oldTitle = tag.optString(Tag.TAG_TITLE);
 
         final Iterator<String> parameterNames = request.getParameterNames().iterator();
         while (parameterNames.hasNext()) {
             final String name = parameterNames.next();
             final String value = context.param(name);
+
+            if (Tag.TAG_CSS.equals(name) && !Role.ROLE_ID_C_ADMIN.equals(currentRole)) {
+                continue;
+            }
+
+            if (Tag.TAG_CSS.equals(name)) {
+                tag.put(name, Escapes.sanitizeTagCSS(value));
+                continue;
+            }
+
+            if (Tag.TAG_ICON_PATH.equals(name) && !isSafeTagIconPath(value)) {
+                continue;
+            }
+
+            if (Tag.TAG_SEO_DESC.equals(name) || Tag.TAG_SEO_KEYWORDS.equals(name) || Tag.TAG_SEO_TITLE.equals(name)) {
+                tag.put(name, Jsoup.clean(value, Safelist.none()));
+                continue;
+            }
 
             if (name.equals(Tag.TAG_REFERENCE_CNT)
                     || name.equals(Tag.TAG_COMMENT_CNT)
@@ -2110,9 +2178,50 @@ public class AdminProcessor {
         }
 
         tag = tagQueryService.getTag(tagId);
+        if (null == tag) {
+            context.sendError(404);
+            return;
+        }
+
+        Escapes.escapeHTML(tag);
         dataModel.put(Tag.TAG, tag);
 
         dataModelService.fillHeaderAndFooter(context, dataModel);
+    }
+
+    /**
+     * Checks whether the current user can modify the specified target user.
+     *
+     * @param targetUser the specified target user
+     * @return {@code true} if it is allowed, returns {@code false} otherwise
+     */
+    private static boolean canModifyTargetUser(final JSONObject targetUser) {
+        if (!Role.ROLE_ID_C_ADMIN.equals(targetUser.optString(User.USER_ROLE))) {
+            return true;
+        }
+
+        final JSONObject currentUser = Sessions.getUser();
+        return null != currentUser && Role.ROLE_ID_C_ADMIN.equals(currentUser.optString(User.USER_ROLE));
+    }
+
+    /**
+     * Checks whether the specified tag icon path is safe to output.
+     *
+     * @param path the specified tag icon path
+     * @return {@code true} if it is safe, returns {@code false} otherwise
+     */
+    private static boolean isSafeTagIconPath(final String path) {
+        if (StringUtils.isBlank(path)) {
+            return true;
+        }
+
+        if (StringUtils.containsWhitespace(path)
+                || StringUtils.containsAny(path, '"', '\'', '<', '>', '\\')) {
+            return false;
+        }
+
+        final String lower = path.toLowerCase(Locale.ROOT);
+        return !lower.startsWith("javascript:") && !lower.startsWith("data:") && !lower.startsWith("vbscript:");
     }
 
     /**

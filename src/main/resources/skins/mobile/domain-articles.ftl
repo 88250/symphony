@@ -47,7 +47,7 @@
                             <ul class="module-list domain">
                                 <li>
                                     <#list domain.domainTags as tag>
-                                    <a class="tag" rel="nofollow" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a>
+                                    <a class="tag" rel="nofollow" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle?html}</a>
                                     </#list>
                                 </li>
                             </ul>

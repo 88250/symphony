@@ -78,7 +78,7 @@
         <ul class="tags fn-clear">
             <#list navTrendTags as trendTag>
             <li>
-                <a class="btn small" rel="nofollow" href="${servePath}/tag/${trendTag.tagURI}">${trendTag.tagTitle}</a>
+                <a class="btn small" rel="nofollow" href="${servePath}/tag/${trendTag.tagURI}">${trendTag.tagTitle?html}</a>
             </li>
             </#list>
         </ul>
@@ -120,8 +120,8 @@
             <li>
                 <a rel="nofollow" href="${servePath}/tag/${tag.tagURI}">
                     <#if tag.tagIconPath!="">
-                    <img src="${tag.tagIconPath}" alt="${tag.tagTitle}" /></#if>
-                    ${tag.tagTitle}
+                    <img src="${tag.tagIconPath?html}" alt="${tag.tagTitle?html}" /></#if>
+                    ${tag.tagTitle?html}
                 </a>
                 <div<#if tag.tagDescription == ''> style="width:auto"</#if>>
                     <div>${tag.tagDescription}</div>

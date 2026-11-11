@@ -29,7 +29,7 @@
                     <a rel="nofollow" class="slogan ft-a-title" href="${servePath}/domain/${domain.domainURI}">${domain.domainTitle}</a>
                     <div class="title">
                         <#list domain.domainTags as tag>
-                        <a class="ft-gray ft-13" rel="nofollow" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a> &nbsp;
+                        <a class="ft-gray ft-13" rel="nofollow" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle?html}</a> &nbsp;
                         </#list>
                     </div>
                 </li>

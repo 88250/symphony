@@ -70,6 +70,11 @@ public class CaptchaProcessor {
     public static final String CAPTCHA = "captcha";
 
     /**
+     * Key of captcha generation time.
+     */
+    public static final String CAPTCHA_TIME = "captchaTime";
+
+    /**
      * Captchas.
      */
     public static final Set<String> CAPTCHAS = new HashSet<>();
@@ -202,6 +207,7 @@ public class CaptchaProcessor {
             final BufferedImage bufferedImage = captcha.getImage();
 
             wrong.put(CAPTCHA, challenge);
+            wrong.put(CAPTCHA_TIME, System.currentTimeMillis());
 
             response.setHeader("Pragma", "no-cache");
             response.setHeader("Cache-Control", "no-cache");

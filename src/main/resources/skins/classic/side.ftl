@@ -101,8 +101,8 @@
             <li>
                 <a rel="nofollow" href="${servePath}/tag/${tag.tagURI}">
                     <#if tag.tagIconPath!="">
-                    <img src="${tag.tagIconPath}" alt="${tag.tagTitle}" /></#if>
-                    ${tag.tagTitle}
+                    <img src="${tag.tagIconPath?html}" alt="${tag.tagTitle?html}" /></#if>
+                    ${tag.tagTitle?html}
                 </a>
                 <div<#if tag.tagDescription == ''> style="width:auto"</#if>>
                     <div>${tag.tagDescription}</div>
@@ -152,7 +152,7 @@
         <ul class="fn-clear tags">
             <#list newTags as newTag>
             <li>
-                <a class="ft-gray ft-13" rel="nofollow" href="${servePath}/tag/${newTag.tagURI}">${newTag.tagTitle}</a> &nbsp;
+                <a class="ft-gray ft-13" rel="nofollow" href="${servePath}/tag/${newTag.tagURI}">${newTag.tagTitle?html}</a> &nbsp;
             </li>
             </#list>
         </ul>

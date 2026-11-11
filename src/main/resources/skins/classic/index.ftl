@@ -93,84 +93,84 @@
                         <div class="metro-line fn-flex">
                             <div class="metro-item">
                                 <a class="preview" href="${servePath}/tag/${tag0.tagURI}">
-                                    <img src="${tag0.tagIconPath}" alt="${tag0.tagTitle}">
-                                    <b>${tag0.tagTitle}</b>
+                                    <img src="${tag0.tagIconPath?html}" alt="${tag0.tagTitle?html}">
+                                    <b>${tag0.tagTitle?html}</b>
                                 </a>
                             </div>
                             <div class="metro-item">
                                 <a class="preview" href="${servePath}/tag/${tag1.tagURI}">
-                                    <img src="${tag1.tagIconPath}" alt="${tag1.tagTitle}">
-                                    <b>${tag1.tagTitle}</b>
+                                    <img src="${tag1.tagIconPath?html}" alt="${tag1.tagTitle?html}">
+                                    <b>${tag1.tagTitle?html}</b>
                                 </a>
                             </div>
                             <div class="metro-item">
                                 <a class="preview" href="${servePath}/tag/${tag2.tagURI}">
-                                    <img src="${tag2.tagIconPath}" alt="${tag2.tagTitle}">
-                                    <b>${tag2.tagTitle}</b>
+                                    <img src="${tag2.tagIconPath?html}" alt="${tag2.tagTitle?html}">
+                                    <b>${tag2.tagTitle?html}</b>
                                 </a>
                             </div>
                             <div class="metro-item">
                                 <a class="preview" href="${servePath}/tag/${tag3.tagURI}">
-                                    <img src="${tag3.tagIconPath}" alt="${tag3.tagTitle}">
-                                    <b>${tag3.tagTitle}</b>
+                                    <img src="${tag3.tagIconPath?html}" alt="${tag3.tagTitle?html}">
+                                    <b>${tag3.tagTitle?html}</b>
                                 </a>
                             </div>
                             <div class="metro-item">
                                 <a class="preview" href="${servePath}/tag/${tag4.tagURI}">
-                                    <img src="${tag4.tagIconPath}" alt="${tag4.tagTitle}">
-                                    <b>${tag4.tagTitle}</b>
+                                    <img src="${tag4.tagIconPath?html}" alt="${tag4.tagTitle?html}">
+                                    <b>${tag4.tagTitle?html}</b>
                                 </a>
                             </div>
                         </div>
                         <div class="metro-line fn-flex">
                             <div class="metro-item">
                                 <a class="preview" href="${servePath}/tag/${tag5.tagURI}">
-                                    <img src="${tag5.tagIconPath}" alt="${tag5.tagTitle}">
-                                    <b>${tag5.tagTitle}</b>
+                                    <img src="${tag5.tagIconPath?html}" alt="${tag5.tagTitle?html}">
+                                    <b>${tag5.tagTitle?html}</b>
                                 </a>
                             </div>
                             <div class="metro-item">
                                 <a class="preview" href="${servePath}/tag/${tag6.tagURI}">
-                                    <img src="${tag6.tagIconPath}" alt="${tag6.tagTitle}">
-                                    <b>${tag6.tagTitle}</b>
+                                    <img src="${tag6.tagIconPath?html}" alt="${tag6.tagTitle?html}">
+                                    <b>${tag6.tagTitle?html}</b>
                                 </a>
                             </div>
                             <div class="metro-item">
                                 <a class="preview" href="${servePath}/tag/${tag7.tagURI}">
-                                    <img src="${tag7.tagIconPath}" alt="${tag7.tagTitle}">
-                                    <b>${tag7.tagTitle}</b>
+                                    <img src="${tag7.tagIconPath?html}" alt="${tag7.tagTitle?html}">
+                                    <b>${tag7.tagTitle?html}</b>
                                 </a>
                             </div>
                             <div class="metro-item">
                                 <a class="preview" href="${servePath}/tag/${tag8.tagURI}">
-                                    <img src="${tag8.tagIconPath}" alt="${tag8.tagTitle}">
-                                    <b>${tag8.tagTitle}</b>
+                                    <img src="${tag8.tagIconPath?html}" alt="${tag8.tagTitle?html}">
+                                    <b>${tag8.tagTitle?html}</b>
                                 </a>
                             </div>
                             <div class="metro-item">
                                 <a class="preview" href="${servePath}/tag/${tag9.tagURI}">
-                                    <img src="${tag9.tagIconPath}" alt="${tag9.tagTitle}">
-                                    <b>${tag9.tagTitle}</b>
+                                    <img src="${tag9.tagIconPath?html}" alt="${tag9.tagTitle?html}">
+                                    <b>${tag9.tagTitle?html}</b>
                                 </a>
                             </div>
                         </div>
                         <div class="metro-line fn-flex">
                             <div class="metro-item">
                                 <a class="preview" href="${servePath}/tag/${tag10.tagURI}">
-                                    <img src="${tag10.tagIconPath}" alt="${tag10.tagTitle}">
-                                    <b>${tag10.tagTitle}</b>
+                                    <img src="${tag10.tagIconPath?html}" alt="${tag10.tagTitle?html}">
+                                    <b>${tag10.tagTitle?html}</b>
                                 </a>
                             </div>
                             <div class="metro-item">
                                 <a class="preview" href="${servePath}/tag/${tag11.tagURI}">
-                                    <img src="${tag11.tagIconPath}" alt="${tag11.tagTitle}">
-                                    <b>${tag11.tagTitle}</b>
+                                    <img src="${tag11.tagIconPath?html}" alt="${tag11.tagTitle?html}">
+                                    <b>${tag11.tagTitle?html}</b>
                                 </a>
                             </div>
                             <div class="metro-item">
                                 <a class="preview" href="${servePath}/tag/${tag12.tagURI}">
-                                    <img src="${tag12.tagIconPath}" alt="${tag12.tagTitle}">
-                                    <b>${tag12.tagTitle}</b>
+                                    <img src="${tag12.tagIconPath?html}" alt="${tag12.tagTitle?html}">
+                                    <b>${tag12.tagTitle?html}</b>
                                 </a>
                             </div>
                             <div class="metro-item">

@@ -29,6 +29,7 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.DataModelService;
 import org.b3log.symphony.service.LinkMgmtService;
 import org.b3log.symphony.util.Headers;
+import org.b3log.symphony.util.Networks;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -75,6 +76,11 @@ public class ForwardProcessor {
 
         final String referer = Headers.getHeader(request, "referer", "");
         if (!StringUtils.startsWith(referer, Latkes.getServePath())) {
+            context.sendRedirect(Latkes.getServePath());
+            return;
+        }
+
+        if (!Networks.isSafeHttpUrl(to)) {
             context.sendRedirect(Latkes.getServePath());
             return;
         }

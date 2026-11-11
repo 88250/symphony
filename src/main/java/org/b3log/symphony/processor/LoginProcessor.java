@@ -666,13 +666,26 @@ public class LoginProcessor {
             }
 
             final int wrongCount = wrong.optInt(Common.WRON_COUNT);
+            if (wrongCount >= 20
+                    && System.currentTimeMillis() - wrong.optLong("wrongTime") < 15 * 60 * 1000L) {
+                context.renderMsg(langPropsService.get("loginFailLabel"));
+                return;
+            }
+
             if (wrongCount > 3) {
                 final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
-                if (!StringUtils.equals(wrong.optString(CaptchaProcessor.CAPTCHA), captcha)) {
+                final long captchaTime = wrong.optLong(CaptchaProcessor.CAPTCHA_TIME);
+                if (!wrong.has(CaptchaProcessor.CAPTCHA)
+                        || StringUtils.isBlank(captcha)
+                        || 5 * 60 * 1000L < System.currentTimeMillis() - captchaTime
+                        || !StringUtils.equals(wrong.optString(CaptchaProcessor.CAPTCHA), captcha)) {
                     context.renderMsg(langPropsService.get("captchaErrorLabel"));
                     context.renderJSONValue(Common.NEED_CAPTCHA, userId);
                     return;
                 }
+
+                wrong.remove(CaptchaProcessor.CAPTCHA);
+                wrong.remove(CaptchaProcessor.CAPTCHA_TIME);
             }
 
             final String userPassword = user.optString(User.USER_PASSWORD);
@@ -694,6 +707,7 @@ public class LoginProcessor {
             }
 
             wrong.put(Common.WRON_COUNT, wrongCount + 1);
+            wrong.put("wrongTime", System.currentTimeMillis());
             WRONG_PWD_TRIES.put(userId, wrong);
 
             context.renderMsg(langPropsService.get("wrongPwdLabel"));

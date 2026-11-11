@@ -27,14 +27,14 @@
         <li class="fn-flex">
             <a href="${servePath}/tag/${followingTag.tagURI}">
                 <#if "" != followingTag.tagIconPath>
-                <div title="${followingTag.tagTitle}" class="avatar fn-left" style="background-image:url('${followingTag.tagIconPath}')"></div>
+                <div title="${followingTag.tagTitle?html}" class="avatar fn-left" style="background-image:url('${followingTag.tagIconPath?html}')"></div>
                 <#else>
                 <svg class="avatar"><use xlink:href="#tags"></use></svg>
                 </#if>
             </a>
             <div class="fn-flex-1">
                 <h3 class="fn-inline">
-                    <a href="${servePath}/tag/${followingTag.tagURI}">${followingTag.tagTitle}</a>
+                    <a href="${servePath}/tag/${followingTag.tagURI}">${followingTag.tagTitle?html}</a>
                 </h3>
                 &nbsp;
                 <#if isLoggedIn> 

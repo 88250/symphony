@@ -41,16 +41,16 @@
                 <a href="${servePath}/tag/${followingTag.tagURI}">
                     <#if "" != followingTag.tagIconPath>
                     <div class="avatar fn-left ft-gray tooltipped tooltipped-se"  
-                         aria-label="${followingTag.tagTitle}" style="background-image:url('${followingTag.tagIconPath}')"></div>
+                         aria-label="${followingTag.tagTitle?html}" style="background-image:url('${followingTag.tagIconPath?html}')"></div>
                     <#else>
-                        <div class="tooltipped tooltipped-se fn-left ft-a-title" aria-label="${followingTag.tagTitle}">
+                        <div class="tooltipped tooltipped-se fn-left ft-a-title" aria-label="${followingTag.tagTitle?html}">
                             <svg class="avatar"><use xlink:href="#tags"></use></svg>
                         </div>
                     </#if>
                 </a>
                 <div class="fn-flex-1">
                     <h2 class="fn-inline">
-                        <a href="${servePath}/tag/${followingTag.tagURI}">${followingTag.tagTitle}</a>
+                        <a href="${servePath}/tag/${followingTag.tagURI}">${followingTag.tagTitle?html}</a>
                     </h2>
                     &nbsp;
                     <#if isLoggedIn> 

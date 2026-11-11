@@ -73,7 +73,10 @@ public class CSRFMidware {
         }
 
         // 2. Check Token
-        final String clientToken = context.header(Common.CSRF_TOKEN);
+        String clientToken = context.header(Common.CSRF_TOKEN);
+        if (StringUtils.isBlank(clientToken)) {
+            clientToken = context.param(Common.CSRF_TOKEN);
+        }
         final String serverToken = Sessions.getCSRFToken(context);
 
         if (!StringUtils.equals(clientToken, serverToken)) {

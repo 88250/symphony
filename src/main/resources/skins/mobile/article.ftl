@@ -24,7 +24,7 @@
 <html>
     <head>
         <@head title="${article.articleTitle} - ${symphonyLabel}">
-        <meta name="keywords" content="<#list article.articleTagObjs as articleTag>${articleTag.tagTitle}<#if articleTag?has_next>,</#if></#list>" />
+        <meta name="keywords" content="<#list article.articleTagObjs as articleTag>${articleTag.tagTitle?html}<#if articleTag?has_next>,</#if></#list>" />
         <meta name="description" content="${article.articlePreviewContent}"/>
         <#if 1 == article.articleStatus || 1 == article.articleAuthor.userStatus || 1 == article.articleType>
         <meta name="robots" content="NOINDEX,NOFOLLOW" />
@@ -153,7 +153,7 @@
                         </#if>
                         <div class="article-tags">
                         <#list article.articleTagObjs as articleTag>
-                        <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a>&nbsp;
+                        <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle?html}</a>&nbsp;
                         </#list>
                         </div>
                     </div>

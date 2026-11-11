@@ -60,6 +60,13 @@ public class BeforeRequestHandler implements Handler {
 
     @Override
     public void handle(final RequestContext context) {
+        final Request request = context.getRequest();
+        if (request.isStaticResource() && isUnsafeStaticUri(request.getRequestURI())) {
+            context.sendError(404);
+            context.abort();
+            return;
+        }
+
         Stopwatchs.start("Request initialized [" + context.requestURI() + "]");
 
         Locales.setLocale(Latkes.getLocale());
@@ -70,6 +77,22 @@ public class BeforeRequestHandler implements Handler {
 
         fillBotAttrs(context);
         resolveSkinDir(context);
+    }
+
+    /**
+     * Checks whether the specified static resource URI contains encoded path separators or parent directory traversal.
+     *
+     * @param uri the specified request URI
+     * @return {@code true} if it is unsafe, returns {@code false} otherwise
+     */
+    private static boolean isUnsafeStaticUri(final String uri) {
+        if (StringUtils.isBlank(uri)) {
+            return false;
+        }
+
+        final String lower = uri.toLowerCase(Locale.ROOT);
+        return lower.contains("%2e") || lower.contains("%2f") || lower.contains("%5c")
+                || lower.contains("%00") || lower.contains("..");
     }
 
     /**

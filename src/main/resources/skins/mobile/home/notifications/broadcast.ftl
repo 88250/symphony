@@ -35,7 +35,7 @@
             <div class="ft-gray">
                 <#list notification.articleTagObjs as articleTag>
                 <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">
-                    ${articleTag.tagTitle}</a>
+                    ${articleTag.tagTitle?html}</a>
                 </#list> <br/>
                 <svg><use xlink:href="#date"></use></svg>
                 ${notification.createTime?string('yyyy-MM-dd HH:mm')}

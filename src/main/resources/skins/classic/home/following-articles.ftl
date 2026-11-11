@@ -49,7 +49,7 @@
                 <span class="ft-fade ft-smaller">
                     <#list article.articleTagObjs as articleTag>
                     <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">
-                        ${articleTag.tagTitle}</a>
+                        ${articleTag.tagTitle?html}</a>
                     </#list>  •  
                     ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
                 </span> 

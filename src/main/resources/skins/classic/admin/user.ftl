@@ -127,10 +127,11 @@
         </div>
         <div class="module-panel form fn-clear form--admin">
             <form action="${servePath}/admin/user/${user.oId}" method="POST">
+                <input type="hidden" name="csrfToken" value="${csrfToken}"/>
                 <div class="fn__flex">
                     <label>
                         <div>${passwordLabel}</div>
-                        <input type="text" id="userPassword" name="userPassword" value="${user.userPassword}"/>
+                        <input type="password" id="userPassword" name="userPassword" value="" autocomplete="new-password"/>
                     </label>
                     <label class="mid">
                         <div>${nicknameLabel}</div>
@@ -361,6 +362,7 @@
         </div>
         <div class="module-panel form fn-clear form--admin">
             <form class="fn__flex" action="${servePath}/admin/user/${user.oId}/email" method="POST">
+                <input type="hidden" name="csrfToken" value="${csrfToken}"/>
                 <label>
                     <div>${userEmailLabel}</div>
                     <input type="text" id="userEmail" name="userEmail" value="${user.userEmail}"/>
@@ -371,6 +373,7 @@
                 </div>
             </form>
             <form action="${servePath}/admin/user/${user.oId}/username" method="POST" class="fn__flex">
+                <input type="hidden" name="csrfToken" value="${csrfToken}"/>
                 <label>
                     <div>${userNameLabel}</div>
                     <input type="text" name="userName" value="${user.userName}"/>

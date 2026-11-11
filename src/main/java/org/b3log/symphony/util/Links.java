@@ -69,6 +69,10 @@ public final class Links {
      * </pre>
      */
     public static JSONObject getLink(final String url) {
+        if (!Networks.isSafeHttpUrl(url)) {
+            return null;
+        }
+
         try {
             return Symphonys.EXECUTOR_SERVICE.submit(new Spider(url)).get();
         } catch (final Exception e) {
@@ -104,7 +108,23 @@ public final class Links {
                 final JSONObject ret = new JSONObject();
 
                 // Get meta info of the URL
-                final Connection.Response res = Jsoup.connect(url).timeout(TIMEOUT).followRedirects(true).execute();
+                Connection.Response res = Jsoup.connect(url).timeout(TIMEOUT).followRedirects(false).execute();
+                int redirects = 0;
+                String currentUrl = url;
+                while (300 <= res.statusCode() && 400 > res.statusCode() && 5 > redirects) {
+                    final String location = res.header("Location");
+                    if (StringUtils.isBlank(location)) {
+                        return null;
+                    }
+
+                    currentUrl = new URL(new URL(currentUrl), location).toString();
+                    if (!Networks.isSafeHttpUrl(currentUrl)) {
+                        return null;
+                    }
+
+                    res = Jsoup.connect(currentUrl).timeout(TIMEOUT).followRedirects(false).execute();
+                    redirects++;
+                }
                 if (200 != res.statusCode()) {
                     return null;
                 }
@@ -120,6 +140,7 @@ public final class Links {
                 if (!containsChinese(title)) {
                     return null;
                 }
+                title = Jsoup.parse(title).text();
                 title = Emotions.toAliases(title);
 
                 final String keywords = StringUtils.substringBetween(html, "eywords\" content=\"", "\"");

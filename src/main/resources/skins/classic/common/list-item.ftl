@@ -20,7 +20,7 @@
 <li>
     <div class="fn-clear ft-smaller list-info">
         <#list article.articleTagObjs as articleTag>
-        <a rel="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a> &nbsp;
+        <a rel="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle?html}</a> &nbsp;
         </#list>
 
         <span class="fn-right ft-fade">

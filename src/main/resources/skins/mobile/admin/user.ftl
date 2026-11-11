@@ -88,8 +88,9 @@
         </div>
         <div class="module-panel form fn-clear">
             <form action="${servePath}/admin/user/${user.oId}" method="POST">
+                <input type="hidden" name="csrfToken" value="${csrfToken}"/>
                 <label for="userPassword">${passwordLabel}</label>
-                <input type="text" id="userPassword" name="userPassword" value="${user.userPassword}" />
+                <input type="password" id="userPassword" name="userPassword" value="" autocomplete="new-password" />
 
                 <label for="userNickname">${nicknameLabel}</label>
                 <input type="text" id="userNickname" name="userNickname" value="${user.userNickname}" />
@@ -252,6 +253,7 @@
         </div>
         <div class="module-panel form fn-clear">
             <form action="${servePath}/admin/user/${user.oId}/email" method="POST">
+                <input type="hidden" name="csrfToken" value="${csrfToken}"/>
                 <label for="userEmail">${userEmailLabel}</label>
                 <input type="text" id="userEmail" name="userEmail" value="${user.userEmail}" />
 
@@ -261,6 +263,7 @@
             <br/>
 
             <form action="${servePath}/admin/user/${user.oId}/username" method="POST">
+                <input type="hidden" name="csrfToken" value="${csrfToken}"/>
                 <label for="userName">${userNameLabel}</label>
                 <input type="text" name="userName" value="${user.userName}" />
 

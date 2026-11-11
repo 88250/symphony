@@ -17,10 +17,16 @@
  */
 package org.b3log.symphony.util;
 
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.json.JSONObject;
 import org.owasp.encoder.Encode;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Locale;
 
 /**
  * Escape utilities.
@@ -64,6 +70,44 @@ public final class Escapes {
                 jsonObject.put(key, Encode.forHtml(jsonObject.optString(key)));
             }
         }
+    }
+
+    /**
+     * Sanitizes the specified tag CSS for output.
+     * <p>
+     * Only {@code style} tags are kept. Script-like content is removed.
+     * </p>
+     *
+     * @param css the specified tag CSS
+     * @return sanitized tag CSS
+     */
+    public static String sanitizeTagCSS(final String css) {
+        if (StringUtils.isBlank(css)) {
+            return "";
+        }
+
+        String ret = css;
+        if (StringUtils.containsIgnoreCase(ret, "<style")) {
+            final Document doc = Jsoup.parseBodyFragment(ret);
+            for (final Element el : new ArrayList<>(doc.body().select("*"))) {
+                final String tagName = el.tagName().toLowerCase(Locale.ROOT);
+                if ("style".equals(tagName) || "body".equals(tagName)) {
+                    continue;
+                }
+
+                el.unwrap();
+            }
+            ret = doc.body().html();
+        } else {
+            ret = StringUtils.remove(ret, '<');
+        }
+
+        ret = ret.replaceAll("(?i)on\\w+\\s*=\\s*(\"|').*?\\1", "");
+        ret = ret.replaceAll("(?i)javascript\\s*:", "");
+        ret = ret.replaceAll("(?i)expression\\s*\\(", "");
+        ret = ret.replaceAll("(?i)@import", "");
+
+        return ret;
     }
 
     /**

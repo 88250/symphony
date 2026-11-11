@@ -37,7 +37,7 @@
                 <span class="ft-gray">
                     <#list article.articleTagObjs as articleTag>
                     <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">
-                        ${articleTag.tagTitle}</a>
+                        ${articleTag.tagTitle?html}</a>
                     </#list><br/>
                     <svg><use xlink:href="#date"></use></svg>
                     ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}

@@ -43,11 +43,11 @@
                                 <#list trendTags as tag>
                                 <li class="fn-flex">
                                     <#if tag.tagIconPath!="">
-                                    <div class="avatar" style="background-image:url('${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
+                                    <div class="avatar" style="background-image:url('${tag.tagIconPath?html}')" alt="${tag.tagTitle?html}"></div>
                                     </#if>
                                     <div class="fn-flex-1">
                                         <div class="fn-clear">
-                                            <h3 class="fn-left"><a rel="tag" class="ft-a-title" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a></h3>
+                                            <h3 class="fn-left"><a rel="tag" class="ft-a-title" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle?html}</a></h3>
                                             <span class="ft-gray fn-right">
                                                 ${referenceLabel} ${tag.tagReferenceCount?c} &nbsp;
                                                 ${cmtLabel} ${tag.tagCommentCount?c}
@@ -74,9 +74,9 @@
                                 <#list coldTags as tag>
                                 <li>
                                     <#if tag.tagIconPath!="">
-                                    <div class="avatar-small" style="background-image: url('${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
+                                    <div class="avatar-small" style="background-image: url('${tag.tagIconPath?html}')" alt="${tag.tagTitle?html}"></div>
                                     </#if>
-                                    <a class="ft-a-title" rel="tag" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a>
+                                    <a class="ft-a-title" rel="tag" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle?html}</a>
                                     <div class="vditor-reset">${tag.tagDescription}</div>
                                 </li>
                                 </#list>
