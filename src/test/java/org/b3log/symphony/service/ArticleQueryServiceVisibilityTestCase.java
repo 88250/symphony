@@ -38,9 +38,9 @@ import static org.testng.Assert.assertTrue;
  * @version 1.0.0.0, Nov 13, 2026
  * @since 3.6.4
  */
-public class ArticleVisibilityServiceTestCase {
+public class ArticleQueryServiceVisibilityTestCase {
 
-    private ArticleVisibilityService articleVisibilityService;
+    private ArticleQueryService articleQueryService;
 
     private JSONObject author;
 
@@ -52,8 +52,8 @@ public class ArticleVisibilityServiceTestCase {
 
     @BeforeClass
     public void setUp() throws Exception {
-        articleVisibilityService = new ArticleVisibilityService();
-        inject(articleVisibilityService, "userQueryService", new UserQueryService() {
+        articleQueryService = new ArticleQueryService();
+        inject(articleQueryService, "userQueryService", new UserQueryService() {
             @Override
             public Set<String> getUserNames(final String text) {
                 return text.contains("@invited") ? Set.of("invited") : Set.of();
@@ -81,49 +81,49 @@ public class ArticleVisibilityServiceTestCase {
 
     @Test
     public void normalArticleIsViewableByUnrelatedViewer() {
-        assertTrue(articleVisibilityService.canViewArticle(
+        assertTrue(articleQueryService.canViewArticle(
                 article(Article.ARTICLE_TYPE_C_NORMAL, Article.ARTICLE_STATUS_C_VALID, "author", "body"), unrelated));
     }
 
     @Test
     public void discussionIsViewableByAuthor() {
-        assertTrue(articleVisibilityService.canViewArticle(
+        assertTrue(articleQueryService.canViewArticle(
                 article(Article.ARTICLE_TYPE_C_DISCUSSION, Article.ARTICLE_STATUS_C_VALID, "author", "secret"), author));
     }
 
     @Test
     public void discussionIsViewableByInvitedUser() {
-        assertTrue(articleVisibilityService.canViewArticle(
+        assertTrue(articleQueryService.canViewArticle(
                 article(Article.ARTICLE_TYPE_C_DISCUSSION, Article.ARTICLE_STATUS_C_VALID, "author", "@invited secret"), invited));
     }
 
     @Test
     public void discussionIsViewableByAdmin() {
-        assertTrue(articleVisibilityService.canViewArticle(
+        assertTrue(articleQueryService.canViewArticle(
                 article(Article.ARTICLE_TYPE_C_DISCUSSION, Article.ARTICLE_STATUS_C_VALID, "author", "secret"), admin));
     }
 
     @Test
     public void discussionIsHiddenFromUnrelatedViewer() {
-        assertFalse(articleVisibilityService.canViewArticle(
+        assertFalse(articleQueryService.canViewArticle(
                 article(Article.ARTICLE_TYPE_C_DISCUSSION, Article.ARTICLE_STATUS_C_VALID, "author", "secret"), unrelated));
     }
 
     @Test
     public void discussionIsHiddenFromAnonymousViewer() {
-        assertFalse(articleVisibilityService.canViewArticle(
+        assertFalse(articleQueryService.canViewArticle(
                 article(Article.ARTICLE_TYPE_C_DISCUSSION, Article.ARTICLE_STATUS_C_VALID, "author", "secret"), null));
     }
 
     @Test
     public void blockedArticleIsHidden() {
-        assertFalse(articleVisibilityService.canViewArticle(
+        assertFalse(articleQueryService.canViewArticle(
                 article(Article.ARTICLE_TYPE_C_NORMAL, Article.ARTICLE_STATUS_C_INVALID, "author", "blocked"), author));
     }
 
     @Test
     public void invalidAuthorHidesArticle() {
-        assertFalse(articleVisibilityService.canViewArticle(
+        assertFalse(articleQueryService.canViewArticle(
                 article(Article.ARTICLE_TYPE_C_NORMAL, Article.ARTICLE_STATUS_C_VALID, "invalid", "body"), unrelated));
     }
 
@@ -135,7 +135,7 @@ public class ArticleVisibilityServiceTestCase {
     }
 
     private static void inject(final Object target, final String name, final Object value) throws Exception {
-        final Field field = target.getClass().getDeclaredField(name);
+        final Field field = ArticleQueryService.class.getDeclaredField(name);
         field.setAccessible(true);
         field.set(target, value);
     }

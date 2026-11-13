@@ -123,12 +123,6 @@ public class ArticleQueryService {
     private UserQueryService userQueryService;
 
     /**
-     * Article visibility service.
-     */
-    @Inject
-    private ArticleVisibilityService articleVisibilityService;
-
-    /**
      * Avatar query service.
      */
     @Inject
@@ -1704,6 +1698,91 @@ public class ArticleQueryService {
     }
 
     /**
+     * Checks whether the specified viewer can view the specified article.
+     *
+     * @param article the specified article
+     * @param viewer  the specified viewer, may be {@code null}
+     * @return {@code true} if the viewer can view it, returns {@code false} otherwise
+     */
+    public boolean canViewArticle(final JSONObject article, final JSONObject viewer) {
+        if (null == article) {
+            return false;
+        }
+
+        if (Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
+            return false;
+        }
+
+        final JSONObject author = userQueryService.getUser(article.optString(Article.ARTICLE_AUTHOR_ID));
+        if (null != author && UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)) {
+            return false;
+        }
+
+        return canViewDiscussion(article, viewer);
+    }
+
+    /**
+     * Checks whether the current user can view the specified discussion article.
+     *
+     * @param article the specified discussion article
+     * @return {@code true} if the current user can view it, returns {@code false} otherwise
+     */
+    public boolean canViewDiscussion(final JSONObject article) {
+        return canViewDiscussion(article, Sessions.getUser());
+    }
+
+    /**
+     * Checks whether the specified viewer can view the specified discussion article.
+     *
+     * @param article the specified discussion article
+     * @param viewer  the specified viewer, may be {@code null}
+     * @return {@code true} if the viewer can view it, returns {@code false} otherwise
+     */
+    public boolean canViewDiscussion(final JSONObject article, final JSONObject viewer) {
+        if (Article.ARTICLE_TYPE_C_DISCUSSION != article.optInt(Article.ARTICLE_TYPE)) {
+            return true;
+        }
+
+        final String viewerName = null == viewer ? "" : viewer.optString(User.USER_NAME);
+        final String viewerRole = null == viewer ? "" : viewer.optString(User.USER_ROLE);
+        if (Role.ROLE_ID_C_ADMIN.equals(viewerRole)) {
+            return true;
+        }
+        if (StringUtils.isBlank(viewerName)) {
+            return false;
+        }
+
+        final String authorName = getAuthorName(article);
+        if (StringUtils.isNotBlank(authorName) && authorName.equals(viewerName)) {
+            return true;
+        }
+
+        final Set<String> userNames = userQueryService.getUserNames(article.optString(Article.ARTICLE_CONTENT));
+        for (final String userName : userNames) {
+            if (userName.equals(viewerName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Gets the author name of the specified article.
+     *
+     * @param article the specified article
+     * @return author name
+     */
+    private String getAuthorName(final JSONObject article) {
+        String ret = article.optString(Article.ARTICLE_T_AUTHOR_NAME);
+        if (StringUtils.isBlank(ret)) {
+            final JSONObject author = userQueryService.getUser(article.optString(Article.ARTICLE_AUTHOR_ID));
+            ret = null == author ? "" : author.optString(User.USER_NAME);
+        }
+        return ret;
+    }
+
+    /**
      * Processes the specified article content.
      * <ul>
      * <li>Generates &#64;username home URL</li>
@@ -1747,7 +1826,7 @@ public class ArticleQueryService {
 
             final JSONObject currentUser = Sessions.getUser();
             final int articleType = article.optInt(Article.ARTICLE_TYPE);
-            if (!articleVisibilityService.canViewDiscussion(article, currentUser)) {
+            if (!canViewDiscussion(article, currentUser)) {
                 final String authorName = article.optString(Article.ARTICLE_T_AUTHOR_NAME);
                 String blockContent = langPropsService.get("articleDiscussionLabel");
                 blockContent = blockContent.replace("{user}", UserExt.getUserLink(authorName));

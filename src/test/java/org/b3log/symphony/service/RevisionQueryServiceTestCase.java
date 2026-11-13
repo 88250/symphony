@@ -83,7 +83,7 @@ public class RevisionQueryServiceTestCase {
     @Test
     public void unauthorizedViewerDoesNotQueryRevisions() throws Exception {
         final AtomicBoolean queried = new AtomicBoolean();
-        final RevisionQueryService service = new RevisionQueryService();
+        final RevisionQueryService service = service(false);
         inject(service, "articleRepository", new ArticleRepository() {
             @Override
             public JSONObject get(final String id) {
@@ -95,12 +95,6 @@ public class RevisionQueryServiceTestCase {
             public List<JSONObject> getList(final Query query) {
                 queried.set(true);
                 return List.of();
-            }
-        });
-        inject(service, "articleVisibilityService", new ArticleVisibilityService() {
-            @Override
-            public boolean canViewArticle(final JSONObject article, final JSONObject viewer) {
-                return false;
             }
         });
 
@@ -114,7 +108,7 @@ public class RevisionQueryServiceTestCase {
     @Test
     public void authorizedViewerQueriesRevisions() throws Exception {
         final AtomicBoolean queried = new AtomicBoolean();
-        final RevisionQueryService service = new RevisionQueryService();
+        final RevisionQueryService service = service(true);
         inject(service, "articleRepository", new ArticleRepository() {
             @Override
             public JSONObject get(final String id) {
@@ -128,12 +122,6 @@ public class RevisionQueryServiceTestCase {
                 return List.of();
             }
         });
-        inject(service, "articleVisibilityService", new ArticleVisibilityService() {
-            @Override
-            public boolean canViewArticle(final JSONObject article, final JSONObject viewer) {
-                return true;
-            }
-        });
 
         final List<JSONObject> revisions = service.getArticleRevisions(
                 new JSONObject().put(User.USER_NAME, "author"), "article");
@@ -142,8 +130,22 @@ public class RevisionQueryServiceTestCase {
         assertTrue(queried.get());
     }
 
+    private static RevisionQueryService service(final boolean viewable) {
+        return new RevisionQueryService() {
+            @Override
+            ArticleQueryService getArticleQueryService() {
+                return new ArticleQueryService() {
+                    @Override
+                    public boolean canViewArticle(final JSONObject article, final JSONObject viewer) {
+                        return viewable;
+                    }
+                };
+            }
+        };
+    }
+
     private static void inject(final Object target, final String name, final Object value) throws Exception {
-        final Field field = target.getClass().getDeclaredField(name);
+        final Field field = RevisionQueryService.class.getDeclaredField(name);
         field.setAccessible(true);
         field.set(target, value);
     }

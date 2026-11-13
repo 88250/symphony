@@ -21,6 +21,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.annotation.Service;
@@ -73,10 +74,13 @@ public class RevisionQueryService {
     private ArticleRepository articleRepository;
 
     /**
-     * Article visibility service.
+     * Gets the article query service.
+     *
+     * @return article query service
      */
-    @Inject
-    private ArticleVisibilityService articleVisibilityService;
+    ArticleQueryService getArticleQueryService() {
+        return BeanManager.getInstance().getReference(ArticleQueryService.class);
+    }
 
     /**
      * Gets a comment's revisions.
@@ -101,7 +105,7 @@ public class RevisionQueryService {
 
             final String viewerId = null == viewer ? "" : viewer.optString(Keys.OBJECT_ID);
             final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
-            if (!articleVisibilityService.canViewArticle(article, viewer) && !viewerId.equals(commentAuthorId)) {
+            if (!getArticleQueryService().canViewArticle(article, viewer) && !viewerId.equals(commentAuthorId)) {
                 return ret;
             }
 
@@ -167,7 +171,7 @@ public class RevisionQueryService {
     public List<JSONObject> getArticleRevisions(final JSONObject viewer, final String articleId) {
         try {
             final JSONObject article = articleRepository.get(articleId);
-            if (null == article || !articleVisibilityService.canViewArticle(article, viewer)) {
+            if (null == article || !getArticleQueryService().canViewArticle(article, viewer)) {
                 return Collections.emptyList();
             }
 
