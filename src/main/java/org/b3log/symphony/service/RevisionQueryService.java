@@ -73,6 +73,12 @@ public class RevisionQueryService {
     private ArticleRepository articleRepository;
 
     /**
+     * Article visibility service.
+     */
+    @Inject
+    private ArticleVisibilityService articleVisibilityService;
+
+    /**
      * Gets a comment's revisions.
      *
      * @param viewer    the specified viewer
@@ -88,14 +94,18 @@ public class RevisionQueryService {
                 return ret;
             }
 
-            if (Comment.COMMENT_VISIBLE_C_AUTHOR == comment.optInt(Comment.COMMENT_VISIBLE)) {
-                final JSONObject article = articleRepository.get(comment.optString(Comment.COMMENT_ON_ARTICLE_ID));
-                if (null == article) {
-                    return ret;
-                }
+            final JSONObject article = articleRepository.get(comment.optString(Comment.COMMENT_ON_ARTICLE_ID));
+            if (null == article) {
+                return ret;
+            }
 
-                final String viewerId = viewer.optString(Keys.OBJECT_ID);
-                final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+            final String viewerId = null == viewer ? "" : viewer.optString(Keys.OBJECT_ID);
+            final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+            if (!articleVisibilityService.canViewArticle(article, viewer) && !viewerId.equals(commentAuthorId)) {
+                return ret;
+            }
+
+            if (Comment.COMMENT_VISIBLE_C_AUTHOR == comment.optInt(Comment.COMMENT_VISIBLE)) {
                 final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
                 if (!viewerId.equals(commentAuthorId) && !viewerId.equals(articleAuthorId)) {
                     return ret;
@@ -150,16 +160,22 @@ public class RevisionQueryService {
     /**
      * Gets an article's revisions.
      *
+     * @param viewer    the specified viewer
      * @param articleId the specified article id
-     * @return article revisions, returns an empty list if not found
+     * @return article revisions, returns an empty list if not found or not viewable
      */
-    public List<JSONObject> getArticleRevisions(final String articleId) {
-        final Query query = new Query().setFilter(CompositeFilterOperator.and(
-                new PropertyFilter(Revision.REVISION_DATA_ID, FilterOperator.EQUAL, articleId),
-                new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, Revision.DATA_TYPE_C_ARTICLE)
-        )).addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
-
+    public List<JSONObject> getArticleRevisions(final JSONObject viewer, final String articleId) {
         try {
+            final JSONObject article = articleRepository.get(articleId);
+            if (null == article || !articleVisibilityService.canViewArticle(article, viewer)) {
+                return Collections.emptyList();
+            }
+
+            final Query query = new Query().setFilter(CompositeFilterOperator.and(
+                    new PropertyFilter(Revision.REVISION_DATA_ID, FilterOperator.EQUAL, articleId),
+                    new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, Revision.DATA_TYPE_C_ARTICLE)
+            )).addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
+
             final List<JSONObject> ret = revisionRepository.getList(query);
             if (ret.isEmpty()) {
                 return ret;
@@ -183,7 +199,6 @@ public class RevisionQueryService {
             final JSONObject latestRevData = latestRev.optJSONObject(Revision.REVISION_DATA);
             final String latestRevTitle = latestRevData.optString(Article.ARTICLE_TITLE);
             final String latestRevContent = latestRevData.optString(Article.ARTICLE_CONTENT);
-            final JSONObject article = articleRepository.get(articleId);
             final String currentTitle = article.optString(Article.ARTICLE_TITLE);
             String currentContent = article.optString(Article.ARTICLE_CONTENT);
 

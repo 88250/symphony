@@ -410,7 +410,8 @@ public class ArticleProcessor {
      */
     public void getArticleRevisions(final RequestContext context) {
         final String id = context.pathVar("id");
-        final List<JSONObject> revisions = revisionQueryService.getArticleRevisions(id);
+        final JSONObject viewer = Sessions.getUser();
+        final List<JSONObject> revisions = revisionQueryService.getArticleRevisions(viewer, id);
         final JSONObject ret = new JSONObject();
         ret.put(Keys.CODE, StatusCodes.SUCC);
         ret.put(Revision.REVISIONS, (Object) revisions);

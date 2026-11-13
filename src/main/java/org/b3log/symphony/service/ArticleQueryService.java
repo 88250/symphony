@@ -123,6 +123,12 @@ public class ArticleQueryService {
     private UserQueryService userQueryService;
 
     /**
+     * Article visibility service.
+     */
+    @Inject
+    private ArticleVisibilityService articleVisibilityService;
+
+    /**
      * Avatar query service.
      */
     @Inject
@@ -1740,36 +1746,20 @@ public class ArticleQueryService {
             article.put(Common.DISCUSSION_VIEWABLE, true);
 
             final JSONObject currentUser = Sessions.getUser();
-            final String currentUserName = null == currentUser ? "" : currentUser.optString(User.USER_NAME);
-            final String currentRole = null == currentUser ? "" : currentUser.optString(User.USER_ROLE);
-            final String authorName = article.optString(Article.ARTICLE_T_AUTHOR_NAME);
-
             final int articleType = article.optInt(Article.ARTICLE_TYPE);
-            if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType
-                    && !authorName.equals(currentUserName) && !Role.ROLE_ID_C_ADMIN.equals(currentRole)) {
-                boolean invited = false;
+            if (!articleVisibilityService.canViewDiscussion(article, currentUser)) {
+                final String authorName = article.optString(Article.ARTICLE_T_AUTHOR_NAME);
+                String blockContent = langPropsService.get("articleDiscussionLabel");
+                blockContent = blockContent.replace("{user}", UserExt.getUserLink(authorName));
 
-                final Set<String> userNames = userQueryService.getUserNames(articleContent);
-                for (final String userName : userNames) {
-                    if (userName.equals(currentUserName)) {
-                        invited = true;
-                        break;
-                    }
-                }
-
-                if (!invited) {
-                    String blockContent = langPropsService.get("articleDiscussionLabel");
-                    blockContent = blockContent.replace("{user}", UserExt.getUserLink(authorName));
-
-                    article.put(Article.ARTICLE_CONTENT, blockContent);
-                    article.put(Common.DISCUSSION_VIEWABLE, false);
-                    article.put(Article.ARTICLE_REWARD_CONTENT, "");
-                    article.put(Article.ARTICLE_REWARD_POINT, 0);
-                    article.put(Article.ARTICLE_QNA_OFFER_POINT, 0);
-                    article.put(Article.ARTICLE_T_TOC, "");
-                    article.put(Article.ARTICLE_AUDIO_URL, "");
-                    return;
-                }
+                article.put(Article.ARTICLE_CONTENT, blockContent);
+                article.put(Common.DISCUSSION_VIEWABLE, false);
+                article.put(Article.ARTICLE_REWARD_CONTENT, "");
+                article.put(Article.ARTICLE_REWARD_POINT, 0);
+                article.put(Article.ARTICLE_QNA_OFFER_POINT, 0);
+                article.put(Article.ARTICLE_T_TOC, "");
+                article.put(Article.ARTICLE_AUDIO_URL, "");
+                return;
             }
 
             if (Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
